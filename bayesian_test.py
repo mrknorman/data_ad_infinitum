@@ -11,7 +11,6 @@ from tensorflow.data.experimental import AutoShardPolicy
 
 import numpy as np
 
-
 from bokeh.plotting import figure, save
 from bokeh.models import Span, ColumnDataSource
 from bokeh.io import output_file
@@ -20,9 +19,12 @@ import tensorflow as tf
 
 import tensorflow_probability as tfp
 
-def plot_predictions(model, tf_dataset, filename="output.html"):
-    output_file(filename)
+import cProfile, pstats, io
+from pstats import SortKey
+pr = cProfile.Profile()
+pr.enable()
 
+def plot_predictions(model, tf_dataset, filename="output.html"):
     batch = next(iter(tf_dataset))
     onsource = tf.convert_to_tensor(batch[0]['onsource'])
     snr_ground_truth = batch[1]['snr'].numpy()
@@ -33,21 +35,23 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
 
     x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
 
-    p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
-    
-    i = 0
+    for i in range(10):
+        
+        output_file(f"{filename}_{i}.html")
+        
+        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
+        
+        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
+        p.renderers.extend([vline])
 
-    vline = Span(location=snr_ground_truth[i][0], dimension='height', line_color='green', line_width=2)
-    p.renderers.extend([vline])
+        vline = Span(location=snr_predictions_mean[i][0], dimension='height', line_color='blue', line_width=1)
+        p.renderers.extend([vline])
 
-    vline = Span(location=snr_predictions_mean[i][0], dimension='height', line_color='blue', line_width=1)
-    p.renderers.extend([vline])
+        y = (1/(snr_predictions_stddev[i] * np.sqrt(2 * np.pi))) * np.exp(-0.5*((x - snr_predictions_mean[i][0]) / snr_predictions_stddev[i])**2)
+        source = ColumnDataSource(data=dict(x=x, y=y))
+        p.line('x', 'y', source=source, line_color='blue')
 
-    y = (1/(snr_predictions_stddev[i] * np.sqrt(2 * np.pi))) * np.exp(-0.5*((x - snr_predictions_mean[i][0]) / snr_predictions_stddev[i])**2)
-    source = ColumnDataSource(data=dict(x=x, y=y))
-    p.line('x', 'y', source=source, line_color='blue')
-
-    save(p)
+        save(p)
 
 if __name__ == "__main__":
     
@@ -60,8 +64,6 @@ if __name__ == "__main__":
     options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA
     
     num_examples_per_batch = 32
-    max_populaton = 10
-    max_num_inital_layers = 10
     sample_rate_hertz = 8192.0
     onsource_duration_seconds = 1.0
     
@@ -123,13 +125,13 @@ if __name__ == "__main__":
             DropLayer(0.5)
         ]
         
-        num_train_examples    = int(1.0E3)
+        num_train_examples    = int(1.0E5)
         num_validate_examples = int(1.0E2)
         
         # Creating the noise dataset
         cbc_ds = get_ifo_data_generator(
             time_interval = O3,
-            data_labels = ["noise", "glitches"],
+            data_labels = ["noise", "glitches", "events"],
             ifo = 'L1',
             injection_configs = injection_configs,
             sample_rate_hertz = sample_rate_hertz,
@@ -155,6 +157,9 @@ if __name__ == "__main__":
         
         builder.summary()
         
-        builder.train_model(cbc_ds, 10, 1)
+        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 1)
+        
+        
+        builder.model
     
         plot_predictions(builder.model, cbc_ds, filename="model_predictions.html")
