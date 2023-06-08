@@ -25,17 +25,17 @@ pr = cProfile.Profile()
 pr.enable()
 
 def plot_predictions(model, tf_dataset, filename="output.html"):
-    batch = next(iter(tf_dataset))
-    onsource = tf.convert_to_tensor(batch[0]['onsource'])
-    snr_ground_truth = batch[1]['snr'].numpy()
-
-    predictions_distribution = model(onsource)
-    snr_predictions_mean = predictions_distribution.mean().numpy()
-    snr_predictions_stddev = predictions_distribution.stddev().numpy()
-
-    x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
-
+  
     for i in range(10):
+        batch = next(iter(tf_dataset))
+        onsource = tf.convert_to_tensor(batch[0]['onsource'])
+        snr_ground_truth = batch[1]['snr'].numpy()
+
+        predictions_distribution = model(onsource)
+        snr_predictions_mean = predictions_distribution.mean().numpy()
+        snr_predictions_stddev = predictions_distribution.stddev().numpy()
+
+        x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
         
         output_file(f"{filename}_{i}.html")
         
@@ -157,9 +157,7 @@ if __name__ == "__main__":
         
         builder.summary()
         
-        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 1)
-        
-        
-        builder.model
+        builder.train_model(cbc_ds, 100//num_examples_per_batch, 1)
+        builder.model.save_weights('model_weights.h5')
     
         plot_predictions(builder.model, cbc_ds, filename="model_predictions.html")
