@@ -25,7 +25,6 @@ pr = cProfile.Profile()
 pr.enable()
 
 def plot_predictions(model, tf_dataset, filename="output.html"):
-  
     for i in range(10):
         batch = next(iter(tf_dataset))
         onsource = tf.convert_to_tensor(batch[0]['onsource'])
@@ -56,7 +55,8 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
 if __name__ == "__main__":
     
     gpus = find_available_GPUs(16000, 1)
-    strategy = setup_cuda(gpus, verbose = True)
+    
+    strategy = setup_cuda(gpus, 10000, verbose = True)
             
     policy = mixed_precision.Policy('mixed_float16')
     mixed_precision.set_global_policy(policy)
@@ -74,8 +74,8 @@ if __name__ == "__main__":
             {
                 "type" : "cbc",
                 "snr"  : \
-                    {"min_value" : 0.0, "max_value": 50, "mean_value": 20, "std": 15,  "distribution_type": "normal"},
-                "injection_chance" : 0.5,
+                    {"min_value" : 0.1, "max_value": 100, "mean_value": 0.0, "std": 40,  "distribution_type": "normal"},
+                "injection_chance" : 1.0,
                 "padding_seconds" : {"front" : 0.2, "back" : 0.1},
                 "args" : {
                     "approximant_enum" : \
@@ -125,9 +125,6 @@ if __name__ == "__main__":
             DropLayer(0.5)
         ]
         
-        num_train_examples    = int(1.0E5)
-        num_validate_examples = int(1.0E2)
-        
         # Creating the noise dataset
         cbc_ds = get_ifo_data_generator(
             time_interval = O3,
@@ -157,7 +154,10 @@ if __name__ == "__main__":
         
         builder.summary()
         
-        builder.train_model(cbc_ds, 100//num_examples_per_batch, 1)
+        num_train_examples    = int(2.0E5)
+        num_validate_examples = int(1.0E2)
+        
+        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 10)
         builder.model.save_weights('model_weights.h5')
     
         plot_predictions(builder.model, cbc_ds, filename="model_predictions.html")
