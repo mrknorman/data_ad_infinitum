@@ -17,6 +17,13 @@ from bokeh.io import output_file
 import numpy as np
 import tensorflow as tf
 
+from scipy.stats import gamma
+from scipy.special import beta as beta_function # for the Beta function B(alpha, beta)
+from bokeh.plotting import figure, output_file, save
+from bokeh.models import Span
+from bokeh.models.sources import ColumnDataSource
+import numpy as np
+
 import tensorflow_probability as tfp
 
 import cProfile, pstats, io
@@ -31,22 +38,95 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
         snr_ground_truth = batch[1]['snr'].numpy()
 
         predictions_distribution = model(onsource)
-        snr_predictions_mean = predictions_distribution.mean().numpy()
-        snr_predictions_stddev = predictions_distribution.stddev().numpy()
+
+        # Use the mean() and stddev() methods to get the loc and scale of the distribution
+        snr_predictions_loc = predictions_distribution.mean().numpy()
+        snr_predictions_scale = predictions_distribution.stddev().numpy()
 
         x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
-        
+
         output_file(f"{filename}_{i}.html")
-        
+
         p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
-        
+
         vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
         p.renderers.extend([vline])
 
-        vline = Span(location=snr_predictions_mean[i][0], dimension='height', line_color='blue', line_width=1)
+        vline = Span(location=snr_predictions_loc[i][0], dimension='height', line_color='blue', line_width=1)
         p.renderers.extend([vline])
 
-        y = (1/(snr_predictions_stddev[i] * np.sqrt(2 * np.pi))) * np.exp(-0.5*((x - snr_predictions_mean[i][0]) / snr_predictions_stddev[i])**2)
+        y = (1/(snr_predictions_scale[i] * np.sqrt(2 * np.pi))) * np.exp(-0.5*((x - snr_predictions_loc[i][0]) / snr_predictions_scale[i][0])**2)
+                
+        source = ColumnDataSource(data=dict(x=x, y=y))
+        p.line('x', 'y', source=source, line_color='blue')
+
+        save(p)
+        
+def plot_predictions_b(model, tf_dataset, filename="output.html"):
+    for i in range(10):
+        batch = next(iter(tf_dataset))
+        onsource = tf.cast(batch[0]['onsource'], tf.float32)
+        snr_ground_truth = batch[1]['snr'].numpy()
+
+        predictions_distribution = model(onsource)
+        
+        # Here we extract the concentration parameters (alpha and beta) directly
+        alpha, beta = predictions_distribution.distribution.distribution.concentration1.numpy(), predictions_distribution.distribution.distribution.concentration0.numpy()
+
+        # Compute the median of the distribution
+        median_predictions = np.percentile(predictions_distribution.sample(1000).numpy(), 50, axis=0)
+
+        x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
+
+        output_file(f"{filename}_{i}.html")
+
+        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
+
+        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
+        p.renderers.extend([vline])
+
+        vline = Span(location=median_predictions[i][0], dimension='height', line_color='blue', line_width=1)
+        p.renderers.extend([vline])
+        
+        print(alpha[i], beta[i])
+
+        y = (x**(alpha[i][0]-1) * (1 + x)**(-alpha[i][0]-beta[i][0])) / beta_function(alpha[i][0], beta[i][0])
+        
+        print(y)
+        
+        source = ColumnDataSource(data=dict(x=x, y=y))
+        p.line('x', 'y', source=source, line_color='blue')
+
+        save(p)
+        
+def plot_predictions_g(model, tf_dataset, filename="output.html"):
+    for i in range(10):
+        batch = next(iter(tf_dataset))
+        onsource = tf.cast(batch[0]['onsource'], tf.float32)
+        snr_ground_truth = batch[1]['snr'].numpy()
+
+        predictions_distribution = model(onsource)
+
+        # Here we extract the concentration and rate parameters (alpha and beta) directly
+        alpha, beta = predictions_distribution.distribution.concentration.numpy(), predictions_distribution.distribution.rate.numpy()
+
+        # Compute the median of the distribution
+        median_predictions = np.percentile(predictions_distribution.sample(1000).numpy(), 50, axis=0)
+
+        x = np.linspace(0.0, max(snr_ground_truth), 1000)
+
+        output_file(f"{filename}_{i}.html")
+
+        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
+
+        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
+        p.renderers.extend([vline])
+
+        vline = Span(location=median_predictions[i][0], dimension='height', line_color='blue', line_width=1)
+        p.renderers.extend([vline])
+
+        y = gamma.pdf(x, a=alpha[i][0], scale=1.0/beta[i][0])  # gamma.pdf is used to compute the PDF of the gamma distribution
+
         source = ColumnDataSource(data=dict(x=x, y=y))
         p.line('x', 'y', source=source, line_color='blue')
 
@@ -54,9 +134,9 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
 
 if __name__ == "__main__":
     
-    gpus = find_available_GPUs(16000, 1)
+    gpus = find_available_GPUs(10000, 1)
     
-    strategy = setup_cuda(gpus, 10000, verbose = True)
+    strategy = setup_cuda(gpus, 8000, verbose = True)
             
     policy = mixed_precision.Policy('mixed_float16')
     mixed_precision.set_global_policy(policy)
@@ -74,9 +154,9 @@ if __name__ == "__main__":
             {
                 "type" : "cbc",
                 "snr"  : \
-                    {"min_value" : 0.1, "max_value": 100, "mean_value": 0.0, "std": 40,  "distribution_type": "normal"},
+                    {"min_value" : 0.5, "max_value": 100, "mean_value": 0.5, "std": 20, "distribution_type": "uniform"},
                 "injection_chance" : 1.0,
-                "padding_seconds" : {"front" : 0.2, "back" : 0.1},
+                "padding_seconds" : {"front" : 0.3, "back" : 0.3},
                 "args" : {
                     "approximant_enum" : \
                         {"value" : 1, "distribution_type": "constant", "dtype" : int}, 
@@ -140,7 +220,7 @@ if __name__ == "__main__":
             apply_whitening = True,
             input_keys = ["onsource"], 
             output_keys = ["snr"]
-        ).prefetch(tf.data.experimental.AUTOTUNE).with_options(options)
+        ).with_options(options)
         
         builder = ModelBuilder(
             layers, 
@@ -154,10 +234,10 @@ if __name__ == "__main__":
         
         builder.summary()
         
-        num_train_examples    = int(2.0E5)
+        num_train_examples    = int(2.0E6)
         num_validate_examples = int(1.0E2)
         
-        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 10)
+        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 2)
         builder.model.save_weights('model_weights.h5')
     
-        plot_predictions(builder.model, cbc_ds, filename="model_predictions.html")
+        plot_predictions_g(builder.model, cbc_ds, filename="model_predictions.html")
