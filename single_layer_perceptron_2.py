@@ -114,26 +114,9 @@ def plot_model_output(model, output_digit, x_data, y_data):
     # Save the plot
     output_file(f"output_plot_for_{output_digit}.html")
     save(p)
-    
-
-def load_data():
-    # Step 1: Load and prepare the MNIST dataset.
-    # This data is already split into train and test datasets.
-    (x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-    # Reshape and normalize the images to feed into the neural network.
-    x_train, x_test = tf.cast(x_train.reshape(-1, 784)/255.0, tf.float32), \
-    tf.cast(x_test.reshape(-1, 784)/255.0, tf.float32)
-
-    # Convert labels to one-hot vectors. This is necessary as our output layer 
-    # will have 10 neurons, one for each digit from 0 to 9.
-    y_train, y_test = tf.one_hot(y_train, depth=10), tf.one_hot(y_test, depth=10)
-    
-    return x_train, y_train, x_test, y_test
 
 # Step 1: Load and prepare the MNIST dataset.
-def load_and_prepare_data():
-    
+def load_data():
     # This data is already split into train and test datasets.
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -147,20 +130,21 @@ def load_and_prepare_data():
     
     return x_train, y_train, x_test, y_test
 
-# Define the model
+# Step 2: Define the model
 def define_model():
     W = tf.Variable(tf.random.normal([784, 10]), name="weights", dtype = tf.float32)
     b = tf.Variable(tf.zeros([10]), name="biases",  dtype = tf.float32)
     return W, b
 
-# Define the model's computations
+# Step 3: Define the model's computations
 def model(x, W, b):
     return tf.nn.softmax(tf.matmul(x, W) + b)
 
-# Define the loss function
+# Step 4: Define the loss function
 def compute_loss(y_true, y_pred):
     return tf.reduce_mean(-tf.reduce_sum(y_true * tf.math.log(y_pred), axis=[1]))
 
+# Step 5: Define the loss function
 @tf.function
 def train_step(x, y, W, b):
     with tf.GradientTape() as tape:
