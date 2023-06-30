@@ -43,6 +43,37 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
         snr_predictions_loc = predictions_distribution.mean().numpy()
         snr_predictions_scale = predictions_distribution.stddev().numpy()
 
+        x = np.linspace(0.0, max(snr_ground_truth), 1000)
+
+        output_file(f"{filename}_{i}.html")
+
+        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
+
+        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
+        p.renderers.extend([vline])
+
+        vline = Span(location=snr_predictions_loc[i][0], dimension='height', line_color='blue', line_width=1)
+        p.renderers.extend([vline])
+
+        y = (1/(snr_predictions_scale[i] * np.sqrt(2 * np.pi))) * np.exp(-0.5*((x - snr_predictions_loc[i][0]) / snr_predictions_scale[i][0])**2)
+                
+        source = ColumnDataSource(data=dict(x=x, y=y))
+        p.line('x', 'y', source=source, line_color='blue')
+
+        save(p)
+        
+def plot_predictions_f(model, tf_dataset, filename="output.html"):
+    for i in range(10):
+        batch = next(iter(tf_dataset))
+        onsource = tf.convert_to_tensor(batch[0]['onsource'])
+        snr_ground_truth = batch[1]['snr'].numpy()
+
+        predictions_distribution = model(onsource)
+
+        # Use the mean() and stddev() methods to get the loc and scale of the distribution
+        snr_predictions_loc = predictions_distribution.distribution.distribution.loc.numpy()
+        snr_predictions_scale = predictions_distribution.distribution.distribution.scale.numpy()
+
         x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
 
         output_file(f"{filename}_{i}.html")
@@ -205,6 +236,10 @@ if __name__ == "__main__":
             DropLayer(0.5)
         ]
         
+        def transform_features_labels(features, labels):
+            labels['snr'] = tf.math.sqrt(labels['snr'])
+            return features, labels
+        
         # Creating the noise dataset
         cbc_ds = get_ifo_data_generator(
             time_interval = O3,
@@ -234,10 +269,10 @@ if __name__ == "__main__":
         
         builder.summary()
         
-        num_train_examples    = int(2.0E6)
+        num_train_examples    = int(2.0E5)
         num_validate_examples = int(1.0E2)
         
-        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 2)
+        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 1)
         builder.model.save_weights('model_weights.h5')
     
-        plot_predictions_g(builder.model, cbc_ds, filename="model_predictions.html")
+        plot_predictions_f(builder.model, cbc_ds, filename="model_predictions.html")
