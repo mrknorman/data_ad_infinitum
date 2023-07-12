@@ -3,11 +3,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from bokeh.plotting import figure, output_file, save
+
 from bokeh.models import Range1d, LinearAxis, FactorRange, ColumnDataSource, LabelSet, LinearColorMapper
 from bokeh.io import output_notebook
 from bokeh.palettes import Greys256
 
-from py_ml_tools.setup import load_label_datasets, setup_cuda, find_available_GPUs
+from py_ml_tools.setup import setup_cuda, find_available_GPUs
 from bokeh.models import ColumnDataSource, LabelSet
 from bokeh.transform import transform
 
@@ -144,15 +145,16 @@ def model(x, W, b):
 def compute_loss(y_true, y_pred):
     return tf.reduce_mean(-tf.reduce_sum(y_true * tf.math.log(y_pred), axis=[1]))
 
-# Step 5: Define the loss function
+# Step 5: Define the training step
+learning_rate = 0.01
 @tf.function
 def train_step(x, y, W, b):
     with tf.GradientTape() as tape:
         y_pred = model(x, W, b)
         current_loss = compute_loss(y, y_pred)
     gradients = tape.gradient(current_loss, [W, b])
-    W.assign_sub(0.01 * gradients[0])  # update weights
-    b.assign_sub(0.01 * gradients[1])  # update biases
+    W.assign_sub(learning_rate * gradients[0])  # update weights
+    b.assign_sub(learning_rate * gradients[1])  # update biases
     return current_loss
 
 @tf.function
