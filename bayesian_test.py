@@ -11,17 +11,14 @@ from tensorflow.data.experimental import AutoShardPolicy
 
 import numpy as np
 
-from bokeh.plotting import figure, save
+from bokeh.plotting import figure, output_file, save
 from bokeh.models import Span, ColumnDataSource
-from bokeh.io import output_file
+from bokeh.models.sources import ColumnDataSource
 import numpy as np
 import tensorflow as tf
 
 from scipy.stats import gamma
 from scipy.special import beta as beta_function # for the Beta function B(alpha, beta)
-from bokeh.plotting import figure, output_file, save
-from bokeh.models import Span
-from bokeh.models.sources import ColumnDataSource
 import numpy as np
 
 import tensorflow_probability as tfp
