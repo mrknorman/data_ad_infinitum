@@ -207,7 +207,6 @@ def plot_results(loss_per_epoch, accuracy_per_epoch, W, b, x_train, y_train):
     plot_model_output(model_fn, 1, x_train, y_train)
     plot_model_output(model_fn, 5, x_train, y_train)
 
-
 if __name__ == "__main__":
     # Run the code
     
