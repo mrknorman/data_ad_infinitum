@@ -5,6 +5,9 @@
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
 
+generator_data*
+generated*
+.ipynb
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
