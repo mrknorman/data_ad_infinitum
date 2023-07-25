@@ -1,5 +1,5 @@
 import numpy as np
-from bokeh.plotting import figure, show, output_file
+from bokeh.plotting import figure, show, output_file, output_notebook
 from bokeh.models import ColorBar, LinearColorMapper
 from bokeh.palettes import Sunset11
 
@@ -62,6 +62,8 @@ def plot_objective_function(X, Y, Z, filename="output.html"):
     # Creating the figure object
     p = figure(width=600, height=500, toolbar_location=None, x_range=(X.min(), X.max()), y_range=(Y.min(), Y.max()),
                title="Contour plot of objective function")
+    
+    output_notebook()
 
     # Define levels
     levels = np.linspace(Z.min(), Z.max(), 11)
