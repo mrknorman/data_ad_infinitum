@@ -5,7 +5,7 @@ from py_ml_tools.setup   import load_label_datasets, setup_cuda, find_available_
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.data import Dataset
-from tensorflow.keras import mixed_precision, layers
+from tensorflow.keras import mixed_precision, layers, optimizers
 from tensorflow.keras import backend as K
 from tensorflow.data.experimental import AutoShardPolicy
 
@@ -28,11 +28,11 @@ from pstats import SortKey
 pr = cProfile.Profile()
 pr.enable()
 
-def plot_predictions(model, tf_dataset, filename="output.html"):
+def plot_predictions(model, tf_dataset, output_name = "amplitude", filename="output.html"):
     for i in range(10):
         batch = next(iter(tf_dataset))
         onsource = tf.convert_to_tensor(batch[0]['onsource'])
-        snr_ground_truth = batch[1]['snr'].numpy()
+        snr_ground_truth = batch[1][output_name].numpy()
 
         predictions_distribution = model(onsource)
 
@@ -59,11 +59,11 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
 
         save(p)
         
-def plot_predictions_f(model, tf_dataset, filename="output.html"):
+def plot_predictions_f(model, tf_dataset, output_name = "amplitude", filename="output.html"):
     for i in range(10):
         batch = next(iter(tf_dataset))
         onsource = tf.convert_to_tensor(batch[0]['onsource'])
-        snr_ground_truth = batch[1]['snr'].numpy()
+        snr_ground_truth = batch[1][output_name][0].numpy()
 
         predictions_distribution = model(onsource)
 
@@ -75,7 +75,7 @@ def plot_predictions_f(model, tf_dataset, filename="output.html"):
 
         output_file(f"{filename}_{i}.html")
 
-        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
+        p = figure(width=800, height=400, title=F'{output_name} Predictions vs Ground Truth')
 
         vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
         p.renderers.extend([vline])
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     strategy = setup_cuda(gpus, 8000, verbose = True)
             
     policy = mixed_precision.Policy('mixed_float16')
-    mixed_precision.set_global_policy(policy)
+    #mixed_precision.set_global_policy(policy)
     options = tf.data.Options()
     options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA
     
@@ -183,7 +183,7 @@ if __name__ == "__main__":
                 "type" : "cbc",
                 "snr"  : \
                     {"min_value" : 0.5, "max_value": 100, "mean_value": 0.5, "std": 20, "distribution_type": "uniform"},
-                "injection_chance" : 1.0,
+                "injection_chance" : 0.5,
                 "padding_seconds" : {"front" : 0.3, "back" : 0.3},
                 "args" : {
                     "approximant_enum" : \
@@ -229,13 +229,19 @@ if __name__ == "__main__":
             ConvLayer(16, 16, 'relu'),
             ConvLayer(16, 32, 'relu'),
             ConvLayer(16, 32, 'relu'),
-            DenseLayer(64,  'relu'),
+            DenseLayer(64, 'relu'),
             DropLayer(0.5)
         ]
         
         def transform_features_labels(features, labels):
             labels['snr'] = tf.math.sqrt(labels['snr'])
             return features, labels
+        
+        def transform_features_labels(features, labels):
+            labels['amplitude'] = labels['amplitude'][0]
+            return features, labels
+        
+        output_name = "amplitude"
         
         # Creating the noise dataset
         cbc_ds = get_ifo_data_generator(
@@ -251,25 +257,34 @@ if __name__ == "__main__":
             seed = 123,
             apply_whitening = True,
             input_keys = ["onsource"], 
-            output_keys = ["snr"]
-        ).with_options(options)
+            output_keys = [output_name]
+        ).with_options(options).map(transform_features_labels)
         
         builder = ModelBuilder(
             layers, 
-            optimizer = 'adam', 
+            optimizer = optimizers.Adam(clipvalue=1.0), 
             loss = negative_loglikelihood, 
             batch_size = num_examples_per_batch
         )
         
         input_size = int(onsource_duration_seconds*sample_rate_hertz)
-        builder.build_model(input_shape = (input_size,), output_shape = 2)
+        builder.build_model(
+            input_shape = (input_size,), 
+            output_shape = 2, 
+            output_name = output_name
+        )
         
         builder.summary()
         
-        num_train_examples    = int(2.0E5)
+        num_train_examples    = int(2.0E4)
         num_validate_examples = int(1.0E2)
         
-        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 1)
+        builder.train_model(cbc_ds, num_train_examples//num_examples_per_batch, 100)
         builder.model.save_weights('model_weights.h5')
     
-        plot_predictions_f(builder.model, cbc_ds, filename="model_predictions.html")
+        plot_predictions(
+            builder.model, 
+            cbc_ds, 
+            output_name = output_name,
+            filename="model_predictions.html"
+        )
