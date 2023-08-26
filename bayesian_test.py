@@ -1,6 +1,6 @@
 from py_ml_tools.dataset import get_ifo_data_generator, get_ifo_data, O3
 from py_ml_tools.model   import ModelBuilder, DenseLayer, ConvLayer, PoolLayer, DropLayer, randomizeLayer, negative_loglikelihood
-from py_ml_tools.setup   import load_label_datasets, setup_cuda, find_available_GPUs
+from py_ml_tools.setup   import setup_cuda, find_available_GPUs
 
 import tensorflow as tf
 from tensorflow import keras
@@ -59,107 +59,6 @@ def plot_predictions(model, tf_dataset, filename="output.html"):
 
         save(p)
         
-def plot_predictions_f(model, tf_dataset, filename="output.html"):
-    for i in range(10):
-        batch = next(iter(tf_dataset))
-        onsource = tf.convert_to_tensor(batch[0]['onsource'])
-        snr_ground_truth = batch[1]['snr'].numpy()
-
-        predictions_distribution = model(onsource)
-
-        # Use the mean() and stddev() methods to get the loc and scale of the distribution
-        snr_predictions_loc = predictions_distribution.distribution.distribution.loc.numpy()
-        snr_predictions_scale = predictions_distribution.distribution.distribution.scale.numpy()
-
-        x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
-
-        output_file(f"{filename}_{i}.html")
-
-        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
-
-        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
-        p.renderers.extend([vline])
-
-        vline = Span(location=snr_predictions_loc[i][0], dimension='height', line_color='blue', line_width=1)
-        p.renderers.extend([vline])
-
-        y = (1/(snr_predictions_scale[i] * np.sqrt(2 * np.pi))) * np.exp(-0.5*((x - snr_predictions_loc[i][0]) / snr_predictions_scale[i][0])**2)
-                
-        source = ColumnDataSource(data=dict(x=x, y=y))
-        p.line('x', 'y', source=source, line_color='blue')
-
-        save(p)
-        
-def plot_predictions_b(model, tf_dataset, filename="output.html"):
-    for i in range(10):
-        batch = next(iter(tf_dataset))
-        onsource = tf.cast(batch[0]['onsource'], tf.float32)
-        snr_ground_truth = batch[1]['snr'].numpy()
-
-        predictions_distribution = model(onsource)
-        
-        # Here we extract the concentration parameters (alpha and beta) directly
-        alpha, beta = predictions_distribution.distribution.distribution.concentration1.numpy(), predictions_distribution.distribution.distribution.concentration0.numpy()
-
-        # Compute the median of the distribution
-        median_predictions = np.percentile(predictions_distribution.sample(1000).numpy(), 50, axis=0)
-
-        x = np.linspace(min(snr_ground_truth), max(snr_ground_truth), 1000)
-
-        output_file(f"{filename}_{i}.html")
-
-        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
-
-        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
-        p.renderers.extend([vline])
-
-        vline = Span(location=median_predictions[i][0], dimension='height', line_color='blue', line_width=1)
-        p.renderers.extend([vline])
-        
-        print(alpha[i], beta[i])
-
-        y = (x**(alpha[i][0]-1) * (1 + x)**(-alpha[i][0]-beta[i][0])) / beta_function(alpha[i][0], beta[i][0])
-        
-        print(y)
-        
-        source = ColumnDataSource(data=dict(x=x, y=y))
-        p.line('x', 'y', source=source, line_color='blue')
-
-        save(p)
-        
-def plot_predictions_g(model, tf_dataset, filename="output.html"):
-    for i in range(10):
-        batch = next(iter(tf_dataset))
-        onsource = tf.cast(batch[0]['onsource'], tf.float32)
-        snr_ground_truth = batch[1]['snr'].numpy()
-
-        predictions_distribution = model(onsource)
-
-        # Here we extract the concentration and rate parameters (alpha and beta) directly
-        alpha, beta = predictions_distribution.distribution.concentration.numpy(), predictions_distribution.distribution.rate.numpy()
-
-        # Compute the median of the distribution
-        median_predictions = np.percentile(predictions_distribution.sample(1000).numpy(), 50, axis=0)
-
-        x = np.linspace(0.0, max(snr_ground_truth), 1000)
-
-        output_file(f"{filename}_{i}.html")
-
-        p = figure(width=800, height=400, title='SNR Predictions vs Ground Truth')
-
-        vline = Span(location=snr_ground_truth[i], dimension='height', line_color='green', line_width=2)
-        p.renderers.extend([vline])
-
-        vline = Span(location=median_predictions[i][0], dimension='height', line_color='blue', line_width=1)
-        p.renderers.extend([vline])
-
-        y = gamma.pdf(x, a=alpha[i][0], scale=1.0/beta[i][0])  # gamma.pdf is used to compute the PDF of the gamma distribution
-
-        source = ColumnDataSource(data=dict(x=x, y=y))
-        p.line('x', 'y', source=source, line_color='blue')
-
-        save(p)
-
 if __name__ == "__main__":
     
     gpus = find_available_GPUs(10000, 1)
