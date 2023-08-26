@@ -163,7 +163,6 @@ def plot_predictions_g(model, tf_dataset, filename="output.html"):
 if __name__ == "__main__":
     
     gpus = find_available_GPUs(10000, 1)
-    
     strategy = setup_cuda(gpus, 8000, verbose = True)
             
     policy = mixed_precision.Policy('mixed_float16')
