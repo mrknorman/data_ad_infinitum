@@ -182,36 +182,92 @@ if __name__ == "__main__":
             {
                 "type" : "cbc",
                 "snr"  : \
-                    {"min_value" : 0.5, "max_value": 100, "mean_value": 0.5, "std": 20, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 0.0, 
+                        "max_value": 30, 
+                        "mean_value": 0.0, 
+                        "std": 20, 
+                        "distribution_type": "uniform"
+                },
                 "injection_chance" : 0.5,
-                "padding_seconds" : {"front" : 0.3, "back" : 0.3},
+                "padding_seconds" : 
+                {
+                    "front" : 0.3, 
+                    "back" : 0.3
+                },
                 "args" : {
-                    "approximant_enum" : \
-                        {"value" : 1, "distribution_type": "constant", "dtype" : int}, 
                     "mass_1_msun" : \
-                        {"min_value" : 5, "max_value": 95, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 5, 
+                        "max_value": 95, 
+                        "distribution_type": "uniform"
+                    },
                     "mass_2_msun" : \
-                        {"min_value" : 5, "max_value": 95, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 5, 
+                        "max_value": 95,
+                        "distribution_type": "uniform"
+                    },
                     "sample_rate_hertz" : \
-                        {"value" : sample_rate_hertz, "distribution_type": "constant"},
+                    {
+                        "value" : sample_rate_hertz, 
+                        "distribution_type": "constant"
+                    },
                     "duration_seconds" : \
-                        {"value" : onsource_duration_seconds, "distribution_type": "constant"},
+                    {
+                        "value" : onsource_duration_seconds, 
+                        "distribution_type": "constant"
+                    },
                     "inclination_radians" : \
-                        {"min_value" : 0, "max_value": np.pi, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 0, 
+                        "max_value": np.pi, 
+                        "distribution_type": "uniform"
+                    },
                     "distance_mpc" : \
-                        {"min_value" : 10, "max_value": 1000, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 10, 
+                        "max_value": 1000, 
+                        "distribution_type": "uniform"
+                    },
                     "reference_orbital_phase_in" : \
-                        {"min_value" : 0, "max_value": 2*np.pi, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 0, 
+                        "max_value": 2*np.pi, 
+                        "distribution_type": "uniform"
+                    },
                     "ascending_node_longitude" : \
-                        {"min_value" : 0, "max_value": 2*np.pi, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 0, 
+                        "max_value": 2*np.pi, 
+                        "distribution_type": "uniform"
+                    },
                     "eccentricity" : \
-                        {"min_value" : 0, "max_value": 0.1, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 0, 
+                        "max_value": 0.1, 
+                        "distribution_type": "uniform"
+                    },
                     "mean_periastron_anomaly" : \
-                        {"min_value" : 0, "max_value": 2*np.pi, "distribution_type": "uniform"},
+                    {
+                        "min_value" : 0, 
+                        "max_value": 2*np.pi, 
+                        "distribution_type": "uniform"
+                    },
                     "spin_1_in" : \
-                        {"min_value" : -0.5, "max_value": 0.5, "distribution_type": "uniform", "num_values" : 3},
+                    {
+                        "min_value" : -0.5, 
+                        "max_value": 0.5, 
+                        "distribution_type": 
+                        "uniform", "num_values" : 3
+                    },
                     "spin_2_in" : \
-                        {"min_value" : -0.5, "max_value": 0.5, "distribution_type": "uniform", "num_values" : 3}
+                    {
+                        "min_value" : -0.5, 
+                        "max_value": 0.5, 
+                        "distribution_type": 
+                        "uniform", "num_values" : 3
+                    }
                 }
             }
         ]
