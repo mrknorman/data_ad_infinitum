@@ -1,5 +1,7 @@
-from py_ml_tools.dataset import get_ifo_data_generator, get_ifo_data, O3
-from py_ml_tools.model   import ModelBuilder, DenseLayer, ConvLayer, PoolLayer, DropLayer, randomizeLayer, negative_loglikelihood
+from py_ml_tools.dataset import get_ifo_data_generator, O3
+from py_ml_tools.model   import ( ModelBuilder, DenseLayer, ConvLayer, PoolLayer, 
+                                 DropLayer, randomizeLayer, 
+                                 negative_loglikelihood )
 from py_ml_tools.setup   import setup_cuda, find_available_GPUs
 
 import tensorflow as tf

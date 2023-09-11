@@ -114,7 +114,6 @@ if __name__ == "__main__":
         group_split_dataset(
             generator_args, "test", num_test_examples
         ).map(adjust_features)
-    
 
     # Initilise model
     builder = ModelBuilder(
