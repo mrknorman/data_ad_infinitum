@@ -45,7 +45,7 @@ if __name__ == "__main__":
     input_name = "onsource"
     output_name = "injection_masks"
     data_directory_path = Path("./")
-    injection_config_paths = [Path("injection_parameters_standard.json")]
+    injection_config_paths = [Path("./injection_parameters/phenom_d_parameters_standard.json")]
     
     training_config = \
     {
