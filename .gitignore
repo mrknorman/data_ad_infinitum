@@ -5,6 +5,8 @@
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
 
+py_ml_data/
+
 generator_data*
 generated*
 .ipynb
