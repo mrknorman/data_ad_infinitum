@@ -1,0 +1,52 @@
+{
+    "type": "PhenomD",
+    "scaling_type" : "snr",
+    "scaling_distribution": {
+        "value": 20.0,
+        "type_": "constant"
+    },
+    "scale_factor" : 1.0E21,
+    "injection_chance": 1.0,
+    "front_padding_duration_seconds": 0.7,
+    "back_padding_duration_seconds": 0.3,
+    "mass_1_msun": {
+        "value": 30.0,
+        "type_": "constant"
+    },
+    "mass_2_msun": {
+        "value": 30.0,
+        "type_": "constant"
+    },
+    "inclination_radians": {
+        "value": 0.0,
+        "type_": "constant"
+    },
+    "distance_mpc": {
+        "value": 1000,
+        "type_": "constant"
+    },
+    "reference_orbital_phase_in": {
+        "value": 0.0,
+        "type_": "constant"
+    },
+    "ascending_node_longitude": {
+        "value": 0.0,
+        "type_": "constant"
+    },
+    "eccentricity": {
+        "value": 0.0,
+        "type_": "constant"
+    },
+    "mean_periastron_anomaly": {
+        "value": 0.0,
+        "type_": "constant"
+    },
+    "spin_1_in": {
+        "value": 0.0,
+        "type_": "constant"
+    },
+    "spin_2_in": {
+        "value": 0.0,
+        "type_": "constant"
+    }
+}
