@@ -45,7 +45,7 @@ def plot_injection_examples(
     
     phenom_d_generator.front_padding_duration_seconds = 0.9
     
-    wnb_generator : cuPhenomDGenerator = \
+    wnb_generator : WNBGenerator = \
         WaveformGenerator.load(
             injection_directory_path / "baseline_wnb.json", 
             sample_rate_hertz, 
@@ -58,7 +58,6 @@ def plot_injection_examples(
         # CBC parameters:
         WaveformParameters.MASS_1_MSUN,
         WaveformParameters.MASS_2_MSUN,
-        WaveformParameters.INCLINATION_RADIANS,
         WaveformParameters.SPIN_1_IN,
         WaveformParameters.SPIN_2_IN,
     
@@ -77,7 +76,7 @@ def plot_injection_examples(
             num_examples_per_generation_batch,
             num_examples_per_batch,
             variables_to_return = return_parameters
-        )
+        )        
     
     total_onsource_duration_seconds : float = \
         onsource_duration_seconds + (crop_duration_seconds * 2.0)
