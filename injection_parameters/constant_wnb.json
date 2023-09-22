@@ -1,0 +1,24 @@
+{
+    "type": "WNB",
+    "scaling_type" : "snr",
+    "scaling_distribution": {
+        "value": 20.0,
+        "type_": "constant"
+    },
+    "scale_factor" : 1.0,
+    "injection_chance": 1.0,
+    "front_padding_duration_seconds": 0.7,
+    "back_padding_duration_seconds": 0.3,
+    "duration_seconds" : {
+        "value": 0.5,
+        "type_": "constant"
+    },
+    "min_frequency_hertz" : {
+        "value": 100.0,
+        "type_": "constant"
+    },
+    "max_frequency_hertz" : {
+        "value": 155.0,
+        "type_": "constant"
+    }
+}
