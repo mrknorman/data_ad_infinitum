@@ -20,7 +20,6 @@ from py_ml_tools.acquisition import (IFODataObtainer, SegmentOrder, ObservingRun
 from py_ml_tools.plotting import (generate_strain_plot, generate_spectrogram, 
                                   create_info_panel)
 from py_ml_tools.dataset import get_ifo_dataset, ReturnVariables
-from py_ml_tools.acquisition import IFO
 
 def generate_noise_comparisons(
     output_diretory_path : Path = Path("./figures")
