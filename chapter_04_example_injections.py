@@ -13,9 +13,11 @@ from tqdm import tqdm
 # Local imports:
 from py_ml_tools.maths import Distribution, DistributionType, set_random_seeds
 from py_ml_tools.setup import find_available_GPUs, setup_cuda, ensure_directory_exists
-from py_ml_tools.injection import (cuPhenomDGenerator, WNBGenerator, InjectionGenerator, 
-                         WaveformParameters, WaveformGenerator)
-from py_ml_tools.plotting import generate_strain_plot, create_info_panel, generate_spectrogram
+from py_ml_tools.injection import (cuPhenomDGenerator, WNBGenerator, 
+                                   InjectionGenerator, WaveformParameters,
+                                   WaveformGenerator)
+from py_ml_tools.plotting import (generate_strain_plot, create_info_panel, 
+                                  generate_spectrogram)
 
 def plot_injection_examples(
     num_examples : int = 4,
@@ -151,8 +153,6 @@ def plot_injection_examples(
     grid = gridplot(layout)
         
     save(grid)
-
-
 
 if __name__ == "__main__":
     
