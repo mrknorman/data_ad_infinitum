@@ -23,8 +23,74 @@ from gravyflow.injection import (cuPhenomDGenerator, InjectionGenerator,
 from gravyflow.acquisition import (IFODataObtainer, SegmentOrder, ObservingRun, 
                                    DataQuality, DataLabel, IFO)
 from gravyflow.noise import NoiseObtainer, NoiseType
-from gravyflow.plotting import generate_strain_plot, generate_correlation_plot
+from gravyflow.plotting import (generate_strain_plot, generate_correlation_plot,
+                                create_info_panel)
 from gravyflow.dataset import get_ifo_dataset, get_ifo_data, ReturnVariables
+
+def generate_plots(
+    dataset, 
+    sample_rate_hertz, 
+    onsource_duration_seconds, 
+    scale_factor,
+    has_injection,
+    injection_type,
+    coherent
+    ):
+    
+    layout = []
+    input_dict, _ = next(iter(dataset))
+    
+    onsource = input_dict[ReturnVariables.WHITENED_ONSOURCE.name].numpy()
+    onsource_ = onsource[0]
+    
+    correlation = input_dict[ReturnVariables.ROLLING_PEARSON_ONSOURCE.name].numpy()
+    correlation_ = correlation[0]
+
+    if has_injection:
+        injections = input_dict[ReturnVariables.INJECTIONS.name].numpy()
+        whitened_injections = input_dict[ReturnVariables.WHITENED_INJECTIONS.name].numpy()
+
+        # Using the first values from each array
+        whitened_injection = whitened_injections[0][0]
+        injection = injections[0][0]
+        
+        to_plot = {
+            "Whitened Onsouce + Injection": onsource_,
+            "Whitened Injection": whitened_injection,
+            "Injection": injection
+        }
+    else:
+        to_plot = {
+            "Whitened Onsouce": onsource_
+        }
+    
+    # Extract two strain plots
+    strain_plots = generate_strain_plot(
+        to_plot, 
+        sample_rate_hertz, 
+        onsource_duration_seconds, 
+        height=400, 
+        has_legend=False,
+        scale_factor=scale_factor
+    )
+
+    # Extract correlation plot
+    correlation_plot = generate_correlation_plot(
+        correlation_, 
+        sample_rate_hertz, 
+        height=400, 
+        has_legend=False
+    )
+    
+    info_panel =  create_info_panel({
+        "Injection Type": f"{injection_type}.",
+        "Coherent": f"{coherent}."
+    }, height = 400)
+    
+    # Append to the layout
+    layout.append([info_panel, strain_plots, correlation_plot])
+    
+    return layout
 
 def plot_pearson_correlation(
     output_diretory_path : Path = Path("./figures/")
@@ -32,7 +98,7 @@ def plot_pearson_correlation(
     
     # Test Parameters:
     num_examples_per_generation_batch : int = 2048
-    num_examples_per_batch : int = 3
+    num_examples_per_batch : int = 1
     sample_rate_hertz : float = 2048.0
     onsource_duration_seconds : float = 1.0
     offsource_duration_seconds : float = 16.0
@@ -47,7 +113,7 @@ def plot_pearson_correlation(
     # Intilise Scaling Method:
     scaling_method = \
         ScalingMethod(
-            Distribution(min_=8.0,max_=15.0,type_=DistributionType.UNIFORM),
+            Distribution(min_=30.0,max_=30.0,type_=DistributionType.UNIFORM),
             ScalingTypes.SNR
         )
     
@@ -70,8 +136,12 @@ def plot_pearson_correlation(
             network=ifos
         )
     
-    incoherent_generator = IncoherentGenerator(
+    incoherent_wnb_generator = IncoherentGenerator(
         [wnb_generator, wnb_generator]
+    )
+    
+    incoherent_phenom_d_generator = IncoherentGenerator(
+        [phenom_d_generator, phenom_d_generator]
     )
     
     # Setup ifo data acquisition object:
@@ -96,122 +166,62 @@ def plot_pearson_correlation(
             ifos=ifos
         )
     
-    coherent_dataset : tf.data.Dataset = get_ifo_dataset(
-        # Random Seed:
-        seed= 1000,
-        # Temporal components:
-        sample_rate_hertz=sample_rate_hertz,   
-        onsource_duration_seconds=onsource_duration_seconds,
-        offsource_duration_seconds=offsource_duration_seconds,
-        crop_duration_seconds=crop_duration_seconds,
-        # Noise: 
-        noise_obtainer=noise_obtainer,
-        # Injections:
-        injection_generators=wnb_generator, 
-        # Output configuration:
-        num_examples_per_batch=num_examples_per_batch,
-        input_variables = [
+    dataset_params = {
+        "seed": 1000,
+        "sample_rate_hertz": sample_rate_hertz,
+        "onsource_duration_seconds": onsource_duration_seconds,
+        "offsource_duration_seconds": offsource_duration_seconds,
+        "crop_duration_seconds": crop_duration_seconds,
+        "noise_obtainer": noise_obtainer,
+        "num_examples_per_batch": num_examples_per_batch,
+        "input_variables": [
             ReturnVariables.WHITENED_ONSOURCE, 
             ReturnVariables.INJECTION_MASKS, 
             ReturnVariables.INJECTIONS,
             ReturnVariables.WHITENED_INJECTIONS,
             ReturnVariables.ROLLING_PEARSON_ONSOURCE
-        ],
-    )
+        ]
+    }
     
-    input_dict, _ = next(iter(coherent_dataset))
-        
-    onsource = input_dict[ReturnVariables.WHITENED_ONSOURCE.name].numpy()
-    injections = input_dict[ReturnVariables.INJECTIONS.name].numpy()
-    correlation = input_dict[ReturnVariables.ROLLING_PEARSON_ONSOURCE.name].numpy()
-    whitened_injections = input_dict[
-        ReturnVariables.WHITENED_INJECTIONS.name
-    ].numpy()
-    masks = input_dict[ReturnVariables.INJECTION_MASKS.name].numpy()
-        
-   # Create the layout
-    layout = []
-
-    for onsource_, whitened_injection, injection, correlation_ in zip(onsource, whitened_injections[0], injections[0], correlation):
-        # Extract two strain plots
-        strain_plots = generate_strain_plot({
-            "Whitened Onsouce + Injection": onsource_,
-            "Whitened Injection": whitened_injection,
-            "Injection": injection
-        }, 
-        sample_rate_hertz, 
-        onsource_duration_seconds, 
-        height=400,
-        has_legend=False,
-        scale_factor=scale_factor
-        )
-
-        # Extract correlation plot
-        correlation_plot = generate_correlation_plot(
-            correlation_, sample_rate_hertz, height = 400, has_legend=False
-        )
-
-        # Append to the layout as a row: stacked strain plots next to the correlation plot
-        layout.append([strain_plots, correlation_plot])
-        
-    incoherent_dataset : tf.data.Dataset = get_ifo_dataset(
-        # Random Seed:
-        seed= 1000,
-        # Temporal components:
-        sample_rate_hertz=sample_rate_hertz,   
-        onsource_duration_seconds=onsource_duration_seconds,
-        offsource_duration_seconds=offsource_duration_seconds,
-        crop_duration_seconds=crop_duration_seconds,
-        # Noise: 
-        noise_obtainer=noise_obtainer,
-        # Injections:
-        injection_generators=IncoherentGenerator, 
-        # Output configuration:
-        num_examples_per_batch=num_examples_per_batch,
-        input_variables = [
-            ReturnVariables.WHITENED_ONSOURCE, 
-            ReturnVariables.INJECTION_MASKS, 
-            ReturnVariables.INJECTIONS,
-            ReturnVariables.WHITENED_INJECTIONS,
-            ReturnVariables.ROLLING_PEARSON_ONSOURCE
-        ],
-    )
+    injection_generators = [
+        None,
+        wnb_generator, 
+        incoherent_wnb_generator,
+        phenom_d_generator,
+        incoherent_phenom_d_generator
+    ]
     
-    input_dict, _ = next(iter(incoherent_dataset))
-        
-    onsource = input_dict[ReturnVariables.WHITENED_ONSOURCE.name].numpy()
-    injections = input_dict[ReturnVariables.INJECTIONS.name].numpy()
-    correlation = input_dict[ReturnVariables.ROLLING_PEARSON_ONSOURCE.name].numpy()
-    whitened_injections = input_dict[
-        ReturnVariables.WHITENED_INJECTIONS.name
-    ].numpy()
-    masks = input_dict[ReturnVariables.INJECTION_MASKS.name].numpy()
-        
-   # Create the layout
+    injection_types = [
+        "No Injection",
+        "White Noise Burst",
+        "White Noise Burst",
+        "IMRPhenomD",
+        "IMRPhenomD"
+    ]
+    
+    coherent = [
+        "False",
+        "True",
+        "False",
+        "True",
+        "False"
+    ]
+    
     layout = []
-
-    for onsource_, whitened_injection, injection, correlation_ in zip(onsource, whitened_injections[0], injections[0], correlation):
-        # Extract two strain plots
-        strain_plots = generate_strain_plot({
-            "Whitened Onsouce + Injection": onsource_,
-            "Whitened Injection": whitened_injection,
-            "Injection": injection
-        }, 
-        sample_rate_hertz, 
-        onsource_duration_seconds, 
-        height=400,
-        has_legend=False,
-        scale_factor=scale_factor
+    for injection_generator, type_, coherent_ in zip(injection_generators, injection_types, coherent):
+        params = deepcopy(dataset_params)
+        params["injection_generators"] = injection_generator
+        generator : tf.data.Dataset = get_ifo_dataset(**params)
+        
+        layout += generate_plots(
+            generator, 
+            sample_rate_hertz, 
+            onsource_duration_seconds, 
+            scale_factor,
+            injection_generator != None,
+            type_,
+            coherent_
         )
-
-        # Extract correlation plot
-        correlation_plot = generate_correlation_plot(
-            correlation_, sample_rate_hertz, height = 400, has_legend=False
-        )
-
-        # Append to the layout as a row: stacked strain plots next to the correlation plot
-        layout.append([strain_plots, correlation_plot])
-
         
     # Ensure output directory exists
     ensure_directory_exists(output_diretory_path)
