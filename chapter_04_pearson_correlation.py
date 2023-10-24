@@ -12,16 +12,21 @@ from bokeh.layouts import gridplot
 from tqdm import tqdm
 
 # Local imports:
-from py_ml_tools.maths import Distribution, DistributionType
-from py_ml_tools.setup import find_available_GPUs, setup_cuda, ensure_directory_exists
-from py_ml_tools.injection import (cuPhenomDGenerator, InjectionGenerator, 
-                         WaveformParameters, WaveformGenerator, ScalingMethod, 
-                         ScalingTypes, IncoherentGenerator)
-from py_ml_tools.acquisition import (IFODataObtainer, SegmentOrder, ObservingRun, 
-                          DataQuality, DataLabel, IFO)
-from py_ml_tools.noise import NoiseObtainer, NoiseType
-from py_ml_tools.plotting import generate_strain_plot, generate_correlation_plot
-from py_ml_tools.dataset import get_ifo_dataset, get_ifo_data, ReturnVariables
+from gravitationalflow.maths import Distribution, DistributionType
+from gravitationalflow.setup import (find_available_GPUs, setup_cuda, 
+                                     ensure_directory_exists)
+from gravitationalflow.injection import (cuPhenomDGenerator, InjectionGenerator, 
+                                         WaveformParameters, WaveformGenerator, 
+                                         ScalingMethod, ScalingTypes, 
+                                         IncoherentGenerator)
+from gravitationalflow.acquisition import (IFODataObtainer, SegmentOrder, 
+                                           ObservingRun, DataQuality, DataLabel, 
+                                           IFO)
+from gravitationalflow.noise import NoiseObtainer, NoiseType
+from gravitationalflow.plotting import (generate_strain_plot, 
+                                        generate_correlation_plot)
+from gravitationalflow.dataset import (get_ifo_dataset, get_ifo_data, 
+                                       ReturnVariables)
 
 def plot_pearson_correlation(
     num_tests : int = 32,
