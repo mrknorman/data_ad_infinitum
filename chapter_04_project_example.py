@@ -42,7 +42,7 @@ def plot_projection_examples(
     
     phenom_d_generator : cuPhenomDGenerator = \
         WaveformGenerator.load(
-            injection_directory_path / "baseline_phenom_d.json", 
+            injection_directory_path / "constant_phenom_d.json", 
             sample_rate_hertz, 
             onsource_duration_seconds
         )
@@ -53,7 +53,7 @@ def plot_projection_examples(
     
     wnb_generator : WNBGenerator = \
         WaveformGenerator.load(
-            injection_directory_path / "baseline_wnb.json", 
+            injection_directory_path / "constant_wnb.json", 
             sample_rate_hertz, 
             onsource_duration_seconds
         )
