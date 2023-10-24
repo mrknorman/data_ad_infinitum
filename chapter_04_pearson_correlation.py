@@ -13,21 +13,18 @@ from bokeh.layouts import column
 from tqdm import tqdm
 
 # Local imports:
-from gravitationalflow.maths import Distribution, DistributionType
-from gravitationalflow.setup import (find_available_GPUs, setup_cuda, 
-                                     ensure_directory_exists)
-from gravitationalflow.injection import (cuPhenomDGenerator, InjectionGenerator, 
-                                         WaveformParameters, WaveformGenerator, 
-                                         ScalingMethod, ScalingTypes, 
-                                         IncoherentGenerator)
-from gravitationalflow.acquisition import (IFODataObtainer, SegmentOrder, 
-                                           ObservingRun, DataQuality, DataLabel, 
-                                           IFO)
-from gravitationalflow.noise import NoiseObtainer, NoiseType
-from gravitationalflow.plotting import (generate_strain_plot, 
-                                        generate_correlation_plot)
-from gravitationalflow.dataset import (get_ifo_dataset, get_ifo_data, 
-                                       ReturnVariables)
+from gravyflow.maths import Distribution, DistributionType
+from gravyflow.setup import (find_available_GPUs, setup_cuda, 
+                             ensure_directory_exists)
+from gravyflow.injection import (cuPhenomDGenerator, InjectionGenerator, 
+                                 WaveformParameters, WaveformGenerator, 
+                                 ScalingMethod, ScalingTypes, 
+                                 IncoherentGenerator)
+from gravyflow.acquisition import (IFODataObtainer, SegmentOrder, ObservingRun, 
+                                   DataQuality, DataLabel, IFO)
+from gravyflow.noise import NoiseObtainer, NoiseType
+from gravyflow.plotting import generate_strain_plot, generate_correlation_plot
+from gravyflow.dataset import get_ifo_dataset, get_ifo_data, ReturnVariables
 
 def plot_pearson_correlation(
     output_diretory_path : Path = Path("./figures/")
@@ -74,7 +71,7 @@ def plot_pearson_correlation(
         )
     
     incoherent_generator = IncoherentGenerator(
-        [phenom_d_generator, wnb_generator]
+        [wnb_generator, wnb_generator]
     )
     
     # Setup ifo data acquisition object:
@@ -99,7 +96,7 @@ def plot_pearson_correlation(
             ifos=ifos
         )
     
-    dataset : tf.data.Dataset = get_ifo_dataset(
+    coherent_dataset : tf.data.Dataset = get_ifo_dataset(
         # Random Seed:
         seed= 1000,
         # Temporal components:
@@ -122,7 +119,65 @@ def plot_pearson_correlation(
         ],
     )
     
-    input_dict, _ = next(iter(dataset))
+    input_dict, _ = next(iter(coherent_dataset))
+        
+    onsource = input_dict[ReturnVariables.WHITENED_ONSOURCE.name].numpy()
+    injections = input_dict[ReturnVariables.INJECTIONS.name].numpy()
+    correlation = input_dict[ReturnVariables.ROLLING_PEARSON_ONSOURCE.name].numpy()
+    whitened_injections = input_dict[
+        ReturnVariables.WHITENED_INJECTIONS.name
+    ].numpy()
+    masks = input_dict[ReturnVariables.INJECTION_MASKS.name].numpy()
+        
+   # Create the layout
+    layout = []
+
+    for onsource_, whitened_injection, injection, correlation_ in zip(onsource, whitened_injections[0], injections[0], correlation):
+        # Extract two strain plots
+        strain_plots = generate_strain_plot({
+            "Whitened Onsouce + Injection": onsource_,
+            "Whitened Injection": whitened_injection,
+            "Injection": injection
+        }, 
+        sample_rate_hertz, 
+        onsource_duration_seconds, 
+        height=400,
+        has_legend=False,
+        scale_factor=scale_factor
+        )
+
+        # Extract correlation plot
+        correlation_plot = generate_correlation_plot(
+            correlation_, sample_rate_hertz, height = 400, has_legend=False
+        )
+
+        # Append to the layout as a row: stacked strain plots next to the correlation plot
+        layout.append([strain_plots, correlation_plot])
+        
+    incoherent_dataset : tf.data.Dataset = get_ifo_dataset(
+        # Random Seed:
+        seed= 1000,
+        # Temporal components:
+        sample_rate_hertz=sample_rate_hertz,   
+        onsource_duration_seconds=onsource_duration_seconds,
+        offsource_duration_seconds=offsource_duration_seconds,
+        crop_duration_seconds=crop_duration_seconds,
+        # Noise: 
+        noise_obtainer=noise_obtainer,
+        # Injections:
+        injection_generators=IncoherentGenerator, 
+        # Output configuration:
+        num_examples_per_batch=num_examples_per_batch,
+        input_variables = [
+            ReturnVariables.WHITENED_ONSOURCE, 
+            ReturnVariables.INJECTION_MASKS, 
+            ReturnVariables.INJECTIONS,
+            ReturnVariables.WHITENED_INJECTIONS,
+            ReturnVariables.ROLLING_PEARSON_ONSOURCE
+        ],
+    )
+    
+    input_dict, _ = next(iter(incoherent_dataset))
         
     onsource = input_dict[ReturnVariables.WHITENED_ONSOURCE.name].numpy()
     injections = input_dict[ReturnVariables.INJECTIONS.name].numpy()

@@ -11,15 +11,15 @@ from bokeh.palettes import Bright
 from tqdm import tqdm
 
 # Local imports:
-from py_ml_tools.maths import Distribution, DistributionType, set_random_seeds
-from py_ml_tools.setup import (find_available_GPUs, setup_cuda, 
-                               ensure_directory_exists)
-from py_ml_tools.detector import Network, IFO
-from py_ml_tools.injection import (cuPhenomDGenerator, WNBGenerator, 
-                                   InjectionGenerator, WaveformParameters,
-                                   WaveformGenerator)
-from py_ml_tools.plotting import (generate_strain_plot, create_info_panel, 
-                                  generate_spectrogram)
+from gravyflow.maths import Distribution, DistributionType, set_random_seeds
+from gravyflow.setup import (find_available_GPUs, setup_cuda, 
+                             ensure_directory_exists)
+from gravyflow.detector import Network, IFO
+from gravyflow.injection import (cuPhenomDGenerator, WNBGenerator, 
+                                 InjectionGenerator, WaveformParameters,
+                                 WaveformGenerator)
+from gravyflow.plotting import (generate_strain_plot, create_info_panel, 
+                                generate_spectrogram)
 
 def plot_projection_examples(
     num_tests : int = 2048,

@@ -11,15 +11,14 @@ from bokeh.palettes import Bright
 from tqdm import tqdm
 
 # Local imports:
-from gravitationalflow.maths import (Distribution, DistributionType, 
-                                     set_random_seeds)
-from gravitationalflow.setup import (find_available_GPUs, setup_cuda, 
-                                     ensure_directory_exists)
-from gravitationalflow.injection import (cuPhenomDGenerator, WNBGenerator, 
-                                         InjectionGenerator, WaveformParameters,
-                                         WaveformGenerator)
-from gravitationalflow.plotting import (generate_strain_plot, create_info_panel, 
-                                        generate_spectrogram)
+from gravyflow.maths import Distribution, DistributionType, set_random_seeds
+from gravyflow.setup import (find_available_GPUs, setup_cuda, 
+                             ensure_directory_exists)
+from gravyflow.injection import (cuPhenomDGenerator, WNBGenerator, 
+                                 InjectionGenerator, WaveformParameters,
+                                 WaveformGenerator)
+from gravyflow.plotting import (generate_strain_plot, create_info_panel, 
+                                generate_spectrogram)
 
 def plot_injection_examples(
     num_examples : int = 4,

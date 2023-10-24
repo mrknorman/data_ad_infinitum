@@ -1,8 +1,8 @@
-from gravitationalflow.dataset import get_ifo_data_generator, O3
-from gravitationalflow.model   import (ModelBuilder, DenseLayer, ConvLayer, 
-                                       PoolLayer, DropLayer, randomizeLayer, 
-                                       negative_loglikelihood)
-from gravitationalflow.setup   import setup_cuda, find_available_GPUs
+from gravyflow.dataset import get_ifo_data_generator, O3
+from gravyflow.model   import (ModelBuilder, DenseLayer, ConvLayer, PoolLayer, 
+                               DropLayer, randomizeLayer, negative_loglikelihood
+                              )
+from gravyflow.setup   import setup_cuda, find_available_GPUs
 
 import tensorflow as tf
 from tensorflow import keras
