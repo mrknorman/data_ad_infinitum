@@ -1,3 +1,3 @@
-[submodule "gravitationalflow"]
-	path = gravitationalflow
-	url = https://github.com/mrknorman/gravitationalflow.git
+[submodule "gravyflow"]
+	path = gravyflow
+	url = https://github.com/mrknorman/gravyflow.git
