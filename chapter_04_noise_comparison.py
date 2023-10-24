@@ -13,14 +13,15 @@ from bokeh.palettes import Bright
 from tqdm import tqdm
 
 # Local imports:
-from py_ml_tools.setup import (find_available_GPUs, setup_cuda, 
-                               ensure_directory_exists)
-from py_ml_tools.noise import NoiseObtainer, NoiseType
-from py_ml_tools.acquisition import (IFODataObtainer, SegmentOrder, 
-                                     ObservingRun, DataQuality, DataLabel, IFO)
-from py_ml_tools.plotting import (generate_strain_plot, generate_spectrogram, 
-                                  create_info_panel)
-from py_ml_tools.dataset import get_ifo_dataset, ReturnVariables
+from gravitationalflow.setup import (find_available_GPUs, setup_cuda, 
+                                     ensure_directory_exists)
+from gravitationalflow.noise import NoiseObtainer, NoiseType
+from gravitationalflow.acquisition import (IFODataObtainer, SegmentOrder, 
+                                           ObservingRun, DataQuality, DataLabel, 
+                                           IFO)
+from gravitationalflow.plotting import (generate_strain_plot, 
+                                        generate_spectrogram, create_info_panel)
+from gravitationalflow.dataset import get_ifo_dataset, ReturnVariables
 
 def generate_noise_comparisons(
     output_diretory_path : Path = Path("./figures")

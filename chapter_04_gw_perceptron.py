@@ -3,10 +3,11 @@ from pathlib import Path
 
 from tensorflow.keras import losses, metrics, optimizers
 
-from py_ml_tools.dataset import group_split_dataset, O3
-from py_ml_tools.model import DenseLayer, ModelBuilder
-from py_ml_tools.setup import (find_available_GPUs, read_injection_config_file, 
-                               setup_cuda)
+from gravitationalflow.dataset import group_split_dataset, O3
+from gravitationalflow.model import DenseLayer, ModelBuilder
+from gravitationalflow.setup import (find_available_GPUs, 
+                                     read_injection_config_file, 
+                                     setup_cuda)
 
 if __name__ == "__main__":
     
