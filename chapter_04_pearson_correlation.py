@@ -9,6 +9,7 @@ import numpy as np
 import tensorflow as tf
 from bokeh.io import output_file, save
 from bokeh.layouts import gridplot
+from bokeh.layouts import column
 from tqdm import tqdm
 
 # Local imports:
@@ -29,13 +30,12 @@ from gravitationalflow.dataset import (get_ifo_dataset, get_ifo_data,
                                        ReturnVariables)
 
 def plot_pearson_correlation(
-    num_tests : int = 32,
     output_diretory_path : Path = Path("./figures/")
     ):
     
     # Test Parameters:
     num_examples_per_generation_batch : int = 2048
-    num_examples_per_batch : int = num_tests
+    num_examples_per_batch : int = 3
     sample_rate_hertz : float = 2048.0
     onsource_duration_seconds : float = 1.0
     offsource_duration_seconds : float = 16.0
@@ -45,7 +45,7 @@ def plot_pearson_correlation(
     
     # Define injection directory path:
     injection_directory_path : Path = \
-        Path("./py_ml_tools/tests/example_injection_parameters")
+        Path("./injection_parameters/")
     
     # Intilise Scaling Method:
     scaling_method = \
@@ -57,7 +57,7 @@ def plot_pearson_correlation(
     # Load injection config:
     phenom_d_generator : cuPhenomDGenerator = \
         WaveformGenerator.load(
-            injection_directory_path / "phenom_d_parameters.json", 
+            injection_directory_path / "baseline_phenom_d.json", 
             sample_rate_hertz, 
             onsource_duration_seconds,
             scaling_method=scaling_method,
@@ -66,9 +66,11 @@ def plot_pearson_correlation(
     
     wnb_generator : WNBGenerator = \
         WaveformGenerator.load(
-            injection_directory_path / "wnb_parameters.json", 
+            injection_directory_path / "baseline_wnb.json", 
             sample_rate_hertz, 
-            onsource_duration_seconds
+            onsource_duration_seconds,
+            scaling_method=scaling_method,
+            network=ifos
         )
     
     incoherent_generator = IncoherentGenerator(
@@ -108,7 +110,7 @@ def plot_pearson_correlation(
         # Noise: 
         noise_obtainer=noise_obtainer,
         # Injections:
-        injection_generators=incoherent_generator, 
+        injection_generators=wnb_generator, 
         # Output configuration:
         num_examples_per_batch=num_examples_per_batch,
         input_variables = [
@@ -129,29 +131,32 @@ def plot_pearson_correlation(
         ReturnVariables.WHITENED_INJECTIONS.name
     ].numpy()
     masks = input_dict[ReturnVariables.INJECTION_MASKS.name].numpy()
-    
-    layout = [
-        generate_strain_plot(
-            {
-                "Whitened Onsouce + Injection": onsource_,
-                "Whitened Injection" : whitened_injection,
-                "Injection": injection
-            },
-            sample_rate_hertz,
-            onsource_duration_seconds,
-            scale_factor=scale_factor
-        ) + 
-        [generate_correlation_plot(
-            correlation_,
-            sample_rate_hertz
-        )]
-        for onsource_, whitened_injection, injection, correlation_ in zip(
-            onsource,
-            whitened_injections[0],
-            injections[0],
-            correlation
+        
+   # Create the layout
+    layout = []
+
+    for onsource_, whitened_injection, injection, correlation_ in zip(onsource, whitened_injections[0], injections[0], correlation):
+        # Extract two strain plots
+        strain_plots = generate_strain_plot({
+            "Whitened Onsouce + Injection": onsource_,
+            "Whitened Injection": whitened_injection,
+            "Injection": injection
+        }, 
+        sample_rate_hertz, 
+        onsource_duration_seconds, 
+        height=400,
+        has_legend=False,
+        scale_factor=scale_factor
         )
-    ]
+
+        # Extract correlation plot
+        correlation_plot = generate_correlation_plot(
+            correlation_, sample_rate_hertz, height = 400, has_legend=False
+        )
+
+        # Append to the layout as a row: stacked strain plots next to the correlation plot
+        layout.append([strain_plots, correlation_plot])
+
         
     # Ensure output directory exists
     ensure_directory_exists(output_diretory_path)
