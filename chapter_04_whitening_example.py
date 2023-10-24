@@ -13,16 +13,16 @@ from bokeh.colors import RGB
 from tqdm import tqdm
 import tensorflow as tf
 
-from gravitationalflow.psd import calculate_psd
-from gravitationalflow.maths import set_random_seeds
-from gravitationalflow.setup import (find_available_GPUs, setup_cuda, 
+from gravyflow.psd import calculate_psd
+from gravyflow.maths import set_random_seeds
+from gravyflow.setup import (find_available_GPUs, setup_cuda, 
                                      ensure_directory_exists)
-from gravitationalflow.plotting import generate_psd_plot, generate_strain_plot
-from gravitationalflow.noise import NoiseObtainer, NoiseType
-from gravitationalflow.acquisition import (IFODataObtainer, SegmentOrder, 
+from gravyflow.plotting import generate_psd_plot, generate_strain_plot
+from gravyflow.noise import NoiseObtainer, NoiseType
+from gravyflow.acquisition import (IFODataObtainer, SegmentOrder, 
                                            ObservingRun, DataQuality, DataLabel, 
                                            IFO)
-from gravitationalflow.dataset import get_ifo_dataset, ReturnVariables
+from gravyflow.dataset import get_ifo_dataset, ReturnVariables
 
 def plot_whitening_examples(
     output_diretory_path : Path = Path("./figures")

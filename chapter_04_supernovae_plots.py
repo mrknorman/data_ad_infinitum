@@ -11,11 +11,11 @@ from bokeh.palettes import Bright
 from tqdm import tqdm
 import tensorflow as tf
 
-from py_ml_tools.psd import calculate_psd
-from py_ml_tools.maths import set_random_seeds
-from py_ml_tools.setup import (find_available_GPUs, setup_cuda, 
+from gravyflow.psd import calculate_psd
+from gravyflow.maths import set_random_seeds
+from gravyflow.setup import (find_available_GPUs, setup_cuda, 
                                ensure_directory_exists)
-from py_ml_tools.plotting import generate_psd_plot, generate_strain_plot
+from gravyflow.plotting import generate_psd_plot, generate_strain_plot
 
 def plot_supernovae(
     output_diretory_path : Path = Path("./figures")
