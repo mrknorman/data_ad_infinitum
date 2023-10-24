@@ -13,10 +13,11 @@ from bokeh.palettes import Bright
 from tqdm import tqdm
 
 # Local imports:
-from py_ml_tools.setup import find_available_GPUs, setup_cuda, ensure_directory_exists
+from py_ml_tools.setup import (find_available_GPUs, setup_cuda, 
+                               ensure_directory_exists)
 from py_ml_tools.noise import NoiseObtainer, NoiseType
-from py_ml_tools.acquisition import (IFODataObtainer, SegmentOrder, ObservingRun, 
-                          DataQuality, DataLabel, IFO)
+from py_ml_tools.acquisition import (IFODataObtainer, SegmentOrder, 
+                                     ObservingRun, DataQuality, DataLabel, IFO)
 from py_ml_tools.plotting import (generate_strain_plot, generate_spectrogram, 
                                   create_info_panel)
 from py_ml_tools.dataset import get_ifo_dataset, ReturnVariables
@@ -109,8 +110,8 @@ def generate_noise_comparisons(
         if (gps_time == -1):
             gps_time = "N/A"
             
-        if noise_type == "White Noise":
-            scale_factor = 1.0
+        if noise_type == NoiseType.WHITE:
+            scale_factor = None
         else:
             scale_factor = 1.0E21
             
