@@ -13,19 +13,7 @@ from bokeh.layouts import column
 from tqdm import tqdm
 
 # Local imports:
-from gravyflow.maths import Distribution, DistributionType
-from gravyflow.setup import (find_available_GPUs, setup_cuda, 
-                             ensure_directory_exists)
-from gravyflow.injection import (cuPhenomDGenerator, InjectionGenerator, 
-                                 WaveformParameters, WaveformGenerator, 
-                                 ScalingMethod, ScalingTypes, 
-                                 IncoherentGenerator)
-from gravyflow.acquisition import (IFODataObtainer, SegmentOrder, ObservingRun, 
-                                   DataQuality, DataLabel, IFO)
-from gravyflow.noise import NoiseObtainer, NoiseType
-from gravyflow.plotting import (generate_strain_plot, generate_correlation_plot,
-                                create_info_panel)
-from gravyflow.dataset import get_ifo_dataset, get_ifo_data, ReturnVariables
+import gravyflow as gf
 
 def generate_plots(
     dataset, 
@@ -40,15 +28,15 @@ def generate_plots(
     layout = []
     input_dict, _ = next(iter(dataset))
     
-    onsource = input_dict[ReturnVariables.WHITENED_ONSOURCE.name].numpy()
+    onsource = input_dict[gf.ReturnVariables.WHITENED_ONSOURCE.name].numpy()
     onsource_ = onsource[0]
     
-    correlation = input_dict[ReturnVariables.ROLLING_PEARSON_ONSOURCE.name].numpy()
+    correlation = input_dict[gf.ReturnVariables.ROLLING_PEARSON_ONSOURCE.name].numpy()
     correlation_ = correlation[0]
 
     if has_injection:
-        injections = input_dict[ReturnVariables.INJECTIONS.name].numpy()
-        whitened_injections = input_dict[ReturnVariables.WHITENED_INJECTIONS.name].numpy()
+        injections = input_dict[gf.ReturnVariables.INJECTIONS.name].numpy()
+        whitened_injections = input_dict[gf.ReturnVariables.WHITENED_INJECTIONS.name].numpy()
 
         # Using the first values from each array
         whitened_injection = whitened_injections[0][0]
@@ -65,7 +53,7 @@ def generate_plots(
         }
     
     # Extract two strain plots
-    strain_plots = generate_strain_plot(
+    strain_plots = gf.generate_strain_plot(
         to_plot, 
         sample_rate_hertz, 
         onsource_duration_seconds, 
@@ -75,14 +63,14 @@ def generate_plots(
     )
 
     # Extract correlation plot
-    correlation_plot = generate_correlation_plot(
+    correlation_plot = gf.generate_correlation_plot(
         correlation_, 
         sample_rate_hertz, 
         height=400, 
         has_legend=False
     )
     
-    info_panel =  create_info_panel({
+    info_panel =  gf.create_info_panel({
         "Injection Type": f"{injection_type}.",
         "Coherent": f"{coherent}."
     }, height = 400)
@@ -104,7 +92,7 @@ def plot_pearson_correlation(
     offsource_duration_seconds : float = 16.0
     crop_duration_seconds : float = 0.5
     scale_factor : float = 1.0E21
-    ifos = [IFO.L1, IFO.H1]
+    ifos = [gf.IFO.L1, gf.IFO.H1]
     
     # Define injection directory path:
     injection_directory_path : Path = \
@@ -112,14 +100,14 @@ def plot_pearson_correlation(
     
     # Intilise Scaling Method:
     scaling_method = \
-        ScalingMethod(
-            Distribution(min_=30.0,max_=30.0,type_=DistributionType.UNIFORM),
-            ScalingTypes.SNR
+        gf.ScalingMethod(
+            gf.Distribution(min_=50.0,max_=50.0,type_=gf.DistributionType.UNIFORM),
+            gf.ScalingTypes.SNR
         )
     
     # Load injection config:
-    phenom_d_generator : cuPhenomDGenerator = \
-        WaveformGenerator.load(
+    phenom_d_generator : gf.cuPhenomDGenerator = \
+        gf.WaveformGenerator.load(
             injection_directory_path / "baseline_phenom_d.json", 
             sample_rate_hertz, 
             onsource_duration_seconds,
@@ -128,7 +116,7 @@ def plot_pearson_correlation(
         )
     
     wnb_generator : WNBGenerator = \
-        WaveformGenerator.load(
+        gf.WaveformGenerator.load(
             injection_directory_path / "baseline_wnb.json", 
             sample_rate_hertz, 
             onsource_duration_seconds,
@@ -136,33 +124,33 @@ def plot_pearson_correlation(
             network=ifos
         )
     
-    incoherent_wnb_generator = IncoherentGenerator(
+    incoherent_wnb_generator = gf.IncoherentGenerator(
         [wnb_generator, wnb_generator]
     )
     
-    incoherent_phenom_d_generator = IncoherentGenerator(
+    incoherent_phenom_d_generator = gf.IncoherentGenerator(
         [phenom_d_generator, phenom_d_generator]
     )
     
     # Setup ifo data acquisition object:
-    ifo_data_obtainer : IFODataObtainer = \
-        IFODataObtainer(
-            ObservingRun.O3, 
-            DataQuality.BEST, 
+    ifo_data_obtainer : gf.IFODataObtainer = \
+        gf.IFODataObtainer(
+            gf.ObservingRun.O3, 
+            gf.DataQuality.BEST, 
             [
-                DataLabel.NOISE, 
-                DataLabel.GLITCHES
+                gf.DataLabel.NOISE, 
+                gf.DataLabel.GLITCHES
             ],
-            SegmentOrder.RANDOM,
+            gf.SegmentOrder.RANDOM,
             force_acquisition = True,
             cache_segments = False
         )
     
     # Initilise noise generator wrapper:
-    noise_obtainer: NoiseObtainer = \
-        NoiseObtainer(
+    noise_obtainer: gf.NoiseObtainer = \
+        gf.NoiseObtainer(
             ifo_data_obtainer=ifo_data_obtainer,
-            noise_type=NoiseType.REAL,
+            noise_type=gf.NoiseType.REAL,
             ifos=ifos
         )
     
@@ -175,11 +163,11 @@ def plot_pearson_correlation(
         "noise_obtainer": noise_obtainer,
         "num_examples_per_batch": num_examples_per_batch,
         "input_variables": [
-            ReturnVariables.WHITENED_ONSOURCE, 
-            ReturnVariables.INJECTION_MASKS, 
-            ReturnVariables.INJECTIONS,
-            ReturnVariables.WHITENED_INJECTIONS,
-            ReturnVariables.ROLLING_PEARSON_ONSOURCE
+            gf.ReturnVariables.WHITENED_ONSOURCE, 
+            gf.ReturnVariables.INJECTION_MASKS, 
+            gf.ReturnVariables.INJECTIONS,
+            gf.ReturnVariables.WHITENED_INJECTIONS,
+            gf.ReturnVariables.ROLLING_PEARSON_ONSOURCE
         ]
     }
     
@@ -211,7 +199,7 @@ def plot_pearson_correlation(
     for injection_generator, type_, coherent_ in zip(injection_generators, injection_types, coherent):
         params = deepcopy(dataset_params)
         params["injection_generators"] = injection_generator
-        generator : tf.data.Dataset = get_ifo_dataset(**params)
+        generator : tf.data.Dataset = gf.Dataset(**params)
         
         layout += generate_plots(
             generator, 
@@ -224,7 +212,7 @@ def plot_pearson_correlation(
         )
         
     # Ensure output directory exists
-    ensure_directory_exists(output_diretory_path)
+    gf.ensure_directory_exists(output_diretory_path)
     
     # Define an output path for the dashboard
     output_file(output_diretory_path / "04_pearson_plots.html")
@@ -244,8 +232,8 @@ if __name__ == "__main__":
     memory_to_allocate_tf : int = 2000
     
     # Setup CUDA
-    gpus = find_available_GPUs(min_gpu_memory_mb, num_gpus_to_request)
-    strategy = setup_cuda(
+    gpus = gf.find_available_GPUs(min_gpu_memory_mb, num_gpus_to_request)
+    strategy = gf.setup_cuda(
         gpus, 
         max_memory_limit = memory_to_allocate_tf, 
         logging_level=logging.WARNING
