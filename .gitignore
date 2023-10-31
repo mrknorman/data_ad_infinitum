@@ -6,6 +6,7 @@
 # website: http://jupyter.org/
 
 py_ml_data/
+gravyflow_data/
 
 generator_data*
 generated*
