@@ -6,7 +6,7 @@ from typing import List, Dict
 from copy import deepcopy
 
 
-from tensorflow.keras import losses, metrics, optimizers
+from tensorflow.keras import losses, optimizers
 
 import gravyflow as gf
 
@@ -25,20 +25,13 @@ def train_perceptron(
         # Model Arguments:
         num_neurons_in_hidden_layers : List[int],
         # Training Arguments:
-        num_examples_per_epoc : int = int(1E6),
         patience : int = 10,
         learning_rate : float = 1.0E-4,
-        max_epochs : int = 500,
-        model_path : Path = Path("./models"),
+        max_epochs : int = 1,
+        model_path : Path = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E6),
-        num_examples_per_generation_batch : int = 2048,
-        num_examples_per_batch : int = 32,
-        sample_rate_hertz : float = 2048.0,
-        onsource_duration_seconds : float = 1.0,
-        offsource_duration_seconds : float = 16.0,
-        crop_duration_seconds : float = 0.5,
-        scale_factor : float = 1.0E21,
+        num_train_examples : int = int(1E5),
+        num_validation_examples : int = int(1E3),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1]
@@ -46,9 +39,11 @@ def train_perceptron(
     
     # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
-    injection_directory_path : Path = \
-        Path(current_dir / "injection_parameters")
-        
+    injection_directory_path : Path = current_dir / "injection_parameters"
+
+    if model_path is None:
+        model_path = current_dir / f"models/chapter_04/perceptron_{num_neurons_in_hidden_layers}"
+    
     # Intilise Scaling Method:
     scaling_method : gf.ScalingMethod = gf.ScalingMethod(
         gf.Distribution(
@@ -62,8 +57,6 @@ def train_perceptron(
     # Load injection config:
     phenom_d_generator : gf.cuPhenomDGenerator = gf.WaveformGenerator.load(
         injection_directory_path / "baseline_phenom_d.json", 
-        sample_rate_hertz, 
-        onsource_duration_seconds,
         scaling_method=scaling_method,    
         network = None # Single detector
     )
@@ -74,8 +67,10 @@ def train_perceptron(
         gf.DataQuality.BEST, 
         [
             gf.DataLabel.NOISE,
+            #gf.DataLabel.GLITCHES
         ],
-        gf.SegmentOrder.RANDOM
+        gf.SegmentOrder.RANDOM,
+        logging_level=logging.INFO
     )
     
     # Initilise noise generator wrapper:
@@ -96,40 +91,38 @@ def train_perceptron(
     ]
 
     dataset_arguments : Dict = {
-        # Random Seed:
-        "seed" : 1000,
-        # Temporal components:
-        "sample_rate_hertz" : sample_rate_hertz,   
-        "onsource_duration_seconds" : onsource_duration_seconds,
-        "offsource_duration_seconds" : offsource_duration_seconds,
-        "crop_duration_seconds" : crop_duration_seconds,
         # Noise: 
         "noise_obtainer" : noise_obtainer,
-        "scale_factor" : scale_factor,
         # Injections:
         "injection_generators" : phenom_d_generator, 
         # Output configuration:
-        "num_examples_per_batch" : num_examples_per_batch,
         "input_variables" : input_variables,
         "output_variables": output_variables
     }
+
+    def adjust_features(features, labels):
+        labels['INJECTION_MASKS'] = labels['INJECTION_MASKS'][0]
+        return features, labels
     
     train_dataset : tf.data.Dataset = gf.Dataset(
         **deepcopy(dataset_arguments),
         group="train"
-    )
+    ).map(adjust_features)
     
     validate_dataset : tf.data.Dataset = gf.Dataset(
         **deepcopy(dataset_arguments),
-        group="test"
-    )
+        group="validate"
+    ).map(adjust_features)
     
     test_dataset : tf.data.Dataset = gf.Dataset(
         **deepcopy(dataset_arguments),
-        group="validate"
-    )
+        group="test"
+    ).map(adjust_features)
     
-    num_samples = int(onsource_duration_seconds*sample_rate_hertz)
+    num_samples = int(
+        gf.Defaults.onsource_duration_seconds*
+        gf.Defaults.sample_rate_hertz
+    )
     
     hidden_layers = create_perceptron_plan(
         num_neurons_in_hidden_layers
@@ -140,8 +133,7 @@ def train_perceptron(
         hidden_layers, 
         optimizer = \
             optimizers.Adam(learning_rate=learning_rate), 
-        loss = losses.BinaryCrossentropy(), 
-        batch_size = num_examples_per_batch
+        loss = losses.BinaryCrossentropy()
     )
         
     input_config = {
@@ -156,6 +148,7 @@ def train_perceptron(
     
     training_config = {
         "num_examples_per_epoc" : num_train_examples,
+        "num_validation_examples" : num_validation_examples,
         "patience" : patience,
         "learning_rate" : learning_rate,
         "max_epochs" : max_epochs,
@@ -173,6 +166,8 @@ def train_perceptron(
         validate_dataset,
         training_config
     )
+
+    print(builder.metrics[0].history)
 
 if __name__ == "__main__":
 
@@ -199,6 +194,17 @@ if __name__ == "__main__":
     
     # Set parameters based on command line arguments:
     num_neurons_in_hidden_layers = args.layers
+
+    gf.Defaults.set(
+        seed = 1000,
+        num_examples_per_generation_batch=2048,
+        num_examples_per_batch=32,
+        sample_rate_hertz=2048.0,
+        onsource_duration_seconds=1.0,
+        offsource_duration_seconds=16.0,
+        crop_duration_seconds=0.5,
+        scale_factor=1.0E21
+    )
     
     with gf.env():
         train_perceptron(num_neurons_in_hidden_layers=num_neurons_in_hidden_layers)
