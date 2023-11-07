@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import List, Dict
 from copy import deepcopy
 
-
 from tensorflow.keras import losses, optimizers
+import prctl
 
 import gravyflow as gf
 
@@ -24,6 +24,7 @@ def create_perceptron_plan(
 def train_perceptron(
         # Model Arguments:
         num_neurons_in_hidden_layers : List[int],
+        cache_segments : bool = False,
         # Training Arguments:
         patience : int = 10,
         learning_rate : float = 1.0E-4,
@@ -31,7 +32,7 @@ def train_perceptron(
         model_path : Path = None,
         # Dataset Arguments: 
         num_train_examples : int = int(1E5),
-        num_validation_examples : int = int(1E3),
+        num_validation_examples : int = int(1E5),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1]
@@ -41,8 +42,9 @@ def train_perceptron(
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
     injection_directory_path : Path = current_dir / "injection_parameters"
 
+    string_id = "_".join(map(str, num_neurons_in_hidden_layers))
     if model_path is None:
-        model_path = current_dir / f"models/chapter_04/perceptron_{num_neurons_in_hidden_layers}"
+        model_path = current_dir / f"models/chapter_04/perceptron_{string_id}"
     
     # Intilise Scaling Method:
     scaling_method : gf.ScalingMethod = gf.ScalingMethod(
@@ -60,6 +62,7 @@ def train_perceptron(
         scaling_method=scaling_method,    
         network = None # Single detector
     )
+    phenom_d_generator.injection_chance = 0.5
 
     # Setup ifo data acquisition object:
     ifo_data_obtainer : gf.IFODataObtainer = gf.IFODataObtainer(
@@ -67,10 +70,12 @@ def train_perceptron(
         gf.DataQuality.BEST, 
         [
             gf.DataLabel.NOISE,
-            #gf.DataLabel.GLITCHES
+            gf.DataLabel.GLITCHES
         ],
         gf.SegmentOrder.RANDOM,
-        logging_level=logging.INFO
+        cache_segments=cache_segments,
+        force_acquisition=True,
+        logging_level=logging.ERROR
     )
     
     # Initilise noise generator wrapper:
@@ -114,7 +119,7 @@ def train_perceptron(
         **deepcopy(dataset_arguments),
         group="validate"
     ).map(adjust_features)
-    
+
     test_dataset : tf.data.Dataset = gf.Dataset(
         **deepcopy(dataset_arguments),
         group="test"
@@ -184,30 +189,44 @@ def train_perceptron(
     print(builder.metrics[0].history)
 
 if __name__ == "__main__":
-
+    
     # Set logging level:
     logging.basicConfig(level=logging.INFO)
     
     # Read command line arguments:
     parser = argparse.ArgumentParser(
-        description = \
-            "Train a multi-layer perceptron for gravitational-wave detection."
+        description = (
+            "Train a multi-layer perceptron "
+            "for gravitational-wave detection."
+        )
     )
     parser.add_argument(
         "--layers", 
         type = int, 
         nargs = "*", 
         default = [],
-        help = \
-            """
-            A list of integers representing the number of neurons in each hidden 
-            layer.
-            """
+        help = (
+            "A list of integers representing the number of "
+            "neurons in each hidden layer."
+        )
+    )
+    parser.add_argument(
+        '--writer', 
+        action='store_true', 
+        help= (
+            "Will allow this script to write to hdf5 file, "
+            "only allow one script at a time to write to a "
+            "single file or errors will occour."
+        )
     )
     args = parser.parse_args()
-    
+
     # Set parameters based on command line arguments:
     num_neurons_in_hidden_layers = args.layers
+    cache_segments = args.writer
+
+    # Set process name:
+    prctl.set_name(f"gwflow_training_{num_neurons_in_hidden_layers}")
 
     gf.Defaults.set(
         seed = 1000,
@@ -221,8 +240,11 @@ if __name__ == "__main__":
     )
     
     with gf.env(
-            min_gpu_memory_mb=8000,
-            memory_to_allocate_tf=4000
+            min_gpu_memory_mb=10000,
+            memory_to_allocate_tf=6000
         ):
-        
-        train_perceptron(num_neurons_in_hidden_layers=num_neurons_in_hidden_layers)
+                
+        train_perceptron(
+            num_neurons_in_hidden_layers=num_neurons_in_hidden_layers,
+            cache_segments=cache_segments
+        )
