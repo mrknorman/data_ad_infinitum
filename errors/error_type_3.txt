@@ -1,0 +1,546 @@
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 799, in add_injections_to_onsource
+    for injections_, mask_, scaling_parameters_, config in \
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7374, in __next__
+    result = self._tensor[self._index]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Index out of range using input dim 2; input has only 2 dims [Op:StridedSlice] name: strided_slice/
+
+
+2023-11-08 14:40:53.460872: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Index out of range using input dim 2; input has only 2 dims [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 799, in add_injections_to_onsource
+    for injections_, mask_, scaling_parameters_, config in \
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7374, in __next__
+    result = self._tensor[self._index]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Index out of range using input dim 2; input has only 2 dims [Op:StridedSlice] name: strided_slice/
+
+
+         [[{{node PyFunc}}]]
+2023-11-08 14:40:53.509853: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INTERNAL: No function library is provided.
+         [[{{node PartitionedCall_1}}]]
+2023-11-08 14:40:53.510191: I tensorflow/core/common_runtime/executor.cc:1197] [/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INTERNAL: No function library is provided.
+         [[{{node PartitionedCall_2}}]]
+2023-11-08 14:40:53.525128: W tensorflow/core/framework/op_kernel.cc:1818] INVALID_ARGUMENT: ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+2023-11-08 14:40:53.525187: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+2023-11-08 14:40:53.586977: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+         [[MultiDeviceIteratorGetNextFromShard]]
+2023-11-08 14:40:53.587153: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:GPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+         [[MultiDeviceIteratorGetNextFromShard]]
+         [[RemoteCall]]
+2023-11-08 14:40:53.590195: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:GPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+         [[MultiDeviceIteratorGetNextFromShard]]
+         [[RemoteCall]]
+         [[IteratorGetNext]]
+2023-11-08 14:40:53.590284: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): INVALID_ARGUMENT: ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+         [[MultiDeviceIteratorGetNextFromShard]]
+         [[RemoteCall]]
+         [[IteratorGetNext]]
+         [[div_no_nan/ReadVariableOp_1/_12]]
+Traceback (most recent call last):
+  File "/home/michael.norman/data_ad_infinitum/chapter_04_gw_perceptron.py", line 244, in <module>
+    train_perceptron(
+  File "/home/michael.norman/data_ad_infinitum/chapter_04_gw_perceptron.py", line 183, in train_perceptron
+    builder.train_model(
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/model.py", line 718, in train_model
+    self.model.fit(
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/keras/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+tensorflow.python.framework.errors_impl.InvalidArgumentError: Graph execution error:
+
+2 root error(s) found.
+  (0) INVALID_ARGUMENT:  ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+         [[MultiDeviceIteratorGetNextFromShard]]
+         [[RemoteCall]]
+         [[IteratorGetNext]]
+         [[div_no_nan/ReadVariableOp_1/_12]]
+  (1) INVALID_ARGUMENT:  ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 834, in add_injections_to_onsource
+    config.scaling_method.scale(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 63, in scale
+    scaled_injections = gf.scale_to_snr(
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/local/michael.norman/__autograph_generated_filebkndm0ax.py", line 11, in tf__scale_to_snr
+    current_snr = ag__.converted_call(ag__.ld(snr), (ag__.ld(injection), ag__.ld(background), ag__.ld(sample_rate_hertz)), dict(fft_duration_seconds=ag__.ld(fft_duration_seconds), overlap_duration_seconds=ag__.ld(overlap_duration_seconds), lower_frequency_cutoff=ag__.ld(lower_frequency_cutoff)), fscope)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 101, in tf__snr
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 2, if_body_2, else_body_2, get_state_2, set_state_2, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 98, in else_body_2
+    ag__.if_stmt(ag__.converted_call(ag__.ld(len), (ag__.ld(injection).shape,), None, fscope) == 3, if_body_1, else_body_1, get_state_1, set_state_1, ('snr_denominator', 'snr_numerator'), 2)
+
+  File "/local/michael.norman/__autograph_generated_fileu0s2a401.py", line 91, in if_body_1
+    snr_denominator = ag__.ld(psd_interp)[:, :, ag__.ld(start_freq_num_samples):ag__.ld(end_freq_num_samples)]
+
+ValueError: in user code:
+
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 150, in scale_to_snr  *
+        current_snr = snr(
+    File "/home/michael.norman/data_ad_infinitum/gravyflow/snr.py", line 111, in snr  *
+        snr_denominator = psd_interp[
+
+    ValueError: Index out of range using input dim 2; input has only 2 dims for '{{node strided_slice_5}} = StridedSlice[Index=DT_INT64, T=DT_FLOAT, begin_mask=3, ellipsis_mask=0, end_mask=3, new_axis_mask=0, shrink_axis_mask=0](interp_regular_1d_grid/SelectV2_1, strided_slice_5/stack, strided_slice_5/stack_1, strided_slice_5/stack_2)' with input shapes: [32,2048], [3], [3], [3] and with computed input tensors: input[3] = <1 1 1>.
+
+
+
+         [[PyFunc]]
+         [[MultiDeviceIteratorGetNextFromShard]]
+         [[RemoteCall]]
+         [[IteratorGetNext]]
+0 successful operations.
+0 derived errors ignored. [Op:__inference_test_function_2536010]
+2023-11-08 14:40:55.781478: I tensorflow/tsl/profiler/lib/profiler_session.cc:131] Profiler session tear down.
+2023-11-08 14:42:21.864824: I tensorflow/compiler/xla/backends/profiler/gpu/cupti_tracer.cc:1813] CUPTI activity buffer flushed

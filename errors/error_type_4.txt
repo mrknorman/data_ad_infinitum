@@ -1,0 +1,258 @@
+2023-11-08 15:39:14.390189: W tensorflow/core/framework/op_kernel.cc:1830] OP_REQUIRES failed at strided_slice_op.cc:105 : INVALID_ARGUMENT: Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead.
+2023-11-08 15:39:14.400654: W tensorflow/core/framework/op_kernel.cc:1818] UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+2023-11-08 15:39:14.400722: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+2023-11-08 15:39:14.400989: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+2023-11-08 15:39:14.402116: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:GPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+2023-11-08 15:39:14.402326: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:GPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+2023-11-08 15:39:14.402887: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+	 [[div_no_nan_1/ReadVariableOp_1/_4]]
+Traceback (most recent call last):
+  File "/home/michael.norman/data_ad_infinitum/chapter_04_gw_perceptron.py", line 244, in <module>
+    train_perceptron(
+  File "/home/michael.norman/data_ad_infinitum/chapter_04_gw_perceptron.py", line 183, in train_perceptron
+    builder.train_model(
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/model.py", line 718, in train_model
+    self.model.fit(
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/keras/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+tensorflow.python.framework.errors_impl.UnknownError: Graph execution error:
+
+2 root error(s) found.
+  (0) UNKNOWN:  InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+	 [[div_no_nan_1/ReadVariableOp_1/_4]]
+  (1) UNKNOWN:  InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 201, in data
+    injection_generator.add_injections_to_onsource(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/injection.py", line 830, in add_injections_to_onsource
+    injections_ = injections_[:, 0, :]
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow-212/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [3], and [3] instead. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+0 successful operations.
+0 derived errors ignored. [Op:__inference_test_function_226310]
+terminate called without an active exception

@@ -1,0 +1,64 @@
+2023-11-06 08:36:44.546998: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__Slice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin and size arguments to be 1-D tensors of size 1, but got shapes [1] and [2048] instead. [Op:Slice]
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 181, in random_subsection
+    batch_background_chunks = tf.map_fn(
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/deprecation.py", line 648, in new_func
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/deprecation.py", line 576, in new_func
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/map_fn.py", line 640, in map_fn_v2
+    return map_fn(
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/deprecation.py", line 576, in new_func
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/map_fn.py", line 498, in map_fn
+    _, r_a = control_flow_ops.while_loop(
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/control_flow_ops.py", line 2823, in while_loop
+    loop_vars = body(*loop_vars)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/control_flow_ops.py", line 2814, in <lambda>
+    body = lambda i, lv: (i + 1, orig_body(*lv))
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/map_fn.py", line 488, in compute
+    result_value = autographed_fn(elems_value)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 183, in <lambda>
+    slice_data(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 171, in slice_data
+    return tf.slice(tensor_data, [start], [num_samples])
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__Slice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin and size arguments to be 1-D tensors of size 1, but got shapes [1] and [2048] instead. [Op:Slice]
+
+
+	 [[{{node PyFunc}}]]

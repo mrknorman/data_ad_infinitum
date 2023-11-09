@@ -1,0 +1,279 @@
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+2023-11-06 08:38:25.155302: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+2023-11-06 08:38:25.155896: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+2023-11-06 08:38:25.156043: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:GPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+2023-11-06 08:38:25.156638: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:GPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+2023-11-06 08:38:25.156995: I tensorflow/core/common_runtime/executor.cc:1197] [/job:localhost/replica:0/task:0/device:CPU:0] (DEBUG INFO) Executor start aborting (this does not indicate an error and you can ignore this message): UNKNOWN: InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+	 [[div_no_nan_1/ReadVariableOp/_2]]
+Traceback (most recent call last):
+  File "/home/michael.norman/data_ad_infinitum/chapter_04_gw_perceptron.py", line 239, in <module>
+    train_perceptron(
+  File "/home/michael.norman/data_ad_infinitum/chapter_04_gw_perceptron.py", line 180, in train_perceptron
+    builder.train_model(
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/model.py", line 717, in train_model
+    self.model.fit(
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/keras/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+tensorflow.python.framework.errors_impl.UnknownError: Graph execution error:
+
+2 root error(s) found.
+  (0) UNKNOWN:  InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+	 [[div_no_nan_1/ReadVariableOp/_2]]
+  (1) UNKNOWN:  InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+Traceback (most recent call last):
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/ops/script_ops.py", line 267, in __call__
+    ret = func(*args)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/autograph/impl/api.py", line 642, in wrapper
+    return func(*args, **kwargs)
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/data/ops/from_generator_op.py", line 198, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/dataset.py", line 194, in data
+    for (onsource, offsource, gps_times), (injections_, mask, parameters) \
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 1275, in get_onsource_offsource_chunks
+    yield segment.random_subsection(
+
+  File "/home/michael.norman/data_ad_infinitum/gravyflow/acquisition.py", line 157, in random_subsection
+    N = tf.shape(tensor_data)[0]
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+
+  File "/home/michael.norman/.conda/envs/gravyflow/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 7262, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+
+tensorflow.python.framework.errors_impl.InvalidArgumentError: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} slice index 1452688 of dimension 0 out of bounds. [Op:StridedSlice] name: strided_slice/
+
+
+	 [[{{node PyFunc}}]]
+	 [[MultiDeviceIteratorGetNextFromShard]]
+	 [[RemoteCall]]
+	 [[IteratorGetNext]]
+0 successful operations.
+0 derived errors ignored. [Op:__inference_test_function_24759916]
