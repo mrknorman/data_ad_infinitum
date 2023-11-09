@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Dict
 from copy import deepcopy
 
+import tensorflow as tf
 from tensorflow.keras import losses, optimizers
 import prctl
 
@@ -28,11 +29,11 @@ def train_perceptron(
         # Training Arguments:
         patience : int = 10,
         learning_rate : float = 1.0E-4,
-        max_epochs : int = 500,
+        max_epochs : int = 10,
         model_path : Path = None,
         # Dataset Arguments: 
         num_train_examples : int = int(1E5),
-        num_validation_examples : int = int(1E5),
+        num_validation_examples : int = int(1E4),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1]
@@ -40,7 +41,7 @@ def train_perceptron(
     
     # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
-    injection_directory_path : Path = current_dir / "injection_parameters"
+    injection_directory_path : Path = current_dir / "/../injection_parameters"
 
     string_id = "_".join(map(str, num_neurons_in_hidden_layers))
     if model_path is None:
@@ -74,7 +75,7 @@ def train_perceptron(
         ],
         gf.SegmentOrder.RANDOM,
         cache_segments=cache_segments,
-        force_acquisition=True,
+        force_acquisition=False,
         logging_level=logging.ERROR
     )
     
@@ -158,7 +159,6 @@ def train_perceptron(
             "shape" : (num_offsource_samples,)
         }
     ]
-
     
     output_config = {
         "name" : gf.ReturnVariables.INJECTION_MASKS.name,
@@ -210,27 +210,18 @@ if __name__ == "__main__":
             "neurons in each hidden layer."
         )
     )
-    parser.add_argument(
-        '--writer', 
-        action='store_true', 
-        help= (
-            "Will allow this script to write to hdf5 file, "
-            "only allow one script at a time to write to a "
-            "single file or errors will occour."
-        )
-    )
+
     args = parser.parse_args()
 
     # Set parameters based on command line arguments:
     num_neurons_in_hidden_layers = args.layers
-    cache_segments = args.writer
 
     # Set process name:
     prctl.set_name(f"gwflow_training_{num_neurons_in_hidden_layers}")
 
     gf.Defaults.set(
         seed = 1000,
-        num_examples_per_generation_batch=2048,
+        num_examples_per_generation_batch=512,
         num_examples_per_batch=32,
         sample_rate_hertz=2048.0,
         onsource_duration_seconds=1.0,
@@ -238,13 +229,21 @@ if __name__ == "__main__":
         crop_duration_seconds=0.5,
         scale_factor=1.0E21
     )
-    
+
+    # Set up TensorBoard logging directory
+    logs = "logs"
+
     with gf.env(
             min_gpu_memory_mb=10000,
-            memory_to_allocate_tf=6000
+            memory_to_allocate_tf=8000
         ):
+           
+        # Start profiling
+        tf.profiler.experimental.start(logs)
                 
         train_perceptron(
-            num_neurons_in_hidden_layers=num_neurons_in_hidden_layers,
-            cache_segments=cache_segments
+            num_neurons_in_hidden_layers=num_neurons_in_hidden_layers
         )
+    
+        # Stop profiling
+        tf.profiler.experimental.stop()
