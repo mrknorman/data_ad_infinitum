@@ -8,6 +8,8 @@
 py_ml_data/
 gravyflow_data/
 models/
+logs/
+segment_data*
 
 generator_data*
 generated*

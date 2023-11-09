@@ -35,9 +35,9 @@ def plot_injection_examples(
     
     set_random_seeds(101)
     
-     # Define injection directory path:
-    injection_directory_path : Path = \
-        Path("./injection_parameters")
+    # Define injection directory path:
+    current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
+    injection_directory_path : Path = current_dir / "/../injection_parameters"
     
     phenom_d_generator : cuPhenomDGenerator = \
         WaveformGenerator.load(
