@@ -4,10 +4,17 @@ import os
 from pathlib import Path
 from typing import List, Dict
 from copy import deepcopy
+import sys
 
 import tensorflow as tf
 from tensorflow.keras import losses, optimizers
 import prctl
+
+
+# Get the directory of your current script
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent
+sys.path.append(str(parent_dir))
 
 import gravyflow as gf
 
@@ -22,6 +29,22 @@ def create_perceptron_plan(
         
     return hidden_layers
 
+def load_or_build_model(builder, model_filename, input_configs, output_config):
+    # Check if the model file exists
+    if os.path.exists(model_filename):
+        try:
+            # Try to load the model
+            print(f"Loading model from {model_filename}")
+            builder.model = tf.keras.models.load_model(model_filename)
+        except Exception as e:
+            print(f"Error loading model: {e}")
+            print("Building new model...")
+            builder.build_model(input_configs, output_config)
+    else:
+        # If the model doesn't exist, build a new one
+        print("No saved model found. Building new model...")
+        builder.build_model(input_configs, output_config)
+
 def train_perceptron(
         # Model Arguments:
         num_neurons_in_hidden_layers : List[int],
@@ -29,7 +52,7 @@ def train_perceptron(
         # Training Arguments:
         patience : int = 10,
         learning_rate : float = 1.0E-4,
-        max_epochs : int = 10,
+        max_epochs : int = 1000,
         model_path : Path = None,
         # Dataset Arguments: 
         num_train_examples : int = int(1E5),
@@ -38,14 +61,14 @@ def train_perceptron(
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1]
     ):
-    
+
     # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
-    injection_directory_path : Path = current_dir / "/../injection_parameters"
+    injection_directory_path : Path = current_dir / "../injection_parameters"
 
     string_id = "_".join(map(str, num_neurons_in_hidden_layers))
     if model_path is None:
-        model_path = current_dir / f"models/chapter_04/perceptron_{string_id}"
+        model_path = current_dir / f"../models/chapter_04/perceptron_{string_id}"
     
     # Intilise Scaling Method:
     scaling_method : gf.ScalingMethod = gf.ScalingMethod(
@@ -173,9 +196,11 @@ def train_perceptron(
         "max_epochs" : max_epochs,
         "model_path" : model_path
     }
-    
-    builder.build_model(
-        input_configs,
+
+    load_or_build_model(
+        builder, 
+        model_path, 
+        input_configs, 
         output_config
     )
     
@@ -183,10 +208,16 @@ def train_perceptron(
     builder.train_model(
         train_dataset,
         validate_dataset,
-        training_config
+        training_config,
+        callbacks = [gf.CustomHistorySaver(model_path)]
     )
 
-    print(builder.metrics[0].history)
+    gf.save_dict_to_hdf5(
+        builder.metrics[0].history, 
+        model_path / "metrics", 
+        force_overwrite=False
+    )
+
 
 if __name__ == "__main__":
     
@@ -210,11 +241,38 @@ if __name__ == "__main__":
             "neurons in each hidden layer."
         )
     )
+    parser.add_argument(
+        "--gpu",
+        type = int, 
+        default = None,
+        help = (
+            "Specify a gpu to use."
+        )
+    )
 
+    parser.add_argument(
+        "--request_memory",
+        type = int, 
+        default = 8000,
+        help = (
+            "Specify a how much memory to give tf."
+        )
+    )
+
+        parser.add_argument(
+        "--request_memory",
+        type = int, 
+        default = 8000,
+        help = (
+            "Specify a how much memory to give tf."
+        )
+    )
     args = parser.parse_args()
 
     # Set parameters based on command line arguments:
     num_neurons_in_hidden_layers = args.layers
+    gpu = args.gpu
+    memory_to_allocate_tf = args.request_memory
 
     # Set process name:
     prctl.set_name(f"gwflow_training_{num_neurons_in_hidden_layers}")
@@ -234,8 +292,8 @@ if __name__ == "__main__":
     logs = "logs"
 
     with gf.env(
-            min_gpu_memory_mb=10000,
-            memory_to_allocate_tf=8000
+            memory_to_allocate_tf=memory_to_allocate_tf,
+            gpus=gpu
         ):
            
         # Start profiling
