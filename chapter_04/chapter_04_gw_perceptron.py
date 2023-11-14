@@ -1,10 +1,12 @@
 import argparse
 import logging
+import signal
 import os
 from pathlib import Path
 from typing import List, Dict
 from copy import deepcopy
 import sys
+import time
 
 import tensorflow as tf
 from tensorflow.keras import losses, optimizers
@@ -29,23 +31,26 @@ def create_perceptron_plan(
         
     return hidden_layers
 
-def load_or_build_model(builder, model_filename, input_configs, output_config):
+def load_or_build_model(builder, model_filename, input_configs, output_config, force_overwrite = False):
     # Check if the model file exists
-    if os.path.exists(model_filename):
+    if os.path.exists(model_filename) and not force_overwrite:
         try:
             # Try to load the model
             print(f"Loading model from {model_filename}")
             builder.model = tf.keras.models.load_model(model_filename)
+            builder.model_path = model_filename
+
         except Exception as e:
             print(f"Error loading model: {e}")
             print("Building new model...")
-            builder.build_model(input_configs, output_config)
+            builder.build_model(input_configs, output_config, model_path=model_filename)
     else:
         # If the model doesn't exist, build a new one
         print("No saved model found. Building new model...")
-        builder.build_model(input_configs, output_config)
+        builder.build_model(input_configs, output_config, model_path=model_filename)
 
 def train_perceptron(
+        heartbeat_object,
         # Model Arguments:
         num_neurons_in_hidden_layers : List[int],
         cache_segments : bool = False,
@@ -59,7 +64,9 @@ def train_perceptron(
         num_validation_examples : int = int(1E4),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
-        ifos : List[gf.IFO] = [gf.IFO.L1]
+        ifos : List[gf.IFO] = [gf.IFO.L1],
+        # Manage args
+        restart_count : int = 0
     ):
 
     # Define injection directory path:
@@ -201,25 +208,33 @@ def train_perceptron(
         builder, 
         model_path, 
         input_configs, 
-        output_config
+        output_config,
+        force_overwrite=(restart_count==0)
     )
     
-    builder.summary()
+    if (restart_count==0):
+        builder.summary()
+    else:
+        print(f"Attempt {restart_count + 1}: Restarting training from where we left off...")
+    
     builder.train_model(
         train_dataset,
         validate_dataset,
         training_config,
-        callbacks = [gf.CustomHistorySaver(model_path)]
+        force_retrain=(restart_count==0), 
+        heart=heart
     )
 
     gf.save_dict_to_hdf5(
         builder.metrics[0].history, 
         model_path / "metrics", 
         force_overwrite=False
-    )
-
+    )    
 
 if __name__ == "__main__":
+
+    signal.signal(signal.SIGINT, gf.signal_handler)  # Handle Ctrl+C
+    signal.signal(signal.SIGTERM, gf.signal_handler)  # Handle termination signal
     
     # Set logging level:
     logging.basicConfig(level=logging.INFO)
@@ -253,26 +268,38 @@ if __name__ == "__main__":
     parser.add_argument(
         "--request_memory",
         type = int, 
-        default = 8000,
+        default = 4000,
         help = (
             "Specify a how much memory to give tf."
         )
     )
 
-        parser.add_argument(
-        "--request_memory",
+    parser.add_argument(
+        "--restart_count",
         type = int, 
-        default = 8000,
+        default = 0,
         help = (
-            "Specify a how much memory to give tf."
+            "Number of times model has been trained, if 0, model will be overwritten."
         )
     )
+
+    parser.add_argument(
+        "--name",
+        type = str, 
+        default = None,
+        help = (
+            "Name of perceptron."
+        )
+    )
+
     args = parser.parse_args()
 
     # Set parameters based on command line arguments:
     num_neurons_in_hidden_layers = args.layers
     gpu = args.gpu
     memory_to_allocate_tf = args.request_memory
+    restart_count = args.restart_count
+    name = args.name
 
     # Set process name:
     prctl.set_name(f"gwflow_training_{num_neurons_in_hidden_layers}")
@@ -291,17 +318,24 @@ if __name__ == "__main__":
     # Set up TensorBoard logging directory
     logs = "logs"
 
+    if gf.is_redirected():
+        heart = gf.Heart(name)
+    else:
+        heart = None
+    
     with gf.env(
             memory_to_allocate_tf=memory_to_allocate_tf,
             gpus=gpu
         ):
            
         # Start profiling
-        tf.profiler.experimental.start(logs)
+        #tf.profiler.experimental.start(logs)
                 
         train_perceptron(
-            num_neurons_in_hidden_layers=num_neurons_in_hidden_layers
+            heart,
+            num_neurons_in_hidden_layers=num_neurons_in_hidden_layers,
+            restart_count=restart_count
         )
     
         # Stop profiling
-        tf.profiler.experimental.stop()
+        #tf.profiler.experimental.stop()
