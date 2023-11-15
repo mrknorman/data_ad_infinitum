@@ -222,14 +222,18 @@ def train_perceptron(
         validate_dataset,
         training_config,
         force_retrain=(restart_count==0), 
-        heart=heart
+        heart=heartbeat_object
     )
+
+    heart.beat()
 
     gf.save_dict_to_hdf5(
         builder.metrics[0].history, 
         model_path / "metrics", 
         force_overwrite=False
     )    
+
+    heart.complete()
 
 if __name__ == "__main__":
 
