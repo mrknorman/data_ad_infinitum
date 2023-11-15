@@ -18,19 +18,19 @@ def configure_logging():
                         format='%(asctime)s:%(levelname)s:%(message)s')
 
 # Modify the start_process function to track first-time start
-def start_process(command, gpu_id, memory_to_request):
+def start_process(command, memory_to_request):
     try:
 
-        process_gap_seconds = 10
+        process_gap_seconds = 3
         print(f"\nWaiting {process_gap_seconds} s to space out process activations.")
         time.sleep(process_gap_seconds)  # Space out so not too many are run at the same time
 
         # Determine the mode for log files based on whether it's a first-time start
-        mode = "w" if command.restart_count == 0 else "a"
+        mode = "w" if command.total_restart_count == 0 else "a"
 
         with open(f"perceptron_logs/{command.name}_log.txt", mode) as stdout_file, \
              open(f"perceptron_logs/{command.name}_error.txt", mode) as stderr_file:
-            full_command = f"{command.full} --gpu {gpu_id} --request_memory {memory_to_request} --restart_count {command.restart_count} --name {command.name}"
+            full_command = f"{command.full} --gpu {command.current_gpu} --request_memory {memory_to_request} --restart_count {command.total_restart_count} --name {command.name}"
 
             command.pipe_name = f"./tmp/heartbeat_{command.name}"
             gf.create_named_pipe(command.pipe_name)
@@ -46,12 +46,13 @@ def start_process(command, gpu_id, memory_to_request):
             )
 
             command.id = process.pid
-            print(f"\nProcess: {command.name} started at {command.id}")
+            logging.info(f"\nProcess: {command.name} started at {command.id}")
 
             return process
     except Exception as e:
         logging.exception(f"\nFailed to start process {command.name} on GPU {gpu_id}.")
         command.restart_count += 1
+        command.total_restart_count += 1
         return None
 
 # Check if a process needs to be marked as failed due to excessive restarts
@@ -59,13 +60,14 @@ def check_and_mark_failed(command, max_restarts, restart_time_window, commands_t
 
     # Check if the process has been restarted more than N times in X seconds
     command.restart_count += 1
+    command.total_restart_count += 1
     if command.restart_count > max_restarts:
         logging.error(f"\nProcess {command.name} has been restarted {command.restart_count} times within {restart_time_window} seconds. Marking as failed.")
         command.has_failed = True  # Mark process as failed
         gf.cleanup_named_pipe(command.pipe_name)
         return True
     
-    commands_to_run.append(command)
+    commands_to_run.insert(0, command)
 
     return False
 
@@ -85,18 +87,34 @@ def signal_handler(signum, frame):
     logging.info("\nReceived termination signal. Shutting down gracefully...")
 
     for proc, command in tqdm(running_processes):
-        kill_command(command, proc, running_processes)
+        kill_command(command, proc, running_processes, None)
 
     sys.exit(0)
 
-def kill_command(command, proc, running_processes):
+def kill_command(command, proc, running_processes, allocation_array):
     gf.kill_process(command.id)
     running_processes.remove((proc, command))
+
+    if allocation_array is not None:
+        allocation_array[command.current_gpu] -= command.memory_assigned
+    
+    command.current_gpu = -1
+    command.memory_assigned = 0
     command.flags["should_exit"].set()
     gf.cleanup_named_pipe(command.pipe_name)
 
 # Main function
-def main(commands_to_run, wait_timer_seconds=10, tensorflow_memory_per_process_mb=2000, cuda_overhead_per_process_mb=1000, max_restarts=4, restart_time_window=1200, max_use=80):
+def main(
+        commands_to_run,
+        wait_timer_seconds : int = 3, 
+        tensorflow_memory_per_process_mb : int = 2000, 
+        cuda_overhead_per_process_mb : int = 1000, 
+        max_restarts : int = 4, 
+        restart_time_window : int = 1200, 
+        max_use : int = 95,
+        max_num_processes : int = 7
+    ):
+
     total_memory_per_process = tensorflow_memory_per_process_mb + cuda_overhead_per_process_mb
 
     configure_logging()
@@ -108,38 +126,41 @@ def main(commands_to_run, wait_timer_seconds=10, tensorflow_memory_per_process_m
 
     try:
         free_memory = gf.get_memory_array()
+        gpu_use = gf.get_gpu_utilization_array()
         logging.info(f"Initial GPU Memory Status: {free_memory}")
     except Exception as e:
-        logging.exception("Failed to get initial free memory array.")
-        free_memory = []
+        raise ValueError("Failed to get initial free memory array.")
         logging.error("Failed to get initial free memory array. See logs for details.")
 
     num_restarted = 0
     num_failed = 0
     num_completed = 0
     total = len(commands_to_run)
+    allocation_array = np.full(len(free_memory), -1)
 
     spinner = "|/-\\"
     idx = 0
 
     while commands_to_run or running_processes:
         idx = (idx + 1) % len(spinner)
-        sys.stdout.write(f"\r{spinner[idx]} {len(running_processes)}/{total} running, {num_completed}/{total} completed, {num_failed}/{total} failed, {len(commands_to_run)}/{total} in queue. {num_restarted} restarts.")
-        sys.stdout.flush()
+        if not gf.is_redirected():
+            sys.stdout.write(f"\r{spinner[idx]} {len(running_processes)}/{total} running, {num_completed}/{total} completed, {num_failed}/{total} failed, {len(commands_to_run)}/{total} in queue. {num_restarted} restarts.")
+            sys.stdout.flush()
+        else:
+            logging.info(f"{len(running_processes)}/{total} running, {num_completed}/{total} completed, {num_failed}/{total} failed, {len(commands_to_run)}/{total} in queue. {num_restarted} restarts.")
 
         try:
             free_memory = gf.get_memory_array()
+            free_memory = free_memory + allocation_array
             gpu_use = gf.get_gpu_utilization_array()
         except Exception as e:
             logging.exception("\nFailed to update free memory array.")
-            free_memory = []
-            gpu_use = []
-
+        
         for proc, command in running_processes[:]:
             if proc is not None:
                 retcode = proc.poll()
                 if retcode is not None:  # Process finished.
-                    kill_command(command, proc, running_processes)
+                    kill_command(command, proc, running_processes, allocation_array)
 
                     stdout, stderr = proc.communicate()
 
@@ -159,14 +180,14 @@ def main(commands_to_run, wait_timer_seconds=10, tensorflow_memory_per_process_m
                         else:
                             num_restarted += 1
                     else:
-                        print(f"\nProcess {command.name} at {command.id} completed sucessfully with return code {retcode}: {gf.explain_exit_code(retcode)}.")
+                        logging.info(f"\nProcess {command.name} at {command.id} completed sucessfully with return code {retcode}: {gf.explain_exit_code(retcode)}.")
                         num_completed += 1
 
                 elif command.flags["has_died"].is_set():
 
                     logging.error(f"\nProcess {command.name} at {command.id} heartbeat lost. Terminating.")
 
-                    kill_command(command, proc, running_processes)
+                    kill_command(command, proc, running_processes, allocation_array)
 
                     if check_and_mark_failed(command, max_restarts, restart_time_window, commands_to_run):
                         num_failed += 1
@@ -175,34 +196,42 @@ def main(commands_to_run, wait_timer_seconds=10, tensorflow_memory_per_process_m
                         num_restarted += 1
 
         num_processes = len(commands_to_run)
-        assignment_array = np.full(num_processes, -1)
 
         process_index = 0
         for gpu_index, (gpu_memory, use) in enumerate(zip(free_memory, gpu_use)):
-            while gpu_memory >= total_memory_per_process and use < max_use and process_index < num_processes:
+            while gpu_memory >= total_memory_per_process and process_index < num_processes:
                 gpu_memory -= total_memory_per_process
-                assignment_array[process_index] = gpu_index
+
+                commands_to_run[process_index].current_gpu = gpu_index
+                commands_to_run[process_index].memory_assigned = total_memory_per_process
+
                 process_index += 1
 
-        for i, gpu in enumerate(assignment_array):
-            if gpu > -1 and commands_to_run:
-                command = commands_to_run.pop(0)
+        for command in commands_to_run:
+            if command.current_gpu > -1 and commands_to_run and len(running_processes) < max_num_processes:
+                commands_to_run.remove(command)
 
-                process = start_process(command, gpu, tensorflow_memory_per_process_mb)
+                process = start_process(command, tensorflow_memory_per_process_mb)
                 if process is not None:
                     running_processes.append((process, command))
                 elif not command.has_failed:
-                    print(f"\nAttempting restart of {command.name}.")
+                    logging.info(f"\nAttempting restart of {command.name}.")
                     commands_to_run.append(command)  # Re-queue if start_process failed
                     num_restarted += 1
                     time.sleep(wait_timer_seconds)
 
         clean_restart_counts(commands_to_run, restart_time_window)
+
+        if gf.is_redirected():
+            time.sleep(100)
     
-    print(f"\nAll processes finished. {num_completed}/{total}  completed, {num_failed}/{total}  failed.  {num_restarted} attempted restarts.")
+    logging.info(f"\nAll processes finished. {num_completed}/{total}  completed, {num_failed}/{total}  failed.  {num_restarted} attempted restarts.")
 
 class processCommand:
     def __init__(self, command_string: str):
+
+        self.current_gpu = -1
+        self.memory_assigned = 0
 
         self.flags = None
         self.pipe_name = None
@@ -210,6 +239,7 @@ class processCommand:
 
         self.id = -1
         self.restart_count = 0
+        self.total_restart_count = 0
         self.restart_counter = time.time()
         self.full = command_string
         self.has_failed = False
@@ -244,19 +274,19 @@ class processCommand:
 if __name__ == "__main__":
     commands_to_run = [
         processCommand("python ./chapter_04/chapter_04_gw_perceptron.py"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 64"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 64"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 128"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64 64"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128 128"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256 256"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 512")
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 64"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 64"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 128"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64 64"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128 128"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256 256"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 512")
     ]
 
     main(commands_to_run)
