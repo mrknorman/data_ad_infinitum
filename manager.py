@@ -159,7 +159,9 @@ def main(
         for proc, command in running_processes[:]:
             if proc is not None:
                 retcode = proc.poll()
+                logging.info(f"retcode: {retcode}")
                 if retcode is not None:  # Process finished.
+
                     kill_command(command, proc, running_processes, allocation_array)
 
                     stdout, stderr = proc.communicate()
@@ -223,7 +225,7 @@ def main(
         clean_restart_counts(commands_to_run, restart_time_window)
 
         if gf.is_redirected():
-            time.sleep(100)
+            time.sleep(1)
     
     logging.info(f"\nAll processes finished. {num_completed}/{total}  completed, {num_failed}/{total}  failed.  {num_restarted} attempted restarts.")
 
@@ -274,19 +276,19 @@ class processCommand:
 if __name__ == "__main__":
     commands_to_run = [
         processCommand("python ./chapter_04/chapter_04_gw_perceptron.py"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 64"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 64"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 128"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64 64"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128 128"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256 256"),
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 512")
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 64"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 64"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 128"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64 64"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128 128"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256 256"),
+        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 512")
     ]
 
     main(commands_to_run)
