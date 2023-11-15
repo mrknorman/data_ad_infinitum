@@ -55,13 +55,13 @@ def train_perceptron(
         num_neurons_in_hidden_layers : List[int],
         cache_segments : bool = False,
         # Training Arguments:
-        patience : int = 10,
+        patience : int = 1,
         learning_rate : float = 1.0E-4,
         max_epochs : int = 1000,
         model_path : Path = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E5),
-        num_validation_examples : int = int(1E4),
+        num_train_examples : int = int(1E3),
+        num_validation_examples : int = int(1E2),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1],
@@ -224,16 +224,19 @@ def train_perceptron(
         force_retrain=(restart_count==0), 
         heart=heartbeat_object
     )
-
-    heart.beat()
+    if heartbeat_object is not None:
+        heartbeat_object.beat()
 
     gf.save_dict_to_hdf5(
         builder.metrics[0].history, 
         model_path / "metrics", 
         force_overwrite=False
     )    
+    
+    if heartbeat_object is not None:
+        heartbeat_object.complete()
 
-    heart.complete()
+    return 0
 
 if __name__ == "__main__":
 
@@ -335,11 +338,13 @@ if __name__ == "__main__":
         # Start profiling
         #tf.profiler.experimental.start(logs)
                 
-        train_perceptron(
+        if train_perceptron(
             heart,
             num_neurons_in_hidden_layers=num_neurons_in_hidden_layers,
             restart_count=restart_count
-        )
-    
+        ) == 0:
+            logging.info("Training completed, do a shot!")
+            sys.exit(0)
+        
         # Stop profiling
         #tf.profiler.experimental.stop()
