@@ -7,7 +7,6 @@
 
 py_ml_data/
 gravyflow_data/
-logs/
 segment_data*
 
 generator_data*
