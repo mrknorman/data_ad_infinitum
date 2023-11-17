@@ -1,0 +1,377 @@
+No saved model found. Building new model...
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ ONSOURCE (InputLayer)          [(None, 4096)]       0           []                               
+                                                                                                  
+ OFFSOURCE (InputLayer)         [(None, 32768)]      0           []                               
+                                                                                                  
+ whiten (Whiten)                (None, 2048)         0           ['ONSOURCE[0][0]',               
+                                                                  'OFFSOURCE[0][0]']              
+                                                                                                  
+ dense (Dense)                  (None, 256)          524544      ['whiten[0][0]']                 
+                                                                                                  
+ dense_1 (Dense)                (None, 128)          32896       ['dense[0][0]']                  
+                                                                                                  
+ INJECTION_MASKS (Dense)        (None, 1)            129         ['dense_1[0][0]']                
+                                                                                                  
+==================================================================================================
+Total params: 557,569
+Trainable params: 557,569
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+Epoch 1/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.7068340182304382 at Epoch: 0 which was 0 epochs ago.
+3125/3125 - 717s - loss: 0.7207 - binary_accuracy: 0.5031 - val_loss: 0.7068 - val_binary_accuracy: 0.5023 - 717s/epoch - 229ms/step
+Epoch 2/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.7068340182304382 at Epoch: 0 which was 1 epochs ago.
+3125/3125 - 663s - loss: 0.7044 - binary_accuracy: 0.5046 - val_loss: 0.7071 - val_binary_accuracy: 0.5126 - 663s/epoch - 212ms/step
+Epoch 3/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6999362707138062 at Epoch: 2 which was 0 epochs ago.
+3125/3125 - 645s - loss: 0.7032 - binary_accuracy: 0.5081 - val_loss: 0.6999 - val_binary_accuracy: 0.5166 - 645s/epoch - 206ms/step
+Epoch 4/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6945804953575134 at Epoch: 3 which was 0 epochs ago.
+3125/3125 - 687s - loss: 0.7008 - binary_accuracy: 0.5089 - val_loss: 0.6946 - val_binary_accuracy: 0.5226 - 687s/epoch - 220ms/step
+Epoch 5/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6945804953575134 at Epoch: 3 which was 1 epochs ago.
+3125/3125 - 632s - loss: 0.6968 - binary_accuracy: 0.5183 - val_loss: 0.6947 - val_binary_accuracy: 0.5239 - 632s/epoch - 202ms/step
+Epoch 6/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6945804953575134 at Epoch: 3 which was 2 epochs ago.
+3125/3125 - 666s - loss: 0.6971 - binary_accuracy: 0.5198 - val_loss: 0.7026 - val_binary_accuracy: 0.5272 - 666s/epoch - 213ms/step
+Epoch 7/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6915038228034973 at Epoch: 6 which was 0 epochs ago.
+3125/3125 - 668s - loss: 0.6935 - binary_accuracy: 0.5305 - val_loss: 0.6915 - val_binary_accuracy: 0.5308 - 668s/epoch - 214ms/step
+Epoch 8/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6899638772010803 at Epoch: 7 which was 0 epochs ago.
+3125/3125 - 668s - loss: 0.6971 - binary_accuracy: 0.5370 - val_loss: 0.6900 - val_binary_accuracy: 0.5434 - 668s/epoch - 214ms/step
+Epoch 9/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6899638772010803 at Epoch: 7 which was 1 epochs ago.
+3125/3125 - 644s - loss: 0.6952 - binary_accuracy: 0.5399 - val_loss: 0.6903 - val_binary_accuracy: 0.5467 - 644s/epoch - 206ms/step
+Epoch 10/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6835642457008362 at Epoch: 9 which was 0 epochs ago.
+3125/3125 - 687s - loss: 0.6891 - binary_accuracy: 0.5502 - val_loss: 0.6836 - val_binary_accuracy: 0.5620 - 687s/epoch - 220ms/step
+Epoch 11/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6831775307655334 at Epoch: 10 which was 0 epochs ago.
+3125/3125 - 683s - loss: 0.6908 - binary_accuracy: 0.5540 - val_loss: 0.6832 - val_binary_accuracy: 0.5628 - 683s/epoch - 218ms/step
+Epoch 12/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6808264255523682 at Epoch: 11 which was 0 epochs ago.
+3125/3125 - 684s - loss: 0.6894 - binary_accuracy: 0.5682 - val_loss: 0.6808 - val_binary_accuracy: 0.5696 - 684s/epoch - 219ms/step
+Epoch 13/1000
+Failed to get data because:
+{{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [512], [1], and [1] instead. [Op:StridedSlice] name: strided_slice/
+Subarrays returned None!
+Background Chunks returned None!
+start_gps_times returned None!
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6808264255523682 at Epoch: 11 which was 1 epochs ago.
+3125/3125 - 719s - loss: 0.6847 - binary_accuracy: 0.5678 - val_loss: 0.7051 - val_binary_accuracy: 0.5701 - 719s/epoch - 230ms/step
+Epoch 14/1000
+Loading model from /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128
+Attempt 2: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+{'binary_accuracy': [0.5030500292778015, 0.5045899748802185, 0.5080999732017517, 0.5089399814605713, 0.5182700157165527, 0.519819974899292, 0.5305200219154358, 0.5369799733161926, 0.5399399995803833, 0.5501999855041504, 0.5540099740028381, 0.5682399868965149, 0.5678499937057495], 'loss': [0.7207279801368713, 0.7043642401695251, 0.7031672596931458, 0.7007702589035034, 0.6968487501144409, 0.6971032023429871, 0.6935310959815979, 0.6971487402915955, 0.6951634287834167, 0.6890930533409119, 0.6907706260681152, 0.6894071102142334, 0.6847330331802368], 'val_binary_accuracy': [0.5023036599159241, 0.512620210647583, 0.5166265964508057, 0.5226362347602844, 0.5239382982254028, 0.5272436141967773, 0.5308493375778198, 0.5433694124221802, 0.5466746687889099, 0.5619992017745972, 0.5628004670143127, 0.5696113705635071, 0.5701121687889099], 'val_loss': [0.7068340182304382, 0.7070997357368469, 0.6999362707138062, 0.6945804953575134, 0.6946645975112915, 0.7025669813156128, 0.6915038228034973, 0.6899638772010803, 0.6902527213096619, 0.6835642457008362, 0.6831775307655334, 0.6808264255523682, 0.7050670385360718]}
+Epoch 14/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.676224410533905 at Epoch: 13 which was 0 epochs ago.
+3125/3125 - 791s - loss: 0.6775 - binary_accuracy: 0.5798 - val_loss: 0.6762 - val_binary_accuracy: 0.5734 - 791s/epoch - 253ms/step
+Epoch 15/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.676224410533905 at Epoch: 13 which was 1 epochs ago.
+3125/3125 - 774s - loss: 0.6796 - binary_accuracy: 0.5799 - val_loss: 0.6944 - val_binary_accuracy: 0.5803 - 774s/epoch - 248ms/step
+Epoch 16/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.676224410533905 at Epoch: 13 which was 2 epochs ago.
+3125/3125 - 798s - loss: 0.6814 - binary_accuracy: 0.5806 - val_loss: 0.6795 - val_binary_accuracy: 0.5981 - 798s/epoch - 255ms/step
+Epoch 17/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6653724312782288 at Epoch: 16 which was 0 epochs ago.
+3125/3125 - 909s - loss: 0.6739 - binary_accuracy: 0.5882 - val_loss: 0.6654 - val_binary_accuracy: 0.5993 - 909s/epoch - 291ms/step
+Epoch 18/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6653724312782288 at Epoch: 16 which was 1 epochs ago.
+3125/3125 - 1086s - loss: 0.6759 - binary_accuracy: 0.6024 - val_loss: 0.6964 - val_binary_accuracy: 0.6009 - 1086s/epoch - 347ms/step
+Epoch 19/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6653724312782288 at Epoch: 16 which was 2 epochs ago.
+3125/3125 - 899s - loss: 0.6757 - binary_accuracy: 0.6016 - val_loss: 0.6876 - val_binary_accuracy: 0.5983 - 899s/epoch - 288ms/step
+Epoch 20/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6619501709938049 at Epoch: 19 which was 0 epochs ago.
+3125/3125 - 922s - loss: 0.6669 - binary_accuracy: 0.6070 - val_loss: 0.6620 - val_binary_accuracy: 0.6084 - 922s/epoch - 295ms/step
+Epoch 21/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6619501709938049 at Epoch: 19 which was 1 epochs ago.
+3125/3125 - 948s - loss: 0.6871 - binary_accuracy: 0.6084 - val_loss: 0.6668 - val_binary_accuracy: 0.6076 - 948s/epoch - 303ms/step
+Epoch 22/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6619501709938049 at Epoch: 19 which was 2 epochs ago.
+3125/3125 - 804s - loss: 0.6731 - binary_accuracy: 0.6136 - val_loss: 0.6658 - val_binary_accuracy: 0.6218 - 804s/epoch - 257ms/step
+Epoch 23/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6619501709938049 at Epoch: 19 which was 3 epochs ago.
+3125/3125 - 823s - loss: 0.6631 - binary_accuracy: 0.6191 - val_loss: 0.6887 - val_binary_accuracy: 0.6093 - 823s/epoch - 263ms/step
+Epoch 24/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6512418389320374 at Epoch: 23 which was 0 epochs ago.
+3125/3125 - 811s - loss: 0.6670 - binary_accuracy: 0.6178 - val_loss: 0.6512 - val_binary_accuracy: 0.6244 - 811s/epoch - 260ms/step
+Epoch 25/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6512418389320374 at Epoch: 23 which was 1 epochs ago.
+3125/3125 - 981s - loss: 0.6609 - binary_accuracy: 0.6252 - val_loss: 0.6624 - val_binary_accuracy: 0.6312 - 981s/epoch - 314ms/step
+Epoch 26/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6487321257591248 at Epoch: 25 which was 0 epochs ago.
+3125/3125 - 1038s - loss: 0.6614 - binary_accuracy: 0.6253 - val_loss: 0.6487 - val_binary_accuracy: 0.6243 - 1038s/epoch - 332ms/step
+Epoch 27/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6487321257591248 at Epoch: 25 which was 1 epochs ago.
+3125/3125 - 816s - loss: 0.6661 - binary_accuracy: 0.6322 - val_loss: 0.6523 - val_binary_accuracy: 0.6242 - 816s/epoch - 261ms/step
+Epoch 28/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6484346389770508 at Epoch: 27 which was 0 epochs ago.
+3125/3125 - 686s - loss: 0.6543 - binary_accuracy: 0.6365 - val_loss: 0.6484 - val_binary_accuracy: 0.6291 - 686s/epoch - 219ms/step
+Epoch 29/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6484346389770508 at Epoch: 27 which was 1 epochs ago.
+3125/3125 - 702s - loss: 0.6635 - binary_accuracy: 0.6369 - val_loss: 0.6619 - val_binary_accuracy: 0.6350 - 702s/epoch - 225ms/step
+Epoch 30/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6484346389770508 at Epoch: 27 which was 2 epochs ago.
+3125/3125 - 846s - loss: 0.6605 - binary_accuracy: 0.6348 - val_loss: 0.6852 - val_binary_accuracy: 0.6357 - 846s/epoch - 271ms/step
+Epoch 31/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 30 which was 0 epochs ago.
+3125/3125 - 712s - loss: 0.6567 - binary_accuracy: 0.6357 - val_loss: 0.6422 - val_binary_accuracy: 0.6327 - 712s/epoch - 228ms/step
+Epoch 32/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 30 which was 1 epochs ago.
+3125/3125 - 668s - loss: 0.6640 - binary_accuracy: 0.6353 - val_loss: 0.6787 - val_binary_accuracy: 0.6327 - 668s/epoch - 214ms/step
+Epoch 33/1000
+An error occurred during slicing: {{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [3], [512], and [3] instead. [Op:StridedSlice] name: strided_slice/
+Error when slicing after!
+Loading model from /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128
+Attempt 3: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+{'binary_accuracy': [0.5030500292778015, 0.5045899748802185, 0.5080999732017517, 0.5089399814605713, 0.5182700157165527, 0.519819974899292, 0.5305200219154358, 0.5369799733161926, 0.5399399995803833, 0.5501999855041504, 0.5540099740028381, 0.5682399868965149, 0.5678499937057495, 0.5798400044441223, 0.5799300074577332, 0.5806400179862976, 0.5882099866867065, 0.6023799777030945, 0.601610004901886, 0.6070399880409241, 0.6083599925041199, 0.6135500073432922, 0.6190699934959412, 0.6177899837493896, 0.6251699924468994, 0.6253399848937988, 0.6321700215339661, 0.6364700198173523, 0.6369100213050842, 0.6348299980163574, 0.6357100009918213, 0.6352699995040894], 'loss': [0.7207279801368713, 0.7043642401695251, 0.7031672596931458, 0.7007702589035034, 0.6968487501144409, 0.6971032023429871, 0.6935310959815979, 0.6971487402915955, 0.6951634287834167, 0.6890930533409119, 0.6907706260681152, 0.6894071102142334, 0.6847330331802368, 0.6775357723236084, 0.67961585521698, 0.6814276576042175, 0.6739181280136108, 0.6758741140365601, 0.6757410764694214, 0.6668674945831299, 0.6870893239974976, 0.6730618476867676, 0.663072407245636, 0.6670266389846802, 0.6609169244766235, 0.6613695025444031, 0.6660624742507935, 0.6542622447013855, 0.6635451316833496, 0.6605291962623596, 0.6566991209983826, 0.6639631390571594], 'val_binary_accuracy': [0.5023036599159241, 0.512620210647583, 0.5166265964508057, 0.5226362347602844, 0.5239382982254028, 0.5272436141967773, 0.5308493375778198, 0.5433694124221802, 0.5466746687889099, 0.5619992017745972, 0.5628004670143127, 0.5696113705635071, 0.5701121687889099, 0.5734174847602844, 0.5803285241127014, 0.5980569124221802, 0.5992588400840759, 0.6008613705635071, 0.5982571840286255, 0.6083734035491943, 0.6075721383094788, 0.6217948794364929, 0.6092748641967773, 0.6243990659713745, 0.6312099099159241, 0.6242988705635071, 0.6241987347602844, 0.6291065812110901, 0.6350160241127014, 0.6357171535491943, 0.6327123641967773, 0.6327123641967773], 'val_loss': [0.7068340182304382, 0.7070997357368469, 0.6999362707138062, 0.6945804953575134, 0.6946645975112915, 0.7025669813156128, 0.6915038228034973, 0.6899638772010803, 0.6902527213096619, 0.6835642457008362, 0.6831775307655334, 0.6808264255523682, 0.7050670385360718, 0.676224410533905, 0.694360077381134, 0.6795263886451721, 0.6653724312782288, 0.6964055299758911, 0.6876336336135864, 0.6619501709938049, 0.6667866110801697, 0.6658431887626648, 0.6886726021766663, 0.6512418389320374, 0.6623647212982178, 0.6487321257591248, 0.652286946773529, 0.6484346389770508, 0.6618632674217224, 0.6851675510406494, 0.6422094702720642, 0.6786581873893738]}
+Epoch 33/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 31 which was 2 epochs ago.
+3125/3125 - 768s - loss: 0.6348 - binary_accuracy: 0.6576 - val_loss: 0.6678 - val_binary_accuracy: 0.6362 - 768s/epoch - 246ms/step
+Epoch 34/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 31 which was 3 epochs ago.
+3125/3125 - 743s - loss: 0.6501 - binary_accuracy: 0.6465 - val_loss: 0.6685 - val_binary_accuracy: 0.6453 - 743s/epoch - 238ms/step
+Epoch 35/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 31 which was 4 epochs ago.
+3125/3125 - 963s - loss: 0.6978 - binary_accuracy: 0.6320 - val_loss: 0.6663 - val_binary_accuracy: 0.6370 - 963s/epoch - 308ms/step
+Epoch 36/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 31 which was 5 epochs ago.
+3125/3125 - 882s - loss: 0.6625 - binary_accuracy: 0.6438 - val_loss: 0.7380 - val_binary_accuracy: 0.6511 - 882s/epoch - 282ms/step
+Epoch 37/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6422094702720642 at Epoch: 31 which was 6 epochs ago.
+3125/3125 - 696s - loss: 0.6587 - binary_accuracy: 0.6446 - val_loss: 0.6506 - val_binary_accuracy: 0.6422 - 696s/epoch - 223ms/step
+Epoch 38/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6400534510612488 at Epoch: 37 which was 0 epochs ago.
+3125/3125 - 716s - loss: 0.6476 - binary_accuracy: 0.6527 - val_loss: 0.6401 - val_binary_accuracy: 0.6278 - 716s/epoch - 229ms/step
+Epoch 39/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6400534510612488 at Epoch: 37 which was 1 epochs ago.
+3125/3125 - 846s - loss: 0.6467 - binary_accuracy: 0.6449 - val_loss: 0.6406 - val_binary_accuracy: 0.6605 - 846s/epoch - 271ms/step
+Epoch 40/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6400534510612488 at Epoch: 37 which was 2 epochs ago.
+3125/3125 - 970s - loss: 0.6719 - binary_accuracy: 0.6438 - val_loss: 0.7851 - val_binary_accuracy: 0.6539 - 970s/epoch - 310ms/step
+Epoch 41/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.637558102607727 at Epoch: 40 which was 0 epochs ago.
+3125/3125 - 1067s - loss: 0.6910 - binary_accuracy: 0.6422 - val_loss: 0.6376 - val_binary_accuracy: 0.6385 - 1067s/epoch - 341ms/step
+Epoch 42/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6346259117126465 at Epoch: 41 which was 0 epochs ago.
+3125/3125 - 718s - loss: 0.6480 - binary_accuracy: 0.6485 - val_loss: 0.6346 - val_binary_accuracy: 0.6442 - 718s/epoch - 230ms/step
+Epoch 43/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6346259117126465 at Epoch: 41 which was 1 epochs ago.
+3125/3125 - 737s - loss: 0.6482 - binary_accuracy: 0.6491 - val_loss: 0.6361 - val_binary_accuracy: 0.6550 - 737s/epoch - 236ms/step
+Epoch 44/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6346259117126465 at Epoch: 41 which was 2 epochs ago.
+3125/3125 - 736s - loss: 0.6685 - binary_accuracy: 0.6508 - val_loss: 0.7848 - val_binary_accuracy: 0.6412 - 736s/epoch - 236ms/step
+Epoch 45/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6346259117126465 at Epoch: 41 which was 3 epochs ago.
+3125/3125 - 651s - loss: 0.6450 - binary_accuracy: 0.6501 - val_loss: 0.6372 - val_binary_accuracy: 0.6420 - 651s/epoch - 208ms/step
+Epoch 46/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6346259117126465 at Epoch: 41 which was 4 epochs ago.
+3125/3125 - 674s - loss: 0.6467 - binary_accuracy: 0.6565 - val_loss: 0.6528 - val_binary_accuracy: 0.6537 - 674s/epoch - 216ms/step
+Epoch 47/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6290474534034729 at Epoch: 46 which was 0 epochs ago.
+3125/3125 - 700s - loss: 0.6472 - binary_accuracy: 0.6565 - val_loss: 0.6290 - val_binary_accuracy: 0.6568 - 700s/epoch - 224ms/step
+Epoch 48/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6290474534034729 at Epoch: 46 which was 1 epochs ago.
+3125/3125 - 773s - loss: 0.6544 - binary_accuracy: 0.6551 - val_loss: 0.9048 - val_binary_accuracy: 0.6389 - 773s/epoch - 247ms/step
+Epoch 49/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6290474534034729 at Epoch: 46 which was 2 epochs ago.
+3125/3125 - 864s - loss: 0.6306 - binary_accuracy: 0.6693 - val_loss: 0.8290 - val_binary_accuracy: 0.6503 - 864s/epoch - 276ms/step
+Epoch 50/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6290474534034729 at Epoch: 46 which was 3 epochs ago.
+3125/3125 - 914s - loss: 0.6453 - binary_accuracy: 0.6565 - val_loss: 0.6425 - val_binary_accuracy: 0.6494 - 914s/epoch - 293ms/step
+Epoch 51/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6290474534034729 at Epoch: 46 which was 4 epochs ago.
+3125/3125 - 1004s - loss: 0.6769 - binary_accuracy: 0.6494 - val_loss: 0.6473 - val_binary_accuracy: 0.6342 - 1004s/epoch - 321ms/step
+Epoch 52/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6290474534034729 at Epoch: 46 which was 5 epochs ago.
+3125/3125 - 779s - loss: 0.6345 - binary_accuracy: 0.6572 - val_loss: 0.6338 - val_binary_accuracy: 0.6644 - 779s/epoch - 249ms/step
+Epoch 53/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6244210600852966 at Epoch: 52 which was 0 epochs ago.
+3125/3125 - 982s - loss: 0.6373 - binary_accuracy: 0.6580 - val_loss: 0.6244 - val_binary_accuracy: 0.6564 - 982s/epoch - 314ms/step
+Epoch 54/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6244210600852966 at Epoch: 52 which was 1 epochs ago.
+3125/3125 - 755s - loss: 0.6533 - binary_accuracy: 0.6608 - val_loss: 0.7440 - val_binary_accuracy: 0.6588 - 755s/epoch - 242ms/step
+Epoch 55/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 0 epochs ago.
+3125/3125 - 744s - loss: 0.6362 - binary_accuracy: 0.6631 - val_loss: 0.6235 - val_binary_accuracy: 0.6710 - 744s/epoch - 238ms/step
+Epoch 56/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 1 epochs ago.
+3125/3125 - 779s - loss: 0.6442 - binary_accuracy: 0.6631 - val_loss: 0.6668 - val_binary_accuracy: 0.6444 - 779s/epoch - 249ms/step
+Epoch 57/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 2 epochs ago.
+3125/3125 - 750s - loss: 0.6454 - binary_accuracy: 0.6593 - val_loss: 0.6398 - val_binary_accuracy: 0.6497 - 750s/epoch - 240ms/step
+Epoch 58/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 3 epochs ago.
+3125/3125 - 847s - loss: 0.6670 - binary_accuracy: 0.6586 - val_loss: 0.6254 - val_binary_accuracy: 0.6588 - 847s/epoch - 271ms/step
+Epoch 59/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 4 epochs ago.
+3125/3125 - 904s - loss: 0.6598 - binary_accuracy: 0.6619 - val_loss: 0.6285 - val_binary_accuracy: 0.6605 - 904s/epoch - 289ms/step
+Epoch 60/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 5 epochs ago.
+3125/3125 - 688s - loss: 0.6451 - binary_accuracy: 0.6589 - val_loss: 0.6235 - val_binary_accuracy: 0.6711 - 688s/epoch - 220ms/step
+Epoch 61/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 6 epochs ago.
+3125/3125 - 688s - loss: 0.6425 - binary_accuracy: 0.6629 - val_loss: 0.9969 - val_binary_accuracy: 0.6696 - 688s/epoch - 220ms/step
+Epoch 62/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 7 epochs ago.
+3125/3125 - 721s - loss: 0.6246 - binary_accuracy: 0.6729 - val_loss: 0.6286 - val_binary_accuracy: 0.6573 - 721s/epoch - 231ms/step
+Epoch 63/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 54 which was 8 epochs ago.
+3125/3125 - 948s - loss: 0.6522 - binary_accuracy: 0.6640 - val_loss: 0.6642 - val_binary_accuracy: 0.6527 - 948s/epoch - 303ms/step
+Epoch 64/1000
+Loading model from /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128
+Attempt 4: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+{'binary_accuracy': [0.5030500292778015, 0.5045899748802185, 0.5080999732017517, 0.5089399814605713, 0.5182700157165527, 0.519819974899292, 0.5305200219154358, 0.5369799733161926, 0.5399399995803833, 0.5501999855041504, 0.5540099740028381, 0.5682399868965149, 0.5678499937057495, 0.5798400044441223, 0.5799300074577332, 0.5806400179862976, 0.5882099866867065, 0.6023799777030945, 0.601610004901886, 0.6070399880409241, 0.6083599925041199, 0.6135500073432922, 0.6190699934959412, 0.6177899837493896, 0.6251699924468994, 0.6253399848937988, 0.6321700215339661, 0.6364700198173523, 0.6369100213050842, 0.6348299980163574, 0.6357100009918213, 0.6352699995040894, 0.6576300263404846, 0.6465399861335754, 0.6319800019264221, 0.6437699794769287, 0.644569993019104, 0.6527299880981445, 0.6449099779129028, 0.643779993057251, 0.6421700119972229, 0.6484799981117249, 0.6491299867630005, 0.6507599949836731, 0.6500599980354309, 0.656499981880188, 0.656499981880188, 0.6551100015640259, 0.6692799925804138, 0.6565300226211548, 0.6493600010871887, 0.6571699976921082, 0.6579800248146057, 0.6608200073242188, 0.6630899906158447, 0.6631399989128113, 0.6593000292778015, 0.6585599780082703, 0.6618800163269043, 0.6588799953460693, 0.662909984588623, 0.6728600263595581, 0.6639900207519531], 'loss': [0.7207279801368713, 0.7043642401695251, 0.7031672596931458, 0.7007702589035034, 0.6968487501144409, 0.6971032023429871, 0.6935310959815979, 0.6971487402915955, 0.6951634287834167, 0.6890930533409119, 0.6907706260681152, 0.6894071102142334, 0.6847330331802368, 0.6775357723236084, 0.67961585521698, 0.6814276576042175, 0.6739181280136108, 0.6758741140365601, 0.6757410764694214, 0.6668674945831299, 0.6870893239974976, 0.6730618476867676, 0.663072407245636, 0.6670266389846802, 0.6609169244766235, 0.6613695025444031, 0.6660624742507935, 0.6542622447013855, 0.6635451316833496, 0.6605291962623596, 0.6566991209983826, 0.6639631390571594, 0.6347939372062683, 0.6501246690750122, 0.6977996826171875, 0.662502646446228, 0.6586876511573792, 0.6475890278816223, 0.6466817855834961, 0.6718844771385193, 0.6910275816917419, 0.6479812860488892, 0.6481812596321106, 0.66847163438797, 0.6450473070144653, 0.6466831564903259, 0.647168755531311, 0.6543650031089783, 0.6306105852127075, 0.6452541947364807, 0.6769219040870667, 0.6344509124755859, 0.6373334527015686, 0.6533013582229614, 0.6362226605415344, 0.6441672444343567, 0.6453881859779358, 0.6670117974281311, 0.6598332524299622, 0.6451221108436584, 0.6424813270568848, 0.6245542764663696, 0.6522254347801208], 'val_binary_accuracy': [0.5023036599159241, 0.512620210647583, 0.5166265964508057, 0.5226362347602844, 0.5239382982254028, 0.5272436141967773, 0.5308493375778198, 0.5433694124221802, 0.5466746687889099, 0.5619992017745972, 0.5628004670143127, 0.5696113705635071, 0.5701121687889099, 0.5734174847602844, 0.5803285241127014, 0.5980569124221802, 0.5992588400840759, 0.6008613705635071, 0.5982571840286255, 0.6083734035491943, 0.6075721383094788, 0.6217948794364929, 0.6092748641967773, 0.6243990659713745, 0.6312099099159241, 0.6242988705635071, 0.6241987347602844, 0.6291065812110901, 0.6350160241127014, 0.6357171535491943, 0.6327123641967773, 0.6327123641967773, 0.6362179517745972, 0.6453325152397156, 0.6370192170143127, 0.6511418223381042, 0.6422275900840759, 0.6278044581413269, 0.6604567170143127, 0.6539463400840759, 0.6385216116905212, 0.6442307829856873, 0.6550480723381042, 0.6412259340286255, 0.6420272588729858, 0.6537460088729858, 0.6567507982254028, 0.6389222741127014, 0.6503405570983887, 0.6494390964508057, 0.6342147588729858, 0.6643629670143127, 0.6563501358032227, 0.6587539911270142, 0.670973539352417, 0.6444311141967773, 0.6497395634651184, 0.6587539911270142, 0.6604567170143127, 0.6710737347602844, 0.6695713400840759, 0.6572515964508057, 0.6527444124221802], 'val_loss': [0.7068340182304382, 0.7070997357368469, 0.6999362707138062, 0.6945804953575134, 0.6946645975112915, 0.7025669813156128, 0.6915038228034973, 0.6899638772010803, 0.6902527213096619, 0.6835642457008362, 0.6831775307655334, 0.6808264255523682, 0.7050670385360718, 0.676224410533905, 0.694360077381134, 0.6795263886451721, 0.6653724312782288, 0.6964055299758911, 0.6876336336135864, 0.6619501709938049, 0.6667866110801697, 0.6658431887626648, 0.6886726021766663, 0.6512418389320374, 0.6623647212982178, 0.6487321257591248, 0.652286946773529, 0.6484346389770508, 0.6618632674217224, 0.6851675510406494, 0.6422094702720642, 0.6786581873893738, 0.6678410172462463, 0.6684751510620117, 0.6662805676460266, 0.7379596829414368, 0.6505967974662781, 0.6400534510612488, 0.6406340003013611, 0.7851030826568604, 0.637558102607727, 0.6346259117126465, 0.6360766291618347, 0.7848230004310608, 0.6372125148773193, 0.6527746319770813, 0.6290474534034729, 0.904818594455719, 0.8289767503738403, 0.6425196528434753, 0.647318422794342, 0.6337600350379944, 0.6244210600852966, 0.7439631819725037, 0.6235129237174988, 0.6667554378509521, 0.6397914886474609, 0.6254324913024902, 0.6284928917884827, 0.6235352754592896, 0.9968737959861755, 0.6286220550537109, 0.6641935706138611]}
+Epoch 64/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 55 which was 9 epochs ago.
+3125/3125 - 758s - loss: 0.6059 - binary_accuracy: 0.6898 - val_loss: 0.7100 - val_binary_accuracy: 0.6553 - 758s/epoch - 243ms/step
+Epoch 65/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04/../models/chapter_04/perceptron_256_128/history.hdf5
+
+Best model so far had a value of: 0.6235129237174988 at Epoch: 55 which was 10 epochs ago.
+3125/3125 - 710s - loss: 0.6317 - binary_accuracy: 0.6692 - val_loss: 0.6432 - val_binary_accuracy: 0.6544 - 710s/epoch - 227ms/step
