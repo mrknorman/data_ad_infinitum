@@ -1,0 +1,3 @@
+= Introduction
+\
+We live in an exciting time. Now is a time of remarkable confluence and innovation; machine learning and artificial intelligence stand poised to remake almost every aspect of science, technology, and everyday life. At the same time, our understanding of the world is increasing with ever more fervour. The era of gravitational-wave astronomy has well and truly begun, and bountiful amounts of cosmological data will soon be at our fingertips. The machine learning community is unlocking novel new tools every month, and it would be an odious missed opportunity not to turn some of these powerful techniques onto the data hidden beneath interferometer noise.
