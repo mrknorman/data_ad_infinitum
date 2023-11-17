@@ -7,10 +7,8 @@
 
 py_ml_data/
 gravyflow_data/
-models/
 logs/
 segment_data*
-perceptron_logs/
 
 generator_data*
 generated*
@@ -193,6 +191,4 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
-
-*.out
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
