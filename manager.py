@@ -28,6 +28,8 @@ def start_process(command, memory_to_request):
         # Determine the mode for log files based on whether it's a first-time start
         mode = "w" if command.total_restart_count == 0 else "a"
 
+        print(f"count: {command.total_restart_count}")
+
         with open(f"perceptron_logs/{command.name}_log.txt", mode) as stdout_file, \
              open(f"perceptron_logs/{command.name}_error.txt", mode) as stderr_file:
             full_command = f"{command.full} --gpu {command.current_gpu} --request_memory {memory_to_request} --restart_count {command.total_restart_count} --name {command.name}"
@@ -35,7 +37,7 @@ def start_process(command, memory_to_request):
             command.pipe_name = f"./tmp/heartbeat_{command.name}"
             gf.create_named_pipe(command.pipe_name)
 
-            command.flags = {"has_died" : threading.Event(), "should_exit" : threading.Event()}
+            command.flags = {"has_died" : threading.Event(), "should_exit" : threading.Event(), "has_completed": threading.Event()}
             command.pipe_monitor_thread = gf.start_monitoring_thread(command, command.flags)
 
             process = subprocess.Popen(
@@ -78,7 +80,6 @@ def clean_restart_counts(commands, restart_time_window):
         if current_time - command.restart_counter > restart_time_window:
             command.restart_counter = current_time
             command.restart_count = 0
-
     
 running_processes = []
 
@@ -109,7 +110,7 @@ def main(
         wait_timer_seconds : int = 3, 
         tensorflow_memory_per_process_mb : int = 2000, 
         cuda_overhead_per_process_mb : int = 1000, 
-        max_restarts : int = 4, 
+        max_restarts : int = 20, 
         restart_time_window : int = 1200, 
         max_use : int = 95,
         max_num_processes : int = 7
@@ -159,7 +160,6 @@ def main(
         for proc, command in running_processes[:]:
             if proc is not None:
                 retcode = proc.poll()
-                logging.info(f"retcode: {retcode}")
                 if retcode is not None:  # Process finished.
 
                     kill_command(command, proc, running_processes, allocation_array)
@@ -184,6 +184,14 @@ def main(
                     else:
                         logging.info(f"\nProcess {command.name} at {command.id} completed sucessfully with return code {retcode}: {gf.explain_exit_code(retcode)}.")
                         num_completed += 1
+                        command.has_completed = True
+
+                elif command.flags["has_completed"].is_set():
+
+                    logging.error(f"\nProcess {command.name} at {command.id} failed to complete gracefully. Forcing termination.")
+                    command.has_completed = True
+
+                    kill_command(command, proc, running_processes, allocation_array)
 
                 elif command.flags["has_died"].is_set():
 
@@ -216,7 +224,7 @@ def main(
                 process = start_process(command, tensorflow_memory_per_process_mb)
                 if process is not None:
                     running_processes.append((process, command))
-                elif not command.has_failed:
+                elif not command.has_failed or not command.has_completed:
                     logging.info(f"\nAttempting restart of {command.name}.")
                     commands_to_run.append(command)  # Re-queue if start_process failed
                     num_restarted += 1
@@ -245,6 +253,7 @@ class processCommand:
         self.restart_counter = time.time()
         self.full = command_string
         self.has_failed = False
+        self.has_completed = False
 
         parts = command_string.split()
     
@@ -275,13 +284,13 @@ class processCommand:
 
 if __name__ == "__main__":
     commands_to_run = [
-        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py"),
+       # processCommand("python ./chapter_04/chapter_04_gw_perceptron.py"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 64"),
-        #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
+        processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 64"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 128"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256"),
@@ -290,6 +299,8 @@ if __name__ == "__main__":
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256 256"),
         #processCommand("python ./chapter_04/chapter_04_gw_perceptron.py --layers 512")
     ]
+
+    commands_to_run[0].total_restart_count +=1 
 
     main(commands_to_run)
 
