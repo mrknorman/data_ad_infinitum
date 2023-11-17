@@ -55,13 +55,13 @@ def train_perceptron(
         num_neurons_in_hidden_layers : List[int],
         cache_segments : bool = False,
         # Training Arguments:
-        patience : int = 1,
+        patience : int = 10,
         learning_rate : float = 1.0E-4,
         max_epochs : int = 1000,
         model_path : Path = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E3),
-        num_validation_examples : int = int(1E2),
+        num_train_examples : int = int(1E5),
+        num_validation_examples : int = int(1E4),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1],
@@ -224,6 +224,7 @@ def train_perceptron(
         force_retrain=(restart_count==0), 
         heart=heartbeat_object
     )
+
     if heartbeat_object is not None:
         heartbeat_object.beat()
 
@@ -240,8 +241,8 @@ def train_perceptron(
 
 if __name__ == "__main__":
 
-    signal.signal(signal.SIGINT, gf.signal_handler)  # Handle Ctrl+C
-    signal.signal(signal.SIGTERM, gf.signal_handler)  # Handle termination signal
+    #signal.signal(signal.SIGINT, gf.signal_handler)  # Handle Ctrl+C
+    #signal.signal(signal.SIGTERM, gf.signal_handler)  # Handle termination signal
     
     # Set logging level:
     logging.basicConfig(level=logging.INFO)
@@ -337,14 +338,20 @@ if __name__ == "__main__":
            
         # Start profiling
         #tf.profiler.experimental.start(logs)
-                
+
         if train_perceptron(
             heart,
             num_neurons_in_hidden_layers=num_neurons_in_hidden_layers,
             restart_count=restart_count
         ) == 0:
             logging.info("Training completed, do a shot!")
-            sys.exit(0)
+            os._exit(0)
         
+        else:
+            logging.error("Training failed for some reason.")
+            os._exit(1)
+
         # Stop profiling
         #tf.profiler.experimental.stop()
+    
+    os._exit(1)
