@@ -296,7 +296,10 @@ class Process:
             return None
 
     def kill(self):
-        gf.kill_process(self.id)
+        
+        if (self.id not None) or (self.id not -1):
+            gf.kill_process(self.id)
+        
         self.manager.running.remove(self)
 
         if self.manager.allocated_memory is not None:
@@ -372,7 +375,6 @@ class Process:
             self.manager.queue.insert(0, self)
             self.kill()
 
-
 class Manager:
 
     running = []
@@ -385,7 +387,11 @@ class Manager:
             self, 
             to_run : List[Process],
             max_restarts : int = 10,
-            restart_timeout_seconds : float = 1200
+            tensorflow_memory_per_process_mb : int = 2000, 
+            cuda_overhead_per_process_mb : int = 1000, 
+            restart_timeout_seconds : float = 1200, 
+            process_start_wait_seconds : float = 1, 
+            max_num_concurent_processes : int = 10
         ):
 
         self.queue = [to_run]
@@ -395,20 +401,19 @@ class Manager:
 
         self.max_restarts = max_restarts
         self.restart_timeout_seconds = restart_timeout_seconds
+        self.tensorflow_memory_per_process_mb = tensorflow_memory_per_process_mb
+        self.cuda_overhead_per_process_mb = cuda_overhead_per_process_mb
+        self.total_memory_per_process = tensorflow_memory_per_process_mb + cuda_overhead_per_process_mb
+        self.max_num_concurent_processes = max_num_concurent_processes
+        self.process_start_wait_seconds = process_start_wait_seconds
 
-    def run(self):
+    def __bool__(self):
+        return bool(self.queue or self.running)
 
-        while self.queue or self.running:
-
-            self.update_memory_array()
-            yield 0
-
-    def update_memory_array(self):
-        try:
-            self.free_memory = gf.get_memory_array()
-            self.free_memory += self.allocated_memory
-        except Exception as e:
-            logging.exception("\nFailed to update free memory array.")
+    def __call__(self):
+        # Perform a single iteration of process management
+        self.manage_running_processes()
+        self.start_processes()
 
     def manage_running_processes(self):
 
@@ -438,11 +443,11 @@ class Manager:
                     # Check if the process should be marked as failed
                     if retcode != 0:  # Process failed, log the error
                         logging.error((
-                            f"\nProcess {process.name} at {process.id}"
-                            f" failed with return code {retcode} :"
-                            f" {gf.explain_exit_code(retcode)}."
+                            f"\nProcess {process.name} at {process.id} "
+                            f"failed with return code {retcode} : "
+                            f"{gf.explain_exit_code(retcode)}. "
+                             "Attempting requeue."
                         ))
-
                         process.requeue()
                     else:
                         logging.info((
@@ -466,6 +471,50 @@ class Manager:
                         f"\nProcess {process.name} at {process.id} heartbeat lost. Terminating."
                     )
                     process.requeue()
+
+    def update_memory_array(self):
+        try:
+            self.free_memory = gf.get_memory_array()
+            self.free_memory += self.allocated_memory
+        except Exception as e:
+            logging.exception("\nFailed to update free memory array.")
+
+    def assign_gpus(self):
+
+        self.update_memory_array()
+
+        process_index = 0
+        for gpu_index, gpu_memory in enumerate(self.free_memory):
+            while gpu_memory >= self.total_memory_per_process \
+                and process_index < len(self.queue):
+
+                gpu_memory -= self.total_memory_per_process
+
+                commands_to_run[process_index].current_gpu = gpu_index
+                commands_to_run[process_index].memory_assigned = self.total_memory_per_process
+
+                process_index += 1
+    
+    def start_processes(self):
+
+        self.assign_gpus()
+
+        for command in self.queue:
+            if command.current_gpu > -1 and commands_to_run \
+                and len(running_processes) < self.max_num_concurent_processes:
+
+                self.queue.remove(command)
+
+                command.start(self.tensorflow_memory_per_process_mb)
+                
+                if command.process is not None:
+                    self.running.append(command)
+                elif not command.has_failed or not command.has_completed:
+                    logging.info(
+                        f"\nAttempting restart of {command.name}."
+                    )
+                    command.requeue()
+                    time.sleep(self.process_start_wait_seconds)
 
 
 if __name__ == "__main__":
