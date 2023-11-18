@@ -55,13 +55,13 @@ def train_perceptron(
         num_neurons_in_hidden_layers : List[int],
         cache_segments : bool = False,
         # Training Arguments:
-        patience : int = 10,
+        patience : int = 2,
         learning_rate : float = 1.0E-4,
         max_epochs : int = 1000,
         model_path : Path = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E5),
-        num_validation_examples : int = int(1E4),
+        num_train_examples : int = int(1E3),
+        num_validation_examples : int = int(1E2),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1],
@@ -287,7 +287,8 @@ if __name__ == "__main__":
         type = int, 
         default = 0,
         help = (
-            "Number of times model has been trained, if 0, model will be overwritten."
+            "Number of times model has been trained,"
+            " if 0, model will be overwritten."
         )
     )
 
