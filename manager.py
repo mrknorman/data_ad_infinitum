@@ -1,4 +1,5 @@
 from typing import List
+from pathlib import Path
 import copy
 import os
 
@@ -35,7 +36,8 @@ def main(
         restart_timeout_seconds=restart_timeout_seconds, 
         process_start_wait_seconds=process_start_wait_seconds, 
         management_tick_length_seconds=management_tick_length_seconds,
-        max_num_concurent_processes=max_num_concurent_processes
+        max_num_concurent_processes=max_num_concurent_processes,
+        log_directory_path = Path("./perceptron_logs/")
     )
 
     while manager:
