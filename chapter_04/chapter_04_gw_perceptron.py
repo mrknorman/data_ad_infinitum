@@ -1,12 +1,10 @@
 import argparse
 import logging
-import signal
 import os
 from pathlib import Path
 from typing import List, Dict
 from copy import deepcopy
 import sys
-import time
 
 import tensorflow as tf
 from tensorflow.keras import losses, optimizers
@@ -55,13 +53,13 @@ def train_perceptron(
         num_neurons_in_hidden_layers : List[int],
         cache_segments : bool = False,
         # Training Arguments:
-        patience : int = 2,
+        patience : int = 10,
         learning_rate : float = 1.0E-4,
         max_epochs : int = 1000,
         model_path : Path = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E3),
-        num_validation_examples : int = int(1E2),
+        num_train_examples : int = int(1E5),
+        num_validation_examples : int = int(1E4),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1],
@@ -146,11 +144,6 @@ def train_perceptron(
         group="train"
     ).map(adjust_features)
     
-    validate_dataset : tf.data.Dataset = gf.Dataset(
-        **deepcopy(dataset_arguments),
-        group="validate"
-    ).map(adjust_features)
-
     test_dataset : tf.data.Dataset = gf.Dataset(
         **deepcopy(dataset_arguments),
         group="test"
@@ -219,7 +212,7 @@ def train_perceptron(
     
     builder.train_model(
         train_dataset,
-        validate_dataset,
+        test_dataset,
         training_config,
         force_retrain=(restart_count==0), 
         heart=heartbeat_object
@@ -315,7 +308,7 @@ if __name__ == "__main__":
 
     gf.Defaults.set(
         seed = 1000,
-        num_examples_per_generation_batch=512,
+        num_examples_per_generation_batch=2048,
         num_examples_per_batch=32,
         sample_rate_hertz=2048.0,
         onsource_duration_seconds=1.0,
