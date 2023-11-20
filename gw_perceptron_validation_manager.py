@@ -47,17 +47,17 @@ def main(
 
 if __name__ == "__main__":
 
-    tensorflow_memory_mb = 2000
+    tensorflow_memory_mb = 4000
     cuda_overhead_mb = 1000
     
     commands_to_run = [
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py", "1", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64", "64", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128", "128", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256", "256", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64", "64_64",tensorflow_memory_mb, cuda_overhead_mb),
+        #gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py", "1", tensorflow_memory_mb, cuda_overhead_mb),
+        #gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64", "64", tensorflow_memory_mb, cuda_overhead_mb),
+        #gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128", "128", tensorflow_memory_mb, cuda_overhead_mb),
+        #gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256", "256", tensorflow_memory_mb, cuda_overhead_mb),
+        #gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 64 64", "64_64",tensorflow_memory_mb, cuda_overhead_mb),
         #Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 64"),
-        ##Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128"),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 128 128", "128_128", tensorflow_memory_mb, cuda_overhead_mb),
         #Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 64"),
         #Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 128"),
         #Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256"),
@@ -66,6 +66,9 @@ if __name__ == "__main__":
         #Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 256 256 256"),
         #Process("python ./chapter_04/chapter_04_gw_perceptron.py --layers 512")
     ]
+
+    commands_to_run[0].total_restart_count += 1
+    commands_to_run[0].restart_count += 1
 
     main(commands_to_run)
 
