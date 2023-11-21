@@ -3,6 +3,16 @@ from pathlib import Path
 from bokeh.plotting import figure, output_file, save
 from bokeh.layouts import gridplot
 from bokeh.palettes import Category20  # A palette with 20 distinct colors
+from bokeh.embed import components, file_html
+from bokeh.io import export_png, output_file, save
+from bokeh.layouts import column, gridplot
+from bokeh.models import (ColumnDataSource, CustomJS, Dropdown, HoverTool, 
+                          Legend, LogAxis, LogTicker, Range1d, Slider, Select,
+                         Div)
+from bokeh.plotting import figure, show
+from bokeh.resources import INLINE, Resources
+from bokeh.palettes import Bright
+
 
 import numpy as np
 import gravyflow as gf
@@ -64,6 +74,8 @@ def plot_metrics(metrics_dict):
         # If you have titles
         p.title.text_font_size = '16pt'
 
+        all_sources = {}
+
         # Plot each series in the list
         for idx, (name, metrics) in enumerate(metrics_dict.items()):
             if key in metrics:
@@ -72,16 +84,31 @@ def plot_metrics(metrics_dict):
                 y = metrics[key]
                 if "accuracy" in key:
                     y = [100*i for i in y]
-                
-                p.line(
-                    np.arange(len(metrics[key])), 
-                    y, 
-                    legend_label=name, 
+
+                source = ColumnDataSource(
+                        data={"x": np.arange(len(metrics[key])), "y" : y, "name" : [name] * len(metrics[key])}
+                )
+                all_sources[name] = source
+                line = p.line(
+                    x='x', 
+                    y='y', 
+                    source=source, 
                     line_color=color,
+                    legend_label=name
                 )
 
          # If you have a legend
+        p.legend.location = "top_right"
         p.legend.label_text_font_size = "12pt"
+        p.legend.click_policy = "hide"
+        
+        hover = HoverTool()
+        if "accuracy" in key:
+            hover.tooltips = [("Name", "@name"), ("Epoch", "@x"), ("Accuracy", "@y")]
+        else:
+            hover.tooltips = [("Name", "@name"), ("Epoch", "@x"), ("Loss", "@y")]
+
+        p.add_tools(hover)
         
         figures.append(p)
 
