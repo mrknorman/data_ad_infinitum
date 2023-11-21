@@ -3,12 +3,21 @@ import logging
 from pathlib import Path
 import os
 from typing import List, Union, Dict
+import prctl
+import logging
+import sys
+import argparse
 
 # Library imports:
 import numpy as np
 import tensorflow as tf
 from bokeh.io import output_file, save
 from bokeh.layouts import gridplot
+
+# Get the directory of your current script
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent
+sys.path.append(str(parent_dir))
 
 # Local imports:
 import gravyflow as gf
@@ -17,25 +26,29 @@ def validate_perceptrons(
     model_name : str, 
     model_path : str,
     output_directory_path : Path = Path("./validation_results/"),
-    noise_directory_path : Path = Path("./validation_datasets/"),
+    noise_directory_path : Path = Path("./validation_noise_files/"),
     minimum_snr : float = 8.0,
     maximum_snr : float = 15.0,
-    ifos : List[gf.IFO] = [gf.IFO.L1]
+    ifos : List[gf.IFO] = [gf.IFO.L1],
+    heart : gf.Heart = None
     ):
-
-    efficiency_config : Dict[str, Union[float, int]] = {
+    
+    efficiency_config = {
             "max_scaling" : 15.0, 
             "num_scaling_steps" : 31, 
-            "num_examples_per_scaling_step" : 2048
+            "num_examples_per_scaling_step" : 16384 // 2
         }
-    far_config : Dict[str, float] = {
-            "num_examples" : 1.0E4
+    far_config = {
+            "num_examples" : 1.0E5
         }
-    roc_config : Dict[str, Union[float, List]] = {
-            "num_examples" : 1.0E4,
+    roc_config : dict = {
+            "num_examples" : 1.0E5,
             "scaling_ranges" :  [
-                (8.0, 20.0),
-                6.0
+                #(8.0, 20.0),
+                #6.0,
+                8.0,
+                #10.0,
+                #12.0
             ]
         }
     
@@ -48,6 +61,10 @@ def validate_perceptrons(
         ),
         gf.ScalingTypes.SNR
     )
+
+     # Define injection directory path:
+    current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
+    injection_directory_path : Path = current_dir / "../injection_parameters"
 
     # Load injection config:
     phenom_d_generator : gf.cuPhenomDGenerator = gf.WaveformGenerator.load(
@@ -65,8 +82,8 @@ def validate_perceptrons(
             gf.DataLabel.GLITCHES
         ],
         gf.SegmentOrder.RANDOM,
-        cache_segments=True,
-        logging_level=logging.ERROR
+        cache_segments=False,
+        logging_level=logging.INFO
     )
     
     # Initilise noise generator wrapper:
@@ -112,16 +129,17 @@ def validate_perceptrons(
             dataset_args=dataset_arguments,
             efficiency_config=efficiency_config,
             far_config=far_config,
-            roc_config=roc_config
+            roc_config=roc_config,
+            heart=heart
         )
 
     # Save validation data:
     validator.save(
-        output_directory_path / f"{model_name}_validation_data.h5", 
+        output_directory_path / f"{model_name}/validation_data.h5", 
     )
 
     validator.plot(
-        output_directory_path / f"{model_name}_validation_plots.html", 
+        output_directory_path / f"{model_name}/validation_plots.html", 
     )
 
     return validator
@@ -138,6 +156,94 @@ def plot_validation(
     )
 
 if __name__ == "__main__":
+
+    # Set logging level:
+    logging.basicConfig(level=logging.INFO)
+    
+    # Read command line arguments:
+    parser = argparse.ArgumentParser(
+        description = (
+            "Train a multi-layer perceptron "
+            "for gravitational-wave detection."
+        )
+    )
+    parser.add_argument(
+        "--layers", 
+        type = int, 
+        nargs = "*", 
+        default = [],
+        help = (
+            "A list of integers representing the number of "
+            "neurons in each hidden layer."
+        )
+    )
+    parser.add_argument(
+        "--gpu",
+        type = int, 
+        default = None,
+        help = (
+            "Specify a gpu to use."
+        )
+    )
+
+    parser.add_argument(
+        "--request_memory",
+        type = int, 
+        default = 4000,
+        help = (
+            "Specify a how much memory to give tf."
+        )
+    )
+
+    parser.add_argument(
+        "--restart_count",
+        type = int, 
+        default = 0,
+        help = (
+            "Number of times model has been trained,"
+            " if 0, model will be overwritten."
+        )
+    )
+
+    parser.add_argument(
+        "--name",
+        type = str, 
+        default = None,
+        help = (
+            "Name of perceptron."
+        )
+    )
+
+    args = parser.parse_args()
+
+    # Set parameters based on command line arguments:
+    num_neurons_in_hidden_layers = args.layers
+    gpu = args.gpu
+    memory_to_allocate_tf = args.request_memory
+    restart_count = args.restart_count
+    name = args.name
+
+    # Set process name:
+    prctl.set_name(f"gwflow_training_{num_neurons_in_hidden_layers}")
+
+    gf.Defaults.set(
+        seed = 1000,
+        num_examples_per_generation_batch=2048,
+        num_examples_per_batch=32,
+        sample_rate_hertz=2048.0,
+        onsource_duration_seconds=1.0,
+        offsource_duration_seconds=16.0,
+        crop_duration_seconds=0.5,
+        scale_factor=1.0E21
+    )
+
+    # Set up TensorBoard logging directory
+    logs = "logs"
+
+    if gf.is_redirected():
+        heart = gf.Heart(name)
+    else:
+        heart = None
         
     # Set logging level:
     logging.basicConfig(level=logging.INFO)
@@ -153,33 +259,17 @@ if __name__ == "__main__":
         scale_factor=1.0E21
     )
 
-    # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
-    injection_directory_path : Path = current_dir / "injection_parameters"
+    string_id = "_".join(map(str, num_neurons_in_hidden_layers))
+    model_path = current_dir / f"../models/chapter_04_perceptrons_single/perceptron_{string_id}"
 
-    model_path = current_dir / "models/chapter_04/"
-    model_names = [
-        model for model in os.listdir(model_path) if os.path.isdir(os.path.join(model_path, model))
-    ]
-
-    model_names = model_names[:2]
-    print(model_names)
-
-    with gf.env():
-        
-        validators = []
-
-        for model_name in model_names: 
-            
-            validators.append(
-                validate_perceptrons(
-                    model_name,
-                    model_path
-                )
-            )
-        
-        plot_validation(
-            validators,
-            model_name,
-            model_path
+    with gf.env(
+            memory_to_allocate_tf=memory_to_allocate_tf,
+            gpus=gpu
+        ):            
+        validate_perceptrons(
+            model_path,
+            model_path,
+            heart=heart
         )
+        
