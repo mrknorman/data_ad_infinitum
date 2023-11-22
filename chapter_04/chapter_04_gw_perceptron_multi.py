@@ -62,7 +62,7 @@ def train_perceptron(
         num_validation_examples : int = int(1E4),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
-        ifos : List[gf.IFO] = [gf.IFO.L1],
+        ifos : List[gf.IFO] = [gf.IFO.L1, gf.IFO.H1],
         # Manage args
         restart_count : int = 0
     ):
@@ -104,7 +104,7 @@ def train_perceptron(
         gf.SegmentOrder.RANDOM,
         cache_segments=cache_segments,
         force_acquisition=False,
-        logging_level=logging.ERROR
+        logging_level=logging.INFO
     )
     
     # Initilise noise generator wrapper:
