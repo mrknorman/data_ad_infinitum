@@ -2,6 +2,7 @@ from typing import List
 from pathlib import Path
 import copy
 import os
+import sys
 
 import time
 import subprocess
@@ -9,6 +10,11 @@ import logging
 from datetime import datetime
 import threading
 import numpy as np
+
+# Get the directory of your current script
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent
+sys.path.append(str(parent_dir))
 
 import gravyflow as gf
 
@@ -58,16 +64,15 @@ if __name__ == "__main__":
         gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 64 64", "64_64",tensorflow_memory_mb, cuda_overhead_mb),
         gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 128 64", "64_64",tensorflow_memory_mb, cuda_overhead_mb),
         gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 128 128", "128_128", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 64", "64_64",tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 128""64_64", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 256""64_64", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 64 64 64""64_64", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 128 128 128""64_64", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 256 256""64_64", tensorflow_memory_mb, cuda_overhead_mb),
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 512""64_64", tensorflow_memory_mb, cuda_overhead_mb)
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 64", "256_64",tensorflow_memory_mb, cuda_overhead_mb),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 128", "256_128", tensorflow_memory_mb, cuda_overhead_mb),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 256", "256_256", tensorflow_memory_mb, cuda_overhead_mb),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 64 64 64", "64_64_64", tensorflow_memory_mb, cuda_overhead_mb),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 128 128 128", "128_128_128", tensorflow_memory_mb, cuda_overhead_mb),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256 256 256", "256_256_256", tensorflow_memory_mb, cuda_overhead_mb),
+        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 512", "512", tensorflow_memory_mb, cuda_overhead_mb)
     ]
     
     main(commands_to_run)
-    """
 
 

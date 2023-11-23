@@ -2,6 +2,7 @@
 import glob
 import os
 from pathlib import Path
+import numpy as np
 from bokeh.palettes import Category20  # A palette with 20 distinct colors
 
 import gravyflow as gf
@@ -38,7 +39,9 @@ if __name__ == "__main__":
 
     validators = []
     for key, value in validation_file_paths.items():
-        validators.append(gf.Validator.load(value))
+        validator = gf.Validator.load(value)
+        validator.name = key
+        validators.append(validator)
 
     validators[0].plot(
         Path("./models/chapter_04_perceptrons_single/master_validation_plot.html"), 
