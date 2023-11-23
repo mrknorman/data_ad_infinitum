@@ -10,7 +10,6 @@ import tensorflow as tf
 from tensorflow.keras import losses, optimizers
 import prctl
 
-
 # Get the directory of your current script
 current_dir = Path(__file__).resolve().parent
 parent_dir = current_dir.parent
@@ -59,12 +58,12 @@ def train_perceptron(
         model_path : Path = None,
         model_name : str = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E4),
-        num_validation_examples : int = int(1E3),
+        num_train_examples : int = int(1E5),
+        num_validation_examples : int = int(1E4),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1, gf.IFO.H1],
-        # Manage args
+        # Manage args:
         restart_count : int = 1
     ):
 
@@ -250,7 +249,7 @@ def train_perceptron(
                 #12.0
             ]
         }
-    
+
     validation_file_path : Path = Path(model_path / "validation_data.h5")
 
     # Validate model:
