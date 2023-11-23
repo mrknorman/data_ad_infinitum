@@ -19,11 +19,11 @@ sys.path.append(str(parent_dir))
 import gravyflow as gf
 
 def create_perceptron_plan(
-        num_neurons_in_hidden_layers : List[int]
+        num_neurons_in_hidden_layers : List[int],
     ):
-    
+
+    hidden_layers = [] 
     # Calculate derived arguments:
-    hidden_layers = []
     for num_neurons in num_neurons_in_hidden_layers:
         hidden_layers.append(gf.DenseLayer(num_neurons))
         
@@ -53,18 +53,19 @@ def train_perceptron(
         num_neurons_in_hidden_layers : List[int],
         cache_segments : bool = False,
         # Training Arguments:
-        patience : int = 10,
+        patience : int = 1,
         learning_rate : float = 1.0E-4,
         max_epochs : int = 1000,
         model_path : Path = None,
+        model_name : str = None,
         # Dataset Arguments: 
-        num_train_examples : int = int(1E5),
-        num_validation_examples : int = int(1E4),
+        num_train_examples : int = int(1E4),
+        num_validation_examples : int = int(1E3),
         minimum_snr : float = 8.0,
         maximum_snr : float = 15.0,
         ifos : List[gf.IFO] = [gf.IFO.L1, gf.IFO.H1],
         # Manage args
-        restart_count : int = 0
+        restart_count : int = 1
     ):
 
     # Define injection directory path:
@@ -158,7 +159,7 @@ def train_perceptron(
         gf.Defaults.sample_rate_hertz
     )
 
-    hidden_layers = [gf.WhitenLayer()]
+    hidden_layers = [gf.WhitenLayer(), gf.FlattenLayer()]
     
     hidden_layers += create_perceptron_plan(
         num_neurons_in_hidden_layers
@@ -175,11 +176,11 @@ def train_perceptron(
     input_configs = [
         {
             "name" : gf.ReturnVariables.ONSOURCE.name,
-            "shape" : (num_onsource_samples ,)
+            "shape" : (len(ifos), num_onsource_samples ,)
         },
         {
             "name" : gf.ReturnVariables.OFFSOURCE.name,
-            "shape" : (num_offsource_samples,)
+            "shape" : (len(ifos), num_offsource_samples,)
         }
     ]
     
@@ -210,7 +211,7 @@ def train_perceptron(
     else:
         print(f"Attempt {restart_count + 1}: Restarting training from where we left off...")
     
-    builder.train_model(
+    trained = builder.train_model(
         train_dataset,
         test_dataset,
         training_config,
@@ -221,11 +222,57 @@ def train_perceptron(
     if heartbeat_object is not None:
         heartbeat_object.beat()
 
-    gf.save_dict_to_hdf5(
-        builder.metrics[0].history, 
-        model_path / "metrics", 
-        force_overwrite=False
-    )    
+    if trained:
+        gf.save_dict_to_hdf5(
+            builder.metrics[0].history, 
+            model_path / "metrics", 
+            force_overwrite=False
+        )
+    else:
+        logging.info("Model training complete, loaded model!")
+
+    # Validation configs:
+    efficiency_config = {
+            "max_scaling" : 15.0, 
+            "num_scaling_steps" : 31, 
+            "num_examples_per_scaling_step" : 16384 // 2
+        }
+    far_config = {
+            "num_examples" : 1.0E5
+        }
+    roc_config : dict = {
+            "num_examples" : 1.0E5,
+            "scaling_ranges" :  [
+                #(8.0, 20.0),
+                #6.0,
+                8.0,
+                #10.0,
+                #12.0
+            ]
+        }
+    
+    validation_file_path : Path = Path(model_path / "validation_data.h5")
+
+    # Validate model:
+    validator = gf.Validator.validate(
+            builder.model, 
+            model_name,
+            dataset_args=deepcopy(dataset_arguments),
+            efficiency_config=efficiency_config,
+            far_config=far_config,
+            roc_config=roc_config,
+            checkpoint_file_path=validation_file_path,
+            heart=heartbeat_object
+        )
+
+    # Save validation data:
+    validator = gf.Validator.load(
+        validation_file_path, 
+    )
+
+    validator.plot(
+        model_path / "validation_plots.html"
+    )
     
     if heartbeat_object is not None:
         heartbeat_object.complete()
@@ -278,7 +325,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--restart_count",
         type = int, 
-        default = 0,
+        default = 1,
         help = (
             "Number of times model has been trained,"
             " if 0, model will be overwritten."
@@ -288,7 +335,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--name",
         type = str, 
-        default = None,
+        default = "default",
         help = (
             "Name of perceptron."
         )
@@ -304,7 +351,7 @@ if __name__ == "__main__":
     name = args.name
 
     # Set process name:
-    prctl.set_name(f"gwflow_training_{num_neurons_in_hidden_layers}")
+    prctl.set_name(f"gwflow_training_{name}")
 
     gf.Defaults.set(
         seed = 1000,
@@ -336,7 +383,8 @@ if __name__ == "__main__":
         if train_perceptron(
             heart,
             num_neurons_in_hidden_layers=num_neurons_in_hidden_layers,
-            restart_count=restart_count
+            restart_count=restart_count,
+            model_name=name
         ) == 0:
             logging.info("Training completed, do a shot!")
             os._exit(0)
