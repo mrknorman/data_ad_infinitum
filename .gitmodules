@@ -4,3 +4,6 @@
 [submodule "chapter_06_skywarp/skywarp"]
 	path = chapter_06_skywarp/skywarp
 	url = https://github.com/mrknorman/skywarp.git
+[submodule "chapter_07_crosswave/crosswave"]
+	path = chapter_07_crosswave/crosswave
+	url = https://github.com/mrknorman/crosswave.git
