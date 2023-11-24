@@ -50,9 +50,9 @@ def train_perceptron(
         heartbeat_object,
         # Model Arguments:
         num_neurons_in_hidden_layers : List[int],
-        cache_segments : bool = False,
+        cache_segments : bool = True,
         # Training Arguments:
-        patience : int = 1,
+        patience : int = 10,
         learning_rate : float = 1.0E-4,
         max_epochs : int = 1000,
         model_path : Path = None,
