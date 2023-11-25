@@ -209,6 +209,7 @@ def train_perceptron(
         builder.summary()
     else:
         print(f"Attempt {restart_count + 1}: Restarting training from where we left off...")
+        builder.summary()
     
     trained = builder.train_model(
         train_dataset,

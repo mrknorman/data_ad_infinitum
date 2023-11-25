@@ -31,7 +31,7 @@ def main(
         restart_timeout_seconds : float = 1200.0, 
         process_start_wait_seconds : float = 1.0,
         management_tick_length_seconds : float = 5.0,
-        max_num_concurent_processes : int = 7
+        max_num_concurent_processes : int = 1
     ):
 
     configure_logging()
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     cuda_overhead_mb = 2000
         
     commands_to_run = [
-        gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py", "1", tensorflow_memory_mb, cuda_overhead_mb),
+        #gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py", "1", tensorflow_memory_mb, cuda_overhead_mb),
         gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 64", "64", tensorflow_memory_mb, cuda_overhead_mb),
         gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 128", "128", tensorflow_memory_mb, cuda_overhead_mb),
         gf.Process("python ./chapter_04/chapter_04_gw_perceptron_multi.py --layers 256", "256", tensorflow_memory_mb, cuda_overhead_mb),
