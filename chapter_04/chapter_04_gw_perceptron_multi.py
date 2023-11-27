@@ -50,7 +50,7 @@ def train_perceptron(
         heartbeat_object,
         # Model Arguments:
         num_neurons_in_hidden_layers : List[int],
-        cache_segments : bool = True,
+        cache_segments : bool = False,
         # Training Arguments:
         patience : int = 10,
         learning_rate : float = 1.0E-4,
@@ -60,8 +60,8 @@ def train_perceptron(
         # Dataset Arguments: 
         num_train_examples : int = int(1E5),
         num_validation_examples : int = int(1E4),
-        minimum_snr : float = 8.0,
-        maximum_snr : float = 15.0,
+        minimum_snr : float = 12.0,
+        maximum_snr : float = 30.0,
         ifos : List[gf.IFO] = [gf.IFO.L1, gf.IFO.H1],
         # Manage args:
         restart_count : int = 1
@@ -70,6 +70,7 @@ def train_perceptron(
     # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
     injection_directory_path : Path = current_dir / "../injection_parameters"
+    noise_directory_path = current_dir / "../noise_files"
 
     string_id = "_".join(map(str, num_neurons_in_hidden_layers))
     if model_path is None:
@@ -110,6 +111,7 @@ def train_perceptron(
     # Initilise noise generator wrapper:
     noise_obtainer: gf.NoiseObtainer = gf.NoiseObtainer(
         ifo_data_obtainer=ifo_data_obtainer,
+        data_directory_path=noise_directory_path,
         noise_type=gf.NoiseType.REAL,
         ifos=ifos
     )
@@ -233,7 +235,7 @@ def train_perceptron(
 
     # Validation configs:
     efficiency_config = {
-            "max_scaling" : 15.0, 
+            "max_scaling" : 30.0, 
             "num_scaling_steps" : 31, 
             "num_examples_per_scaling_step" : 16384 // 2
         }
@@ -354,7 +356,7 @@ if __name__ == "__main__":
     prctl.set_name(f"gwflow_training_{name}")
 
     gf.Defaults.set(
-        seed = 1000,
+        seed=1000,
         num_examples_per_generation_batch=2048,
         num_examples_per_batch=32,
         sample_rate_hertz=2048.0,
