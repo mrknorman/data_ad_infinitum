@@ -69,12 +69,12 @@ def train_perceptron(
 
     # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
-    injection_directory_path : Path = current_dir / "../injection_parameters"
-    noise_directory_path = current_dir / "../noise_files"
+    injection_directory_path : Path = current_dir / "../../injection_parameters"
+    noise_directory_path = current_dir / "../../noise_files"
 
     string_id = "_".join(map(str, num_neurons_in_hidden_layers))
     if model_path is None:
-        model_path = current_dir / f"../models/chapter_04_perceptrons_multi/multi_perceptron_{string_id}"
+        model_path = current_dir / f"/models/multi_perceptron_{string_id}"
     
     # Intilise Scaling Method:
     scaling_method : gf.ScalingMethod = gf.ScalingMethod(

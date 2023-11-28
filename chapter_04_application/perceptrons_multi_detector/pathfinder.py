@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from typing import List, Dict
 from copy import deepcopy
+from itertools import islice
 import sys
 
 import tensorflow as tf
@@ -21,13 +22,13 @@ def pathfind(
         num_train_examples : int = int(2E7),
         num_test_examples : int = int(1E4),
         # Dataset Arguments: 
-        ifos : List[gf.IFO] = [gf.IFO.L1],
+        ifos : List[gf.IFO] = [gf.IFO.L1, gf.IFO.H1],
     ):
 
     # Define injection directory path:
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
 
-    data_directory_path = current_dir / "noise_files"
+    data_directory_path = current_dir.parent.parent / "noise_files"
     
     # Setup ifo data acquisition object:
     ifo_data_obtainer : gf.IFODataObtainer = gf.IFODataObtainer(
@@ -67,20 +68,15 @@ def pathfind(
         labels['INJECTION_MASKS'] = labels['INJECTION_MASKS'][0]
         return features, labels
     
-    test_dataset : tf.data.Dataset = gf.Dataset(
-        **deepcopy(dataset_arguments),
-        group="test"
-    ).take(num_test_examples // gf.Defaults.num_examples_per_batch)
+    # Create generator:
+    test_noise_generator : Iterator = islice( noise_obtainer(group="train"), num_train_examples // gf.Defaults.num_examples_per_batch)
 
-    for i in tqdm(test_dataset):
+    for i in tqdm(test_noise_generator):
         pass
 
-    train_dataset : tf.data.Dataset = gf.Dataset(
-        **deepcopy(dataset_arguments),
-        group="train"
-    ).take(num_train_examples // gf.Defaults.num_examples_per_batch)
+    train_noise_generator : Iterator = islice( noise_obtainer(group="test"), num_test_examples // gf.Defaults.num_examples_per_batch)
 
-    for i in tqdm(train_dataset):
+    for i in tqdm(train_noise_generator):
         pass
 
     return 0
