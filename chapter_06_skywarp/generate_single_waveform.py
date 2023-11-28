@@ -15,7 +15,7 @@ import gravyflow as gf
 
 def plot_single_waveform(
     num_tests : int = 1,
-    output_diretory_path : Path = Path("./figures/")
+    output_diretory_path : Path = Path("./chapter_06_skywarp/figures/")
     ):
     
     with gf.env():
