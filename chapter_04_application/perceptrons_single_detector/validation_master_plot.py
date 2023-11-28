@@ -9,7 +9,7 @@ import gravyflow as gf
 
 def transform_string(s):
     # Remove the 'perceptron_' prefix and split by underscore
-    parts = s.replace('multi_perceptron_', '').split('_')
+    parts = s.replace('perceptron_', '').split('_')
 
     # Remove empty strings and convert to integers
     parts = [int(x) for x in parts if x]
@@ -20,14 +20,14 @@ def transform_string(s):
     return ', '.join(map(str, parts))
 
 def get_perceptron_names():
-    pattern = './models/chapter_04_perceptrons_multi/multi_perceptron*/validation_data.h5'
+    pattern = './models/perceptron*/validation_data.h5'
     directories = glob.glob(pattern)
     names = {}
 
     for dir in directories:
         parts = os.path.normpath(dir).split(os.sep)
         # Assuming the name is always in the second to last position
-        name = parts[-2].replace('multi_perceptron_', '')
+        name = parts[-2].replace('perceptron', '')
 
         names[transform_string(name)] = os.path.normpath(dir)
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         validators.append(validator)
 
     validators[0].plot(
-        Path("./models/chapter_04_perceptrons_multi/master_validation_plot_multi.html"), 
+        Path("./models/master_validation_plot.html"), 
         comparison_validators = validators[1:],
         colors=Category20[20],
         width=1200

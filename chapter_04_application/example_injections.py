@@ -22,7 +22,7 @@ from gravyflow.plotting import (generate_strain_plot, create_info_panel,
 
 def plot_injection_examples(
     num_examples : int = 4,
-    output_diretory_path : Path = Path("./figures")
+    output_diretory_path : Path = Path("./chapter_04_application/figures")
     ):
     
     # Test Parameters:
@@ -148,7 +148,7 @@ def plot_injection_examples(
     ensure_directory_exists(output_diretory_path)
     
     # Define an output path for the dashboard
-    output_file(output_diretory_path / "04_example_injections.html")
+    output_file(output_diretory_path / "example_injections.html")
 
     # Arrange the plots in a grid. 
     grid = gridplot(layout)

@@ -261,7 +261,7 @@ if __name__ == "__main__":
 
     current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
     string_id = "_".join(map(str, num_neurons_in_hidden_layers))
-    model_path = current_dir / f"../models/chapter_04_perceptrons_single/perceptron_{string_id}"
+    model_path = current_dir / f"./models/perceptron_{string_id}"
 
     with gf.env(
             memory_to_allocate_tf=memory_to_allocate_tf,

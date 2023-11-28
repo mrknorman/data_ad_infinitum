@@ -13,7 +13,6 @@ from bokeh.plotting import figure, show
 from bokeh.resources import INLINE, Resources
 from bokeh.palettes import Bright
 
-
 import numpy as np
 import gravyflow as gf
 
@@ -118,12 +117,12 @@ def plot_metrics(metrics_dict):
     grid = gridplot(figures, ncols=2)
 
     # Output file
-    output_file("multi_perceptron_training_plot.html")
+    output_file("./chapter_04_application/perceptrons_multi_detector/models/multi_perceptron_training_plot.html")
     save(grid)
 
 histories = {}
 
-directory_path = Path('./models/chapter_04_perceptrons_multi/')
+directory_path = Path('./chapter_04_application/perceptrons_multi_detector/models/')
 for entry in directory_path.iterdir():
     if entry.name.startswith("multi_perceptron"):
         name = transform_string(entry.name)
