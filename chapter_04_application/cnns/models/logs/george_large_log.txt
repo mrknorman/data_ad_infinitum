@@ -1,0 +1,433 @@
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ ONSOURCE (InputLayer)          [(None, 1, 16392)]   0           []                               
+                                                                                                  
+ OFFSOURCE (InputLayer)         [(None, 1, 131136)]  0           []                               
+                                                                                                  
+ whiten (Whiten)                (None, 1, 8196)      0           ['ONSOURCE[0][0]',               
+                                                                  'OFFSOURCE[0][0]']              
+                                                                                                  
+ reshape (Reshape)              (None, 8196, 1)      0           ['whiten[0][0]']                 
+                                                                                                  
+ conv1d (Conv1D)                (None, 8196, 64)     1088        ['reshape[0][0]']                
+                                                                                                  
+ max_pooling1d (MaxPooling1D)   (None, 2049, 64)     0           ['conv1d[0][0]']                 
+                                                                                                  
+ conv1d_1 (Conv1D)              (None, 2049, 128)    131200      ['max_pooling1d[0][0]']          
+                                                                                                  
+ max_pooling1d_1 (MaxPooling1D)  (None, 513, 128)    0           ['conv1d_1[0][0]']               
+                                                                                                  
+ conv1d_2 (Conv1D)              (None, 513, 256)     524544      ['max_pooling1d_1[0][0]']        
+                                                                                                  
+ max_pooling1d_2 (MaxPooling1D)  (None, 65, 256)     0           ['conv1d_2[0][0]']               
+                                                                                                  
+ conv1d_3 (Conv1D)              (None, 65, 512)      4194816     ['max_pooling1d_2[0][0]']        
+                                                                                                  
+ max_pooling1d_3 (MaxPooling1D)  (None, 9, 512)      0           ['conv1d_3[0][0]']               
+                                                                                                  
+ flatten (Flatten)              (None, 4608)         0           ['max_pooling1d_3[0][0]']        
+                                                                                                  
+ dense (Dense)                  (None, 64)           294976      ['flatten[0][0]']                
+                                                                                                  
+ dropout (Dropout)              (None, 64)           0           ['dense[0][0]']                  
+                                                                                                  
+ dense_1 (Dense)                (None, 64)           4160        ['dropout[0][0]']                
+                                                                                                  
+ dropout_1 (Dropout)            (None, 64)           0           ['dense_1[0][0]']                
+                                                                                                  
+ INJECTION_MASKS (Dense)        (None, 1)            65          ['dropout_1[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 5,150,849
+Trainable params: 5,150,849
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+Epoch 1/1000
+Attempt 2: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+Epoch 1/1000
+Attempt 3: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+Epoch 1/1000
+Attempt 4: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+Epoch 1/1000
+Attempt 5: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+Epoch 1/1000
+Attempt 2: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+Epoch 1/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.10187755525112152 at Epoch: 0 which was 0 epochs ago.
+3125/3125 - 1386s - loss: 0.3149 - binary_accuracy: 0.8349 - val_loss: 0.1019 - val_binary_accuracy: 0.9637 - 1386s/epoch - 444ms/step
+Epoch 2/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.10187755525112152 at Epoch: 0 which was 1 epochs ago.
+3125/3125 - 1298s - loss: 0.1075 - binary_accuracy: 0.9661 - val_loss: 0.1117 - val_binary_accuracy: 0.9663 - 1298s/epoch - 415ms/step
+Epoch 3/1000
+Attempt 2: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826]
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+{'binary_accuracy': [0.8348699808120728, 0.9660599827766418], 'loss': [0.31488236784935, 0.10746154934167862], 'val_binary_accuracy': [0.9637419581413269, 0.9663461446762085], 'val_loss': [0.10187755525112152, 0.11165349930524826]}
+Epoch 3/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.08213592320680618 at Epoch: 2 which was 0 epochs ago.
+3125/3125 - 1249s - loss: 0.1112 - binary_accuracy: 0.9658 - val_loss: 0.0821 - val_binary_accuracy: 0.9719 - 1249s/epoch - 400ms/step
+Epoch 4/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.08213592320680618 at Epoch: 2 which was 1 epochs ago.
+3125/3125 - 856s - loss: 0.0984 - binary_accuracy: 0.9693 - val_loss: 0.0945 - val_binary_accuracy: 0.9722 - 856s/epoch - 274ms/step
+Epoch 5/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.07346278429031372 at Epoch: 4 which was 0 epochs ago.
+3125/3125 - 166s - loss: 0.0926 - binary_accuracy: 0.9701 - val_loss: 0.0735 - val_binary_accuracy: 0.9748 - 166s/epoch - 53ms/step
+Epoch 6/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.06438814103603363 at Epoch: 5 which was 0 epochs ago.
+3125/3125 - 158s - loss: 0.0850 - binary_accuracy: 0.9717 - val_loss: 0.0644 - val_binary_accuracy: 0.9768 - 158s/epoch - 51ms/step
+Epoch 7/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.06340120732784271 at Epoch: 6 which was 0 epochs ago.
+3125/3125 - 154s - loss: 0.0861 - binary_accuracy: 0.9713 - val_loss: 0.0634 - val_binary_accuracy: 0.9783 - 154s/epoch - 49ms/step
+Epoch 8/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.06340120732784271 at Epoch: 6 which was 1 epochs ago.
+3125/3125 - 154s - loss: 0.0825 - binary_accuracy: 0.9737 - val_loss: 0.0691 - val_binary_accuracy: 0.9765 - 154s/epoch - 49ms/step
+Epoch 9/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.06340120732784271 at Epoch: 6 which was 2 epochs ago.
+3125/3125 - 156s - loss: 0.0769 - binary_accuracy: 0.9746 - val_loss: 0.0678 - val_binary_accuracy: 0.9764 - 156s/epoch - 50ms/step
+Epoch 10/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.0627887025475502 at Epoch: 9 which was 0 epochs ago.
+3125/3125 - 166s - loss: 0.0766 - binary_accuracy: 0.9754 - val_loss: 0.0628 - val_binary_accuracy: 0.9786 - 166s/epoch - 53ms/step
+Epoch 11/1000
+Failed to get data because:
+{{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [256], [1], and [1] instead. [Op:StridedSlice] name: strided_slice/
+Subarrays returned None!
+Background Chunks returned None!
+start_gps_times returned None!
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.0627887025475502 at Epoch: 9 which was 1 epochs ago.
+3125/3125 - 170s - loss: 0.0701 - binary_accuracy: 0.9760 - val_loss: 0.0742 - val_binary_accuracy: 0.9805 - 170s/epoch - 54ms/step
+Epoch 12/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.0627887025475502 at Epoch: 9 which was 2 epochs ago.
+3125/3125 - 178s - loss: 0.0761 - binary_accuracy: 0.9762 - val_loss: 0.0634 - val_binary_accuracy: 0.9778 - 178s/epoch - 57ms/step
+Epoch 13/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.0627887025475502 at Epoch: 9 which was 3 epochs ago.
+3125/3125 - 193s - loss: 0.0718 - binary_accuracy: 0.9758 - val_loss: 0.0638 - val_binary_accuracy: 0.9791 - 193s/epoch - 62ms/step
+Epoch 14/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.056725386530160904 at Epoch: 13 which was 0 epochs ago.
+3125/3125 - 837s - loss: 0.0756 - binary_accuracy: 0.9751 - val_loss: 0.0567 - val_binary_accuracy: 0.9803 - 837s/epoch - 268ms/step
+Epoch 15/1000
+Failed to get data because:
+{{function_node __wrapped__StridedSlice_device_/job:localhost/replica:0/task:0/device:GPU:0}} Expected begin, end, and strides to be 1D equal size tensors, but got shapes [256], [1], and [1] instead. [Op:StridedSlice] name: strided_slice/
+Subarrays returned None!
+Background Chunks returned None!
+start_gps_times returned None!
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.056725386530160904 at Epoch: 13 which was 1 epochs ago.
+3125/3125 - 639s - loss: 0.0672 - binary_accuracy: 0.9781 - val_loss: 0.0624 - val_binary_accuracy: 0.9795 - 639s/epoch - 205ms/step
+Epoch 16/1000
+Attempt 3: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476]
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+{'binary_accuracy': [0.8348699808120728, 0.9660599827766418, 0.9658200144767761, 0.969290018081665, 0.9701099991798401, 0.9716799855232239, 0.9713299870491028, 0.9737300276756287, 0.9746299982070923, 0.9753599762916565, 0.9760199785232544, 0.9761999845504761, 0.9757800102233887, 0.9751099944114685, 0.9780700206756592], 'loss': [0.31488236784935, 0.10746154934167862, 0.11115126311779022, 0.09844603389501572, 0.09257934242486954, 0.08504801988601685, 0.08611331135034561, 0.08254263550043106, 0.076897531747818, 0.07662618160247803, 0.07010356336832047, 0.07608567178249359, 0.0718204602599144, 0.07564817368984222, 0.06720466166734695], 'val_binary_accuracy': [0.9637419581413269, 0.9663461446762085, 0.9718549847602844, 0.9721554517745972, 0.9747596383094788, 0.9767628312110901, 0.9782652258872986, 0.9764623641967773, 0.9763621687889099, 0.9785656929016113, 0.98046875, 0.9777644276618958, 0.9790664911270142, 0.9802684187889099, 0.9794671535491943], 'val_loss': [0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476]}
+Epoch 16/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.056725386530160904 at Epoch: 14 which was 2 epochs ago.
+3125/3125 - 683s - loss: 0.0758 - binary_accuracy: 0.9760 - val_loss: 0.0697 - val_binary_accuracy: 0.9793 - 683s/epoch - 218ms/step
+Epoch 17/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05471646413207054 at Epoch: 16 which was 0 epochs ago.
+3125/3125 - 1120s - loss: 0.0664 - binary_accuracy: 0.9779 - val_loss: 0.0547 - val_binary_accuracy: 0.9811 - 1120s/epoch - 358ms/step
+Epoch 18/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05471646413207054 at Epoch: 16 which was 1 epochs ago.
+3125/3125 - 765s - loss: 0.0704 - binary_accuracy: 0.9764 - val_loss: 0.0573 - val_binary_accuracy: 0.9812 - 765s/epoch - 245ms/step
+Epoch 19/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05471646413207054 at Epoch: 16 which was 2 epochs ago.
+3125/3125 - 300s - loss: 0.0701 - binary_accuracy: 0.9764 - val_loss: 0.0613 - val_binary_accuracy: 0.9779 - 300s/epoch - 96ms/step
+Epoch 20/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05471646413207054 at Epoch: 16 which was 3 epochs ago.
+3125/3125 - 309s - loss: 0.0796 - binary_accuracy: 0.9755 - val_loss: 0.0592 - val_binary_accuracy: 0.9801 - 309s/epoch - 99ms/step
+Epoch 21/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05458485707640648 at Epoch: 20 which was 0 epochs ago.
+3125/3125 - 321s - loss: 0.0699 - binary_accuracy: 0.9772 - val_loss: 0.0546 - val_binary_accuracy: 0.9803 - 321s/epoch - 103ms/step
+Epoch 22/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05458485707640648 at Epoch: 20 which was 1 epochs ago.
+3125/3125 - 330s - loss: 0.0615 - binary_accuracy: 0.9789 - val_loss: 0.0575 - val_binary_accuracy: 0.9813 - 330s/epoch - 106ms/step
+Epoch 23/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05458485707640648 at Epoch: 20 which was 2 epochs ago.
+3125/3125 - 349s - loss: 0.0632 - binary_accuracy: 0.9787 - val_loss: 0.0562 - val_binary_accuracy: 0.9806 - 349s/epoch - 112ms/step
+Epoch 24/1000
+Unexpected error: MemoryError, std::bad_alloc
+Segment is none for some reason, skipping.
+No segment acquired, skipping to next iteration.
+No segments acquired, skipping to next iteration.
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.05458485707640648 at Epoch: 20 which was 3 epochs ago.
+3125/3125 - 407s - loss: 0.0619 - binary_accuracy: 0.9796 - val_loss: 0.0603 - val_binary_accuracy: 0.9801 - 407s/epoch - 130ms/step
+Epoch 25/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.054180536419153214 at Epoch: 24 which was 0 epochs ago.
+3125/3125 - 332s - loss: 0.0630 - binary_accuracy: 0.9790 - val_loss: 0.0542 - val_binary_accuracy: 0.9817 - 332s/epoch - 106ms/step
+Epoch 26/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.054180536419153214 at Epoch: 24 which was 1 epochs ago.
+3125/3125 - 332s - loss: 0.0651 - binary_accuracy: 0.9786 - val_loss: 0.0653 - val_binary_accuracy: 0.9799 - 332s/epoch - 106ms/step
+Epoch 27/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.053984347730875015 at Epoch: 26 which was 0 epochs ago.
+3125/3125 - 371s - loss: 0.0644 - binary_accuracy: 0.9780 - val_loss: 0.0540 - val_binary_accuracy: 0.9808 - 371s/epoch - 119ms/step
+Epoch 28/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.053984347730875015 at Epoch: 26 which was 1 epochs ago.
+3125/3125 - 322s - loss: 0.0638 - binary_accuracy: 0.9796 - val_loss: 0.0583 - val_binary_accuracy: 0.9795 - 322s/epoch - 103ms/step
+Epoch 29/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.048908133059740067 at Epoch: 28 which was 0 epochs ago.
+3125/3125 - 303s - loss: 0.0609 - binary_accuracy: 0.9787 - val_loss: 0.0489 - val_binary_accuracy: 0.9837 - 303s/epoch - 97ms/step
+Epoch 30/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.048908133059740067 at Epoch: 28 which was 1 epochs ago.
+3125/3125 - 285s - loss: 0.0612 - binary_accuracy: 0.9796 - val_loss: 0.0523 - val_binary_accuracy: 0.9813 - 285s/epoch - 91ms/step
+Epoch 31/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.048908133059740067 at Epoch: 28 which was 2 epochs ago.
+3125/3125 - 344s - loss: 0.0625 - binary_accuracy: 0.9795 - val_loss: 0.0611 - val_binary_accuracy: 0.9781 - 344s/epoch - 110ms/step
+Epoch 32/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.048908133059740067 at Epoch: 28 which was 3 epochs ago.
+3125/3125 - 292s - loss: 0.0600 - binary_accuracy: 0.9798 - val_loss: 0.0501 - val_binary_accuracy: 0.9827 - 292s/epoch - 93ms/step
+Epoch 33/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 0 epochs ago.
+3125/3125 - 296s - loss: 0.0628 - binary_accuracy: 0.9789 - val_loss: 0.0460 - val_binary_accuracy: 0.9835 - 296s/epoch - 95ms/step
+Epoch 34/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 1 epochs ago.
+3125/3125 - 274s - loss: 0.0602 - binary_accuracy: 0.9787 - val_loss: 0.0543 - val_binary_accuracy: 0.9803 - 274s/epoch - 88ms/step
+Epoch 35/1000
+Unexpected error: HTTPError, 502 Server Error: Proxy Error for url: http://10.21.201.15:80/LDR/services/data/v1/gwf/L/L1_HOFT_C01/1253364738.1,1253365485.9/file.json
+Segment is none for some reason, skipping.
+No segment acquired, skipping to next iteration.
+No segments acquired, skipping to next iteration.
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 2 epochs ago.
+3125/3125 - 630s - loss: 0.0634 - binary_accuracy: 0.9794 - val_loss: 0.0537 - val_binary_accuracy: 0.9840 - 630s/epoch - 202ms/step
+Epoch 36/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 3 epochs ago.
+3125/3125 - 276s - loss: 0.0586 - binary_accuracy: 0.9811 - val_loss: 0.0521 - val_binary_accuracy: 0.9806 - 276s/epoch - 88ms/step
+Epoch 37/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 4 epochs ago.
+3125/3125 - 253s - loss: 0.0591 - binary_accuracy: 0.9801 - val_loss: 0.0540 - val_binary_accuracy: 0.9818 - 253s/epoch - 81ms/step
+Epoch 38/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 5 epochs ago.
+3125/3125 - 253s - loss: 0.0573 - binary_accuracy: 0.9806 - val_loss: 0.0493 - val_binary_accuracy: 0.9834 - 253s/epoch - 81ms/step
+Epoch 39/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 6 epochs ago.
+3125/3125 - 259s - loss: 0.0593 - binary_accuracy: 0.9808 - val_loss: 0.0510 - val_binary_accuracy: 0.9823 - 259s/epoch - 83ms/step
+Epoch 40/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 32 which was 7 epochs ago.
+3125/3125 - 292s - loss: 0.0600 - binary_accuracy: 0.9802 - val_loss: 0.0515 - val_binary_accuracy: 0.9834 - 292s/epoch - 93ms/step
+Epoch 41/1000
+Unexpected error: HTTPError, 502 Server Error: Proxy Error for url: http://10.21.201.15:80/LDR/services/data/v1/gwf/L/L1_HOFT_C01/1250977792.1,1250979565.9/file.json
+Segment is none for some reason, skipping.
+No segment acquired, skipping to next iteration.
+No segments acquired, skipping to next iteration.
+Attempt 4: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196]
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+{'binary_accuracy': [0.8348699808120728, 0.9660599827766418, 0.9658200144767761, 0.969290018081665, 0.9701099991798401, 0.9716799855232239, 0.9713299870491028, 0.9737300276756287, 0.9746299982070923, 0.9753599762916565, 0.9760199785232544, 0.9761999845504761, 0.9757800102233887, 0.9751099944114685, 0.9780700206756592, 0.9759699702262878, 0.9779499769210815, 0.9764299988746643, 0.9764299988746643, 0.9754800200462341, 0.9772099852561951, 0.9789400100708008, 0.9787399768829346, 0.9795500040054321, 0.9789599776268005, 0.9785599708557129, 0.9779999852180481, 0.9795799851417542, 0.9787200093269348, 0.9795600175857544, 0.9794899821281433, 0.9798200130462646, 0.978879988193512, 0.9787399768829346, 0.9793599843978882, 0.9811000227928162, 0.9800900220870972, 0.9805600047111511, 0.9807900190353394, 0.9802299737930298], 'loss': [0.31488236784935, 0.10746154934167862, 0.11115126311779022, 0.09844603389501572, 0.09257934242486954, 0.08504801988601685, 0.08611331135034561, 0.08254263550043106, 0.076897531747818, 0.07662618160247803, 0.07010356336832047, 0.07608567178249359, 0.0718204602599144, 0.07564817368984222, 0.06720466166734695, 0.07583317160606384, 0.06636793166399002, 0.07041336596012115, 0.07012610137462616, 0.0795908123254776, 0.06994488090276718, 0.061451543122529984, 0.06319611519575119, 0.0618855357170105, 0.06297774612903595, 0.06508257985115051, 0.06437951326370239, 0.06381063163280487, 0.060862645506858826, 0.061234764754772186, 0.06253345310688019, 0.06002860516309738, 0.06277702748775482, 0.06020157411694527, 0.0633651465177536, 0.05859670788049698, 0.05907164886593819, 0.05727366358041763, 0.0592820942401886, 0.059966087341308594], 'val_binary_accuracy': [0.9637419581413269, 0.9663461446762085, 0.9718549847602844, 0.9721554517745972, 0.9747596383094788, 0.9767628312110901, 0.9782652258872986, 0.9764623641967773, 0.9763621687889099, 0.9785656929016113, 0.98046875, 0.9777644276618958, 0.9790664911270142, 0.9802684187889099, 0.9794671535491943, 0.9792668223381042, 0.9810696840286255, 0.9811698794364929, 0.9778645634651184, 0.9800680875778198, 0.9802684187889099, 0.9812700152397156, 0.9805688858032227, 0.9800680875778198, 0.9816706776618958, 0.9798678159713745, 0.9807692170143127, 0.9794671535491943, 0.9836738705635071, 0.9812700152397156, 0.9780648946762085, 0.9826722741127014, 0.983473539352417, 0.9802684187889099, 0.9839743375778198, 0.9805688858032227, 0.9817708134651184, 0.9833734035491943, 0.9822716116905212, 0.9833734035491943], 'val_loss': [0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196]}
+Epoch 41/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 33 which was 8 epochs ago.
+3125/3125 - 331s - loss: 0.0608 - binary_accuracy: 0.9789 - val_loss: 0.0551 - val_binary_accuracy: 0.9782 - 331s/epoch - 106ms/step
+Epoch 42/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 33 which was 9 epochs ago.
+3125/3125 - 283s - loss: 0.0629 - binary_accuracy: 0.9796 - val_loss: 0.0602 - val_binary_accuracy: 0.9774 - 283s/epoch - 90ms/step
+Epoch 43/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 33 which was 10 epochs ago.
+3125/3125 - 282s - loss: 0.0625 - binary_accuracy: 0.9789 - val_loss: 0.0594 - val_binary_accuracy: 0.9783 - 282s/epoch - 90ms/step
+Data appended to /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/metrics
+The file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/validation_data.h5 was opened in w mode.
+Calculating efficiency scores for george_large...
+1536/1536 - 67s - 67s/epoch - 43ms/step
+The file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/validation_data.h5 was opened in a mode.
+Done
+Calculating FAR scores for george_large...
+31250/31250 - 603s - 603s/epoch - 19ms/step
+The file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/validation_data.h5 was opened in a mode.
+Saving FAR Scores!
+Done
+Collecting ROC data for george_large...
+The file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/validation_data.h5 was opened in a mode.
+Saving ROC data keys.
+The file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/validation_data.h5 was opened in r mode.
+Attempt 5: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514]
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+{'binary_accuracy': [0.8348699808120728, 0.9660599827766418, 0.9658200144767761, 0.969290018081665, 0.9701099991798401, 0.9716799855232239, 0.9713299870491028, 0.9737300276756287, 0.9746299982070923, 0.9753599762916565, 0.9760199785232544, 0.9761999845504761, 0.9757800102233887, 0.9751099944114685, 0.9780700206756592, 0.9759699702262878, 0.9779499769210815, 0.9764299988746643, 0.9764299988746643, 0.9754800200462341, 0.9772099852561951, 0.9789400100708008, 0.9787399768829346, 0.9795500040054321, 0.9789599776268005, 0.9785599708557129, 0.9779999852180481, 0.9795799851417542, 0.9787200093269348, 0.9795600175857544, 0.9794899821281433, 0.9798200130462646, 0.978879988193512, 0.9787399768829346, 0.9793599843978882, 0.9811000227928162, 0.9800900220870972, 0.9805600047111511, 0.9807900190353394, 0.9802299737930298, 0.9788699746131897, 0.9795899987220764, 0.9788699746131897], 'loss': [0.31488236784935, 0.10746154934167862, 0.11115126311779022, 0.09844603389501572, 0.09257934242486954, 0.08504801988601685, 0.08611331135034561, 0.08254263550043106, 0.076897531747818, 0.07662618160247803, 0.07010356336832047, 0.07608567178249359, 0.0718204602599144, 0.07564817368984222, 0.06720466166734695, 0.07583317160606384, 0.06636793166399002, 0.07041336596012115, 0.07012610137462616, 0.0795908123254776, 0.06994488090276718, 0.061451543122529984, 0.06319611519575119, 0.0618855357170105, 0.06297774612903595, 0.06508257985115051, 0.06437951326370239, 0.06381063163280487, 0.060862645506858826, 0.061234764754772186, 0.06253345310688019, 0.06002860516309738, 0.06277702748775482, 0.06020157411694527, 0.0633651465177536, 0.05859670788049698, 0.05907164886593819, 0.05727366358041763, 0.0592820942401886, 0.059966087341308594, 0.06082465499639511, 0.06289232522249222, 0.06249215826392174], 'val_binary_accuracy': [0.9637419581413269, 0.9663461446762085, 0.9718549847602844, 0.9721554517745972, 0.9747596383094788, 0.9767628312110901, 0.9782652258872986, 0.9764623641967773, 0.9763621687889099, 0.9785656929016113, 0.98046875, 0.9777644276618958, 0.9790664911270142, 0.9802684187889099, 0.9794671535491943, 0.9792668223381042, 0.9810696840286255, 0.9811698794364929, 0.9778645634651184, 0.9800680875778198, 0.9802684187889099, 0.9812700152397156, 0.9805688858032227, 0.9800680875778198, 0.9816706776618958, 0.9798678159713745, 0.9807692170143127, 0.9794671535491943, 0.9836738705635071, 0.9812700152397156, 0.9780648946762085, 0.9826722741127014, 0.983473539352417, 0.9802684187889099, 0.9839743375778198, 0.9805688858032227, 0.9817708134651184, 0.9833734035491943, 0.9822716116905212, 0.9833734035491943, 0.9781650900840759, 0.9773637652397156, 0.9782652258872986], 'val_loss': [0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514]}
+Epoch 44/1000
+Data saved to new file /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+
+Best model so far had a value of: 0.045990701764822006 at Epoch: 33 which was 11 epochs ago.
+3125/3125 - 427s - loss: 0.0607 - binary_accuracy: 0.9793 - val_loss: 0.0515 - val_binary_accuracy: 0.9821 - 427s/epoch - 137ms/step
+Data appended to /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/metrics
+Loading validation data for george_large...
+Attempt 6: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 7: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 8: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 9: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 10: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 11: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 12: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 13: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 14: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 15: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 16: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 17: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 18: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 19: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 20: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 21: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 22: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 23: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 24: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
+Attempt 2: Restarting training from where we left off...
+path /home/michael.norman/data_ad_infinitum/chapter_04_application/cnns/models/cnn_george_large/history.hdf5
+[0.10187755525112152, 0.11165349930524826, 0.08213592320680618, 0.09448852390050888, 0.07346278429031372, 0.06438814103603363, 0.06340120732784271, 0.06906895339488983, 0.06778428703546524, 0.0627887025475502, 0.07422612607479095, 0.06338774412870407, 0.06376226991415024, 0.056725386530160904, 0.062403660267591476, 0.06967786699533463, 0.05471646413207054, 0.05734540894627571, 0.06128273904323578, 0.05917814001441002, 0.05458485707640648, 0.05747520178556442, 0.056231796741485596, 0.06027164310216904, 0.054180536419153214, 0.06530456244945526, 0.053984347730875015, 0.05826753377914429, 0.048908133059740067, 0.05233399569988251, 0.061092596501111984, 0.05011875182390213, 0.045990701764822006, 0.05428333953022957, 0.053655821830034256, 0.05208154395222664, 0.05404595285654068, 0.049276143312454224, 0.051013462245464325, 0.05146339535713196, 0.05512354150414467, 0.0601537823677063, 0.059386689215898514, 0.051476966589689255]
+Loading validation data for george_large...
