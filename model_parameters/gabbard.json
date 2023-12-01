@@ -1,0 +1,100 @@
+{
+    "inputs" : [
+        {
+            "name" : "ONSOURCE",
+            "shape" : ["num_ifos", "num_onsource_samples"]
+        },
+        {
+            "name" : "OFFSOURCE",
+            "shape" : ["num_ifos", "num_offsource_samples"]
+        }
+    ],
+    "layers" : [
+        {
+            "name" : "Whiten",
+            "type" : "Whiten"
+        },
+        {
+            "name" : "Convolutional 1",
+            "type" : "Conv",
+            "num_filters" : 8,
+            "filter_size" : 64,
+            "activation" : "ELU"
+        },
+        {
+            "name" : "Pooling 1",
+            "type" : "Pool",
+            "size" : 8,
+            "stride" : 8
+        },
+        {
+            "name" : "Convolutional 2",
+            "type" : "Conv",
+            "num_filters" : 8,
+            "filter_size" : 32,
+            "activation" : "ELU"
+        },
+        {
+            "name" : "Convolutional 3",
+            "type" : "Conv",
+            "num_filters" : 16,
+            "filter_size" : 32,
+            "activation" : "ELU"
+        },
+        {
+            "name" : "Pooling 3",
+            "type" : "Pool",
+            "size" : 6,
+            "stride" : 6
+        },
+        {
+            "name" : "Convolutional 4",
+            "type" : "Conv",
+            "num_filters" : 16,
+            "filter_size" : 16,
+            "activation" : "ELU"
+        },
+        {
+            "name" : "Convolutional 5",
+            "type" : "Conv",
+            "num_filters" : 32,
+            "filter_size" : 16,
+            "activation" : "ELU"
+        },
+        {
+            "name" : "Pooling 5",
+            "type" : "Pool",
+            "size" : 6,
+            "stride" : 6
+        },
+        {
+            "name" : "Convolutional 6",
+            "type" : "Conv",
+            "num_filters" : 32,
+            "filter_size" : 16,
+            "activation" : "ELU"
+        },
+        {
+            "name" : "Flatten",
+            "type" : "Flatten"
+        },
+        {
+            "name" : "Dense 1",
+            "type" : "Dense",
+            "num_neurons" : 64,
+            "dropout" : 0.5
+        },
+        {
+            "name" : "Dense 2",
+            "type" : "Dense",
+            "num_neurons" : 64,
+            "dropout" : 0.5
+        }
+    ],
+    "outputs" : [
+        {
+            "name" : "INJECTION_MASKS",
+            "type" : "binary"
+        }
+    ]
+}

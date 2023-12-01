@@ -1,0 +1,18 @@
+ {
+    "training" : {
+        "batch_size" : 12,
+        "learning_rate" : 1E-4,
+        "optimizer" : "Adam",
+        "sample_rate_hertz" : 8196.0,
+        "data_acquisition_batch_duration_seconds" : 2048.0,
+        "onsource_duration_seconds" : 1.0,
+        "offsource_duration_seconds" : 16.0,
+        "patience" : 10,
+        "num_examples_per_epoch" : 1E5,
+        "num_test_examples": 1E4
+    },
+    "dataset" : {
+        "training_injection_config_paths" : ["./injection_configs/baseline_cbc"],
+        "validation_injection_config_paths" : ["./injection_configs/validation_cbc"]
+    }
+}
