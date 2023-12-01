@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import sys
 
 from bokeh.plotting import figure, output_file, save
 from bokeh.layouts import gridplot
@@ -54,15 +56,18 @@ def plot_metrics(metrics_dict):
     # Create a figure for each metric
     figures = []
 
-    for i, key in enumerate(['binary_accuracy', 'loss', 'val_binary_accuracy', 'val_loss']):
+    keys = ['binary_accuracy', 'loss', 'val_binary_accuracy', 'val_loss']
+    labels = [
+        "Accuracy: Training Data (Per Cent)", 
+        "Loss: Training Data (Per Cent)", 
+        "Accuracy: Validation Data (Per Cent)", 
+        "Loss: Validation Data (Per Cent)"
+    ]
+
+    for i, (key, label) in enumerate(zip(keys, labels)):
         # Use specified width for each plot, or default if not enough widths are specified
         width = plot_widths[i] if i < len(plot_widths) else plot_widths[-1]
-
-        y_axis_label = snake_case_to_capitalised_first_with_spaces(key)
-        if "accuracy" in key:
-            y_axis_label += " (Per Cent)"
-        
-        p = figure(x_axis_label='Epochs', y_axis_label=y_axis_label, width=width)
+        p = figure(x_axis_label='Epochs', y_axis_label=label, width=width)
         
         if "accuracy" in key:
             p.y_range.start = 45
@@ -122,12 +127,12 @@ def plot_metrics(metrics_dict):
     grid = gridplot(figures, ncols=2)
 
     # Output file
-    output_file("metrics.html")
+    output_file(f"{current_dir}/models/training_history.html")
     save(grid)
 
 histories = {}
 
-directory_path = Path('./models/chapter_04_perceptrons_single/')
+directory_path = Path(f'{current_dir}/models/')
 for entry in directory_path.iterdir():
     if entry.name.startswith("perceptron"):
         name = transform_string(entry.name)
