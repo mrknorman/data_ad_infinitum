@@ -12,7 +12,7 @@ import prctl
 
 # Get the directory of your current script
 current_dir = Path(__file__).resolve().parent
-parent_dir = current_dir.parent
+parent_dir = current_dir.parent.parent
 sys.path.append(str(parent_dir))
 
 import gravyflow as gf
@@ -27,24 +27,6 @@ def create_perceptron_plan(
         hidden_layers.append(gf.DenseLayer(num_neurons))
         
     return hidden_layers
-
-def load_or_build_model(builder, model_filename, input_configs, output_config, force_overwrite = False):
-    # Check if the model file exists
-    if os.path.exists(model_filename) and not force_overwrite:
-        try:
-            # Try to load the model
-            print(f"Loading model from {model_filename}")
-            builder.model = tf.keras.models.load_model(model_filename)
-            builder.model_path = model_filename
-
-        except Exception as e:
-            print(f"Error loading model: {e}")
-            print("Building new model...")
-            builder.build_model(input_configs, output_config, model_path=model_filename)
-    else:
-        # If the model doesn't exist, build a new one
-        print("No saved model found. Building new model...")
-        builder.build_model(input_configs, output_config, model_path=model_filename)
 
 def train_perceptron(
         heartbeat_object,
@@ -166,18 +148,10 @@ def train_perceptron(
         num_neurons_in_hidden_layers
     )
 
-    # Initilise model
-    builder = gf.ModelBuilder(
-        hidden_layers, 
-        optimizer = \
-            optimizers.Adam(learning_rate=learning_rate), 
-        loss = losses.BinaryCrossentropy()
-    )
-        
     input_configs = [
         {
             "name" : gf.ReturnVariables.ONSOURCE.name,
-            "shape" : (len(ifos), num_onsource_samples ,)
+            "shape" : (len(ifos), num_onsource_samples,)
         },
         {
             "name" : gf.ReturnVariables.OFFSOURCE.name,
@@ -199,21 +173,26 @@ def train_perceptron(
         "model_path" : model_path
     }
 
-    load_or_build_model(
-        builder, 
-        model_path, 
-        input_configs, 
-        output_config,
+    # Load or build model:
+    model = gf.Model.load(
+        model_load_path=model_path,
+        num_ifos=len(ifos),
+        optimizer=optimizers.Adam(learning_rate=learning_rate), 
+        loss=losses.BinaryCrossentropy(),
+        input_configs=input_configs,
+        output_config=output_config,
+        hidden_layers=hidden_layers,
         force_overwrite=(restart_count==0)
     )
     
     if (restart_count==0):
-        builder.summary()
+        model.summary()
     else:
         print(f"Attempt {restart_count + 1}: Restarting training from where we left off...")
-        builder.summary()
-    
-    trained = builder.train_model(
+        model.summary()
+        
+    trained = model.train(
+        model_name,
         train_dataset,
         test_dataset,
         training_config,
@@ -257,7 +236,7 @@ def train_perceptron(
 
     # Validate model:
     validator = gf.Validator.validate(
-            builder.model, 
+            model.model, 
             model_name,
             dataset_args=deepcopy(dataset_arguments),
             efficiency_config=efficiency_config,
@@ -265,11 +244,11 @@ def train_perceptron(
             roc_config=roc_config,
             checkpoint_file_path=validation_file_path,
             heart=heartbeat_object
-        )
-
+        )  
+    
     # Save validation data:
-    validator = gf.Validator.load(
-        validation_file_path, 
+    validator.save(
+        validation_file_path
     )
 
     validator.plot(

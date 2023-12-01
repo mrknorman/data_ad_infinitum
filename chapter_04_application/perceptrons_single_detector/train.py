@@ -29,24 +29,6 @@ def create_perceptron_plan(
         
     return hidden_layers
 
-def load_or_build_model(builder, model_filename, input_configs, output_config, force_overwrite = False):
-    # Check if the model file exists
-    if os.path.exists(model_filename) and not force_overwrite:
-        try:
-            # Try to load the model
-            print(f"Loading model from {model_filename}")
-            builder.model = tf.keras.models.load_model(model_filename)
-            builder.model_path = model_filename
-
-        except Exception as e:
-            print(f"Error loading model: {e}")
-            print("Building new model...")
-            builder.build_model(input_configs, output_config, model_path=model_filename)
-    else:
-        # If the model doesn't exist, build a new one
-        print("No saved model found. Building new model...")
-        builder.build_model(input_configs, output_config, model_path=model_filename)
-
 def train_perceptron(
         heartbeat_object,
         # Model Arguments:
@@ -163,14 +145,6 @@ def train_perceptron(
     hidden_layers += create_perceptron_plan(
         num_neurons_in_hidden_layers
     )
-
-    # Initilise model
-    builder = gf.ModelBuilder(
-        hidden_layers, 
-        optimizer = \
-            optimizers.Adam(learning_rate=learning_rate), 
-        loss = losses.BinaryCrossentropy()
-    )
         
     input_configs = [
         {
@@ -197,20 +171,24 @@ def train_perceptron(
         "model_path" : model_path
     }
 
-    load_or_build_model(
-        builder, 
-        model_path, 
-        input_configs, 
-        output_config,
+    # Load or build model:
+    model = gf.Model.load(
+        model_load_path=model_path,
+        num_ifos=len(ifos),
+        optimizer=optimizers.Adam(learning_rate=learning_rate), 
+        loss=losses.BinaryCrossentropy(),
+        input_configs=input_configs,
+        output_config=output_config,
+        hidden_layers=hidden_layers,
         force_overwrite=(restart_count==0)
     )
     
     if (restart_count==0):
-        builder.summary()
+        model.summary()
     else:
         print(f"Attempt {restart_count + 1}: Restarting training from where we left off...")
     
-    builder.train_model(
+    model.train(
         train_dataset,
         test_dataset,
         training_config,
@@ -222,7 +200,7 @@ def train_perceptron(
         heartbeat_object.beat()
 
     gf.save_dict_to_hdf5(
-        builder.metrics[0].history, 
+        model.metrics[0].history, 
         model_path / "metrics", 
         force_overwrite=False
     )    

@@ -13,6 +13,10 @@ from bokeh.plotting import figure, show
 from bokeh.resources import INLINE, Resources
 from bokeh.palettes import Bright
 
+# Get the directory of your current script
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent.parent
+sys.path.append(str(parent_dir))
 
 import numpy as np
 import gravyflow as gf

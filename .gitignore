@@ -8,6 +8,8 @@
 py_ml_data/
 gravyflow_data/
 segment_data*
+noise_files*
+*error*
 
 generator_data*
 generated*
