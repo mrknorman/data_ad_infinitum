@@ -184,7 +184,7 @@ def train_cnn(
     # Validation configs:
     efficiency_config = {
             "max_scaling" : 15.0, 
-            "num_scaling_steps" : 3, 
+            "num_scaling_steps" : 31, 
             "num_examples_per_scaling_step" : 16384
         }
     far_config = {
@@ -193,9 +193,9 @@ def train_cnn(
     roc_config : dict = {
             "num_examples" : 1.0E6,
             "scaling_ranges" : [
-                (8.0, 20.0),
-                6.0,
-                8.0,
+                #(8.0, 20.0),
+                #6.0,
+                #8.0,
                 10.0,
                 12.0
             ]
@@ -238,7 +238,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--name",
         type = str, 
-        default = "Aaggghghghghh!",
+        default = "Model name.",
         help = (
             "Name of cnn model."
         )

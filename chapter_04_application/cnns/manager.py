@@ -28,7 +28,7 @@ def configure_logging():
 def main(
         initial_processes,
         max_restarts : int = 20, 
-        restart_timeout_seconds : float = 1200.0, 
+        restart_timeout_seconds : float = 3600.0, 
         process_start_wait_seconds : float = 1.0,
         management_tick_length_seconds : float = 5.0,
         max_num_concurent_processes : int = 7
