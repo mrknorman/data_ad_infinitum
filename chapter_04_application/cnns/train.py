@@ -193,9 +193,9 @@ def train_cnn(
     roc_config : dict = {
             "num_examples" : 1.0E6,
             "scaling_ranges" : [
-                #(8.0, 20.0),
-                #6.0,
-                #8.0,
+                (8.0, 20.0),
+                6.0,
+                8.0,
                 10.0,
                 12.0
             ]
