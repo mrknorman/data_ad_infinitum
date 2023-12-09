@@ -10,3 +10,6 @@
 [submodule "dragonn"]
 	path = dragonn
 	url = https://github.com/mrknorman/dragonn.git
+[submodule "chapter_05_dragonn/dragonn"]
+	path = chapter_05_dragonn/dragonn
+	url = https://github.com/mrknorman/dragonn.git
