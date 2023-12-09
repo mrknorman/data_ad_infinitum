@@ -7,3 +7,6 @@
 [submodule "chapter_07_crosswave/crosswave"]
 	path = chapter_07_crosswave/crosswave
 	url = https://github.com/mrknorman/crosswave.git
+[submodule "dragonn"]
+	path = dragonn
+	url = https://github.com/mrknorman/dragonn.git
