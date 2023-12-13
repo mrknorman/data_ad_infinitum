@@ -13,3 +13,6 @@
 [submodule "chapter_05_dragonn/dragonn"]
 	path = chapter_05_dragonn/dragonn
 	url = https://github.com/mrknorman/dragonn.git
+[submodule "thesis_text"]
+	path = thesis_text
+	url = https://github.com/mrknorman/data_ad_infinitum_thesis.git
