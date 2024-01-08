@@ -16,3 +16,6 @@
 [submodule "thesis_text"]
 	path = thesis_text
 	url = https://github.com/mrknorman/data_ad_infinitum_thesis.git
+[submodule "chapter_05_dragonn/genetic_algorithm_alpha"]
+	path = chapter_05_dragonn/genetic_algorithm_alpha
+	url = https://github.com/mrknorman/genetic_algorithm_alpha.git
